@@ -838,27 +838,43 @@ async function recognizeLetterCNN(canvasEl, allowedLetters) {
   }
   if (minX > maxX || minY > maxY) return null;
 
+  // EMNIST 风格预处理：bbox → 等比缩放至 20×20 → 28×28 居中 → 笔画质心对齐 (14,14)
   const bw = maxX - minX + 1, bh = maxY - minY + 1;
-  const pad = Math.max(6, Math.round(Math.max(bw, bh) * 0.15));
-  minX = Math.max(0, minX - pad); minY = Math.max(0, minY - pad);
-  maxX = Math.min(w - 1, maxX + pad); maxY = Math.min(h - 1, maxY + pad);
-
-  const cropW = maxX - minX + 1, cropH = maxY - minY + 1;
-  const size = Math.max(cropW, cropH);
-  const offX = Math.floor((size - cropW) / 2);
-  const offY = Math.floor((size - cropH) / 2);
+  const scale20 = 20 / Math.max(bw, bh);
+  const dw = Math.max(1, Math.round(bw * scale20)), dh = Math.max(1, Math.round(bh * scale20));
 
   const tmp = document.createElement('canvas');
   tmp.width = 28; tmp.height = 28;
   const tmpCtx = tmp.getContext('2d');
-  tmpCtx.fillStyle = '#000000';
-  tmpCtx.fillRect(0, 0, 28, 28);
-  tmpCtx.drawImage(canvasEl, minX, minY, cropW, cropH, offX * 28 / size, offY * 28 / size, cropW * 28 / size, cropH * 28 / size);
+  tmpCtx.drawImage(canvasEl, minX, minY, bw, bh, Math.floor((28 - dw) / 2), Math.floor((28 - dh) / 2), dw, dh);
 
   const tmpData = tmpCtx.getImageData(0, 0, 28, 28);
+  let cx = 0, cy = 0, cnt = 0, tMinX = 28, tMinY = 28, tMaxX = 0, tMaxY = 0;
+  for (let y = 0; y < 28; y++) {
+    for (let x = 0; x < 28; x++) {
+      if (tmpData.data[(y * 28 + x) * 4 + 3] > 20) {
+        cx += x; cy += y; cnt++;
+        if (x < tMinX) tMinX = x; if (x > tMaxX) tMaxX = x;
+        if (y < tMinY) tMinY = y; if (y > tMaxY) tMaxY = y;
+      }
+    }
+  }
+  if (!cnt) return null;
+  let dx = Math.round(14 - cx / cnt), dy = Math.round(14 - cy / cnt);
+  dx = Math.max(-tMinX, Math.min(dx, 27 - tMaxX));
+  dy = Math.max(-tMinY, Math.min(dy, 27 - tMaxY));
+
   const floatArray = new Float32Array(28 * 28);
-  for (let i = 0; i < 28 * 28; i++) {
-    floatArray[i] = (0.299 * tmpData.data[i * 4] + 0.587 * tmpData.data[i * 4 + 1] + 0.114 * tmpData.data[i * 4 + 2]) / 255.0;
+  for (let y = 0; y < 28; y++) {
+    const sy = y - dy;
+    if (sy < 0 || sy >= 28) continue;
+    for (let x = 0; x < 28; x++) {
+      const sx = x - dx;
+      if (sx < 0 || sx >= 28) continue;
+      const i = (sy * 28 + sx) * 4;
+      const a = tmpData.data[i + 3] / 255.0;
+      floatArray[y * 28 + x] = (0.299 * tmpData.data[i] + 0.587 * tmpData.data[i + 1] + 0.114 * tmpData.data[i + 2]) * a / 255.0;
+    }
   }
 
   const tensor = new ort.Tensor('float32', floatArray, [1, 1, 28, 28]);
