@@ -974,10 +974,18 @@ function openHWOverlay(charData, idx) {
 }
 
 async function doHWRecognize(hc) {
-  // 期望拼音去声调后去重，作为候选集约束
+  // 期望拼音去声调后去重，作为候选集约束（借鉴 grade1-practice TONE_MAP 机制）
+  const TONE_MAP = {
+    'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e',
+    'ī':'i','í':'i','ǐ':'i','ì':'i','ō':'o','ó':'o','ǒ':'o','ò':'o',
+    'ū':'u','ú':'u','ǔ':'u','ù':'u','ǖ':'v','ǘ':'v','ǚ':'v','ǜ':'v','ü':'v',
+  };
   const stripTones = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  const expected = stripTones(hwCharData.pinyin);
-  const expectedLetters = [...new Set(expected.split(''))];
+  const raw = hwCharData.pinyin;
+  const expected = stripTones(raw);
+  // ü 系字母（nǚ/lǜ/jù 等）：孩子可能写成 v 或 u → 候选集同时含 u 和 v
+  const hasUmlaut = /[üǖǘǚǜ]/.test(raw);
+  const expectedLetters = [...new Set([...expected.split(''), ...(hasUmlaut ? ['v'] : [])])];
   const msgEl = document.getElementById('hwMsg');
   const result = await recognizeLetterCNN(hc, expectedLetters);
   if (!result) {

@@ -38,6 +38,7 @@
 | `tools/train/make_emnist_strokes.py` | EMNIST 真手写 → 骨架折线笔画轨迹（`--train` 全量/默认 test 采样） |
 | `tools/train/add_ij_dots.py` | 给 i/j 无点样本合成点（儿童书写规范，80% 概率补点） |
 | `test/hw-overlay-test.html` | **蒙层手写回放测试台**：镜像 index.html 蒙层逻辑，用真实 pointer 事件回放 EMNIST 笔画轨迹，批量测准确率/拒识/混淆（`?samples=N&model=old&pen=N&dump=1`） |
+| `test/playwright-e2e.mjs` | **Playwright 端到端验收**（借鉴 grade1-practice 验收体系）：真实游戏流程（L1 切瓜→L2→手写蒙层）+ 26 字母×6 真实鼠标笔画回放 + 真实拼音候选集对比 + 端到端拼音通关；`node test/playwright-e2e.mjs [port]` |
 | `test/emnist-strokes.json` | 624 个真实手写笔画轨迹样本（26 字母 × 24，浏览器回放 + 离线验收共用） |
 | `vendor/ort/` | onnxruntime-web 1.21.0 本地化（ort.min.js + wasm，37MB）——**CDN 在国内被墙，严禁改回 CDN** |
 | `vendor/jieba/` | jieba-wasm 2.4.0 本地化（组词校验用） |
@@ -55,8 +56,9 @@
   │    模型为 EMNIST 真手写 + 笔画渲染 + 4 款渲染字体混合重训（2.54MB，方向A3 完成）
   │    ⚠️ onnxruntime-web 全部本地化（vendor/ort/），CDN 在国内不可用（曾致加载 164s+ 静默失败）
   ├─ 3. 候选集约束：只在期望拼音去重字母集内取最大概率；集内置信不足 → 回退全局最大并标 lowConf
-  ├─ 4. 拒识：lowConf 或 置信度 < HW_MIN_CONF(0.30) → 不采纳，提示重写
-  └─ 5. 匹配：结果串 vs stripTones(期望拼音)（去声调），前缀错误实时提示第N位
+  ├─ 4. 拒识：lowConf 或 置信度 < HW_MIN_CONF(0.20) → 不采纳，提示重写
+  └─ 5. 匹配：结果串 vs 期望拼音（去声调）；前缀错误实时提示第N位
+  └─ 6. 带声调输入处理：TONE_MAP 归一化 ü 系（nǚ/lǜ/jù 等）→ 候选集同时含 u 与 v，孩子写 v 也能认
 ```
 
 ### 关键函数（index.html）
@@ -100,6 +102,7 @@
 | + 变形 + 过采样 | **88.1%** | **11.9%** | 错识 0（候选集下要么认对要么拒识） |
 | 迭代4 复测（900ms 滑动停笔） | **88.14%** | **11.9%** | 错识 0；真实停顿 700ms 模拟 ru/you/shuang 全过 |
 | 迭代5（HW_MIN_CONF 0.30→0.20） | **91.67%**（312 子集）/ 93.1%（624 全量） | 8.3% | 离线 624 网格寻优：th0.20 全赚（错识仅 +2 且真实关卡候选集更小）；同一浏览器口径 88.14%→91.67% |
+| 迭代6（Playwright 真实鼠标验收） | **91.0%**（156）/ 92.2%（真实候选集 90） | 9.0% | 独立工具链验证：真实 mouse 事件回放 ≈ browse dispatch 口径（91.67%），确认测试台无系统偏差 |
 
 **迭代5 阈值调优依据（离线 624 样本、真实拼音候选集 multi 模式）**：
 - th=0.30: 87.0% / 拒识 73 / 错识 8；th=0.20: **90.2%** / 拒识 50 / 错识 11
@@ -174,6 +177,8 @@
 | 单字母准确率（渲染字体 Arial/Georgia 抖动3变体，浏览器） | ≥ 99% | **98.1%（153/156）**，y→v×3 |
 | 单字母准确率（EMNIST 真手写 test 集） | ≥ 90% | **92.82%** |
 | 真手写笔画回放（手机画布 360×420，浏览器 pointer 事件，单字母候选集，900ms 滑动停笔） | ≥ 90% | **88.14%（拒识 11.9%、错识 0）**（迭代4 复测） |
+| 真手写笔画回放（Playwright 真实鼠标事件，156 样本，单字母候选集） | ≥ 90% | **91.0%（拒识 14、错识 0）**（迭代6，≈browse 口径 91.67%） |
+| 真实拼音候选集（Playwright，shuang/dong/you/ru，90 样本） | ≥ 90% | **92.2%（拒识 6、候选内错识 1）** |
 | 真手写笔画（离线渲染验收 18px 粗笔，624 样本） | ≥ 90% | **88.0%** |
 | 端到端拼音通关（真实停顿 700ms/笔画 + 多字母候选集，浏览器模拟） | ≥ 90% | **ru ✓ you ✓ shuang ✓**（迭代4：g 拒识 2 次后重试通过） |
 | 识别延迟（前端 CNN，桌面） | ≤ 100ms | **0.8ms** |
@@ -208,23 +213,36 @@ const EDGE_CASES = [
 ];
 ```
 
-### 4.4 验收脚本要点（Playwright）
+### 4.4 验收脚本要点（Playwright，test/playwright-e2e.mjs）
 
-```javascript
-// 伪代码示例
-const { chromium } = require('playwright');
-const page = await (await chromium.launch()).newPage();
-await page.goto('http://localhost:3000');
+借鉴 grade1-practice 的 Playwright 验收体系（独立于 browse 口径，防系统偏差）。依赖 grade1-practice 仓库的 playwright（本仓库无 node_modules）：
 
-for (const testCase of testCases) {
-  // 1. 进入某课 → 完成 L1（或直接用存档跳过）→ L2 拼音 tab
-  // 2. 点击生字卡 → 打开 hw-overlay
-  // 3. 在 #hwCanvas 上模拟书写（mouse events）
-  // 4. 等待 1.5s → 检查 overlay 是否自动关闭 + 卡片是否出现 .done
-  // 5. 记录结果（PASS/FAIL + 实际识别串，可从 console/state 读取）
-}
-generateReport();
+```bash
+node test/playwright-e2e.mjs 8080   # 完整验收（≈15 分钟：L1 + 156 批量 + 90 候选集 + 端到端）
 ```
+
+四段验收：
+1. **L1 切瓜**：真实 DOM 事件切 12 个水果 → dialog 弹出
+2. **26 字母批量**（6 样本/字母 = 156）：真实 `page.mouse` 事件画 EMNIST 笔画（bbox→150px 字形居中），900ms 停笔识别，单字母候选集
+3. **真实拼音候选集**（shuang/dong/you/ru = 90 样本）：候选集 = 目标拼音全字母集，量化真实关卡差距
+4. **端到端拼音通关**：逐字母写（笔画间 700ms 停顿 <900ms 合成多笔画字母）→ 🎉 → overlay 自动关闭
+
+**关键经验（踩坑记录，勿重犯）**：
+- **顶层 `let` 变量不能通过 `window.x = ...` 覆盖**：index.html 的 `hwCharData/hwRecognized` 是顶层 let（全局词法环境，非 window 属性）。`page.evaluate` 内必须用裸标识符（`hwCharData = ...`、`hwRecognized.length = 0`）才能操作真实变量；`window.x` 只是创建无效的新属性，导致候选集永远停留在初始字、结果数组永远为空
+- **openHWOverlay 对已完成 idx 直接 return**（`l2.pinyinDone.some(p => p.idx === idx)`）：批量循环每个样本必须用**递增负 idx**（`-1, -2, ...`），否则成功一次后后续样本全部打不开蒙层
+- **成功路径 1s 后自动关闭蒙层**（🎉 → `setTimeout(close, 1000)`）：读结果后若成功需等 ~1.2s 再画下一样本，否则下一样本笔画画到一半蒙层被关（墨迹被截断）
+- **drawStrokes 坐标换算**：bbox → `scale = 150/max(bw,bh)` → 画布居中（与测试台一致）。首版误用"字形高度 0.62"公式画到画布外，156 样本 0 墨迹
+- **识别结果读取时机**：900ms 停笔定时器 → 画完等 1500ms 再读 `hwMsg/hwRecognized`
+- Playwright 版本：import grade1-practice 的 `node_modules/playwright/index.mjs`（本仓库无依赖）
+
+### 4.5 带声调输入处理机制（借鉴 grade1-practice）
+
+**实现**（index.html `doHWRecognize`，~978 行）：
+- `TONE_MAP`：韵母声调字符（āáǎà/ēéěè/īíǐì/ōóǒò/ūúǔù）→ 对应字母；`stripTones()` 用 NFD 归一化去除组合变音符
+- **ü 系处理**（nǚ/lǜ/jù 等）：拼音含 `üǖǘǚǜ` 时，候选集同时含 `u` 与 `v`（孩子写 v 也能认）；`hasUmlaut` 正则判断后 `[...new Set([...expected, ...(hasUmlaut ? ['v'] : [])])]`
+- 与 grade1-practice 差异：grade1 的 TONE_MAP 用于**显示层还原**（识别 v 后显示 ü），本项目候选集直接纳入 u/v 双写兼容
+
+**测试覆盖**：EMNIST 样本无 ü 系字形，需手工写 nǚ/lǜ 验证（浏览器回放 + iPhone 真机各一次）。
 
 ---
 
