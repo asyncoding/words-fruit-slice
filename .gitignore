@@ -9,3 +9,4 @@ test/
 # 模型训练环境（2.2GB EMNIST 数据与 venv 不入库）
 tools/train/.venv/
 tools/train/data/
+*.onnx.data

@@ -3,14 +3,18 @@
 """EMNIST 26类字母CNN 重训管线（方向A3：孩子笔迹增强重训 + 方向A4：EMNIST标准预处理对齐）
 
 - 数据：torchvision EMNIST split='letters'（train 124800 / test 20800，类 0-25 = a-z）
+         + StrokeDataset（EMNIST 笔画化渲染：骨架折线→圆头笔画→画布降采样，镜像 app 真实绘制）
+         + FontDataset（渲染字体合成样本）
 - 增强（先EMNIST标准形 -> 再随机扰动）：
     旋转 ±25° / 缩放 0.75~1.25 / 平移 ±3px（带画布越界约束，避免裁掉字母笔画）
     随机擦除少量笔画像素；scipy.ndimage 3×3 dilate/erode 各 25%（粗细模拟）
 - 架构：conv32-BN-MP-conv96-BN-MP-fc128-fc26（约63万参数，fp32 < 4MB）
 - 训练：Adam lr 1e-3 cosine，batch 256，epoch 8；每 epoch 报 EMNIST test 准确率
 - 导出：opset 13，input/output 命名 + Softmax 结尾；onnxruntime 数值一致性验证
-- 验收：EMNIST test >= 97%；字体渲染 Arial >= 99% / Georgia >= 90% / 草书 >= 85%
+- 验收：EMNIST test >= 97%；字体渲染 Arial >= 99% / Georgia >= 90% / 草书 >= 85%；
+        笔画渲染 test 集（笔宽 4.3/18px）作为真实手写代理指标
 """
+import json
 import math
 import os
 import sys
@@ -269,6 +273,211 @@ class FontDataset(Dataset):
         return x[None].copy(), y
 
 
+def render_strokes(strokes, canvas=360, pen=18, glyph_h=150, angle=0, jx=0, jy=0):
+    """骨架折线 -> 圆头圆角笔画渲染（PIL，镜像 app canvas stroke 语义：白色圆头笔画画在透明底上）。
+    返回 HxWx4 RGBA uint8。"""
+    pts = [p for s in strokes for p in s]
+    xs = [p[0] for p in pts]
+    ys = [p[1] for p in pts]
+    min_x, min_y, max_x, max_y = min(xs), min(ys), max(xs), max(ys)
+    bw, bh = max_x - min_x + 1, max_y - min_y + 1
+    scale = glyph_h / max(bw, bh)
+    cx, cy = (min_x + max_x) / 2, (min_y + max_y) / 2
+    rot = math.radians(angle)
+    R = np.array([[math.cos(rot), -math.sin(rot)], [math.sin(rot), math.cos(rot)]])
+    c2 = canvas / 2
+
+    def xf(p):
+        v = (np.array(p, dtype=float) - np.array([cx, cy])) * scale
+        v = R @ v
+        return tuple(v + np.array([c2 + jx, c2 + jy]))
+
+    img = Image.new('RGBA', (canvas, canvas), (0, 0, 0, 0))
+    d = ImageDraw.Draw(img)
+    r = pen / 2
+    for s in strokes:
+        line = [xf(p) for p in s]
+        if len(line) == 1:
+            px, py = line[0]
+            d.ellipse([px - r, py - r, px + r, py + r], fill=(255, 255, 255, 255))
+        elif len(line) >= 2:
+            d.line(line, fill=(255, 255, 255, 255), width=int(round(pen)), joint='curve')
+            for p in (line[0], line[-1]):
+                d.ellipse([p[0] - r, p[1] - r, p[0] + r, p[1] + r], fill=(255, 255, 255, 255))
+    return np.asarray(img)
+
+
+def _deform_bend(line, k):
+    """弯曲量缩放：中间点对首尾弦线的垂距 ×k（k<1 写直，k>1 写弯）。"""
+    if len(line) < 3:
+        return line
+    a = np.array(line[0])
+    b = np.array(line[-1])
+    seg = b - a
+    l2 = float(seg @ seg)
+    if l2 < 1e-6:
+        return line
+    n = np.array([-seg[1], seg[0]]) / np.sqrt(l2)
+    out = []
+    for p in line:
+        v = np.array(p, dtype=float)
+        t = float((v - a) @ seg) / l2
+        proj = a + t * seg
+        d = float((v - proj) @ n)
+        out.append(tuple(proj + n * d * k))
+    return out
+
+
+def _deform_gap(strokes, h, rng):
+    """闭合空隙调整：最近跨笔画端点对 → 40% 完全闭合 / 30% 拉开成开口(0.10~0.25h) / 30% 保持。"""
+    ends = []
+    for si, s in enumerate(strokes):
+        ends.append((si, 0, np.array(s[0], dtype=float)))
+        ends.append((si, -1, np.array(s[-1], dtype=float)))
+    best = None
+    for i in range(len(ends)):
+        for j in range(i + 1, len(ends)):
+            if ends[i][0] == ends[j][0]:
+                continue
+            d = float(np.linalg.norm(ends[i][2] - ends[j][2]))
+            if d < 0.28 * h and (best is None or d < best[0]):
+                best = (d, i, j)
+    if not best:
+        return strokes
+    _, i, j = best
+    pi, pj = ends[i], ends[j]
+    v = pj[2] - pi[2]
+    l = float(np.linalg.norm(v))
+    u = v / (l + 1e-9)
+    r = rng.rand()
+    if r < 0.4:
+        mid = tuple((pi[2] + pj[2]) / 2)
+        strokes[pi[0]][pi[1]] = mid
+        strokes[pj[0]][pj[1]] = mid
+    elif r < 0.7:
+        g = rng.uniform(0.10, 0.25) * h
+        strokes[pi[0]][pi[1]] = tuple(pi[2] - u * g / 2)
+        strokes[pj[0]][pj[1]] = tuple(pj[2] + u * g / 2)
+    return strokes
+
+
+def _deform_corner(line, rng):
+    """顶点尖圆角：沿角平分线移动 ±50% 邻段长（正=更尖，负=更圆钝）。"""
+    if len(line) < 3:
+        return line
+    out = [line[0]]
+    for i in range(1, len(line) - 1):
+        p0 = np.array(line[i - 1], dtype=float)
+        p1 = np.array(line[i], dtype=float)
+        p2 = np.array(line[i + 1], dtype=float)
+        v1 = p1 - p0
+        v2 = p2 - p1
+        l1, l2 = float(np.linalg.norm(v1)), float(np.linalg.norm(v2))
+        if l1 < 1e-6 or l2 < 1e-6:
+            out.append(line[i])
+            continue
+        bis = v1 / l1 + v2 / l2
+        nb = float(np.linalg.norm(bis))
+        if nb < 1e-6:
+            out.append(line[i])
+            continue
+        bis = bis / nb
+        shift = rng.uniform(-0.5, 0.5) * min(l1, l2)
+        out.append(tuple(p1 + bis * shift))
+    out.append(line[-1])
+    return out
+
+
+def deform_strokes(strokes, rng):
+    """孩子书写误差模拟（折线级形状变形，镜像真实儿童的书写偏差）：
+    - bend:   弯曲量缩放 0.6~1.5（弯的写直 / 直的写弯）         ~45%
+    - gap:    圈开口/闭合调整（闭合圈留空隙 / 开口圈闭合）     ~35%
+    - corner: 顶点尖圆角 ±（弧度不够圆 / 过度锋利）            ~40%
+    - join:   近笔画连笔合并（按手写习惯一笔连写）             ~30%
+    """
+    strokes = [list(s) for s in strokes]
+    pts = [p for s in strokes for p in s]
+    if not pts:
+        return strokes
+    h = max(p[1] for p in pts) - min(p[1] for p in pts)
+    h = max(h, 6.0)
+    # 1) join 连笔（先做，合并后 gap/bend/corner 在合并笔画上更合理）
+    if len(strokes) >= 2 and rng.rand() < 0.30:
+        ends = []
+        for si, s in enumerate(strokes):
+            ends.append((si, np.array(s[0], dtype=float), 0))
+            ends.append((si, np.array(s[-1], dtype=float), -1))
+        best = None
+        for i in range(len(ends)):
+            for j in range(i + 1, len(ends)):
+                if ends[i][0] == ends[j][0]:
+                    continue
+                d = float(np.linalg.norm(ends[i][1] - ends[j][1]))
+                if d < 0.25 * h and (best is None or d < best[0]):
+                    best = (d, i, j)
+        if best:
+            _, i, j = best
+            si, sj = ends[i][0], ends[j][0]
+            a, b = ends[i][1], ends[j][1]
+            mid = tuple((a + b) / 2)
+            if ends[i][2] == -1 and ends[j][2] == 0:
+                merged = strokes[si] + [mid] + strokes[sj]
+            elif ends[i][2] == 0 and ends[j][2] == -1:
+                merged = strokes[sj] + [mid] + strokes[si]
+            else:
+                merged = strokes[si] + [mid] + strokes[sj][::-1]
+            strokes = [merged] + [s for k, s in enumerate(strokes) if k not in (si, sj)]
+    # 2) bend 弯曲量
+    out = []
+    for s in strokes:
+        if len(s) >= 3 and rng.rand() < 0.45:
+            s = _deform_bend(s, rng.uniform(0.6, 1.5))
+        if len(s) >= 3 and rng.rand() < 0.40:
+            s = _deform_corner(s, rng)
+        out.append(s)
+    strokes = out
+    # 3) gap 闭合空隙
+    if rng.rand() < 0.35:
+        strokes = _deform_gap(strokes, h, rng)
+    return strokes
+
+
+class StrokeDataset(Dataset):
+    """EMNIST 笔画化渲染数据集（镜像 app 真实绘制管线，方向A3 关键新增）：
+    骨架折线 -> 画布渲染（笔宽/字号/旋转/位置随机）-> preprocess_emnist。
+    目的：让模型学到 app 里真实笔画的分布（细笔画、圆头圆角、降采样淡墨），
+    修复『EMNIST 位图 92% 但笔画渲染只有 ~78%』的 sim-to-real 缺口。"""
+
+    STROKE_JSON = os.path.join(DATA_ROOT, 'emnist-strokes-train.json')
+
+    def __init__(self, pen_rng=(6, 24), glyph_rng=(120, 260), canvas=360):
+        with open(self.STROKE_JSON) as f:
+            items = json.load(f)
+        # 碗状/相似形弱字母过采样 ×2（笔画渲染下 g/p/b/q/i/o/d 最易混）
+        weak = [it for it in items if it['letter'] in 'gpbqiod']
+        self.items = items + weak
+        self.pen_rng = pen_rng
+        self.glyph_rng = glyph_rng
+        self.canvas = canvas
+        self.rng = np.random.RandomState(SEED + 7)
+        print(f'[strokes] {len(self.items)} samples (含弱字母过采样 {len(weak)} 条) from {self.STROKE_JSON}')
+
+    def __len__(self):
+        return len(self.items)
+
+    def __getitem__(self, i):
+        it = self.items[i]
+        y = ord(it['letter']) - 97
+        strokes = deform_strokes(it['strokes'], self.rng)
+        img = render_strokes(strokes, canvas=self.canvas,
+                             pen=np.random.uniform(*self.pen_rng),
+                             glyph_h=np.random.uniform(*self.glyph_rng),
+                             angle=np.random.uniform(-18, 18),
+                             jx=np.random.uniform(-24, 24), jy=np.random.uniform(-24, 24))
+        x = preprocess_emnist(img)
+        return x[None], y
+
+
 # ---------------------------------------------------------------------------
 # 推理预处理（与 index.html recognizeLetterCNN / test/recognition-test.js 镜像）
 # 新（方向A4）：bbox -> 等比缩放至 20×20 -> 28×28 居中 -> 笔画质心对齐 (14,14)
@@ -392,6 +601,37 @@ def eval_fonts(session, preproc, jitter=False):
     return res
 
 
+def eval_strokes(session, strokes_json, pen, glyph_h=150, canvas=360, samples_per_letter=None):
+    """笔画渲染验收（镜像浏览器蒙层测试台：固定渲染参数，确定性）。
+    pen 4.3 = 当前 app 细笔（max(4, 360*0.012)）；pen 18 = 修复后 app 粗笔（0.05*360）。"""
+    with open(strokes_json) as f:
+        data = json.load(f)
+    per_letter = {}
+    for it in data:
+        per_letter.setdefault(it['letter'], []).append(it)
+    all_x, all_y = [], []
+    for letter in map(chr, range(97, 123)):
+        items = per_letter.get(letter, [])
+        if samples_per_letter:
+            items = items[:samples_per_letter]
+        for it in items:
+            img = render_strokes(it['strokes'], canvas=canvas, pen=pen, glyph_h=glyph_h)
+            x = preprocess_emnist(img)
+            if x is None:
+                continue
+            all_x.append(x)
+            all_y.append(letter)
+    outs = predict_batch(session, all_x)
+    ok = sum(1 for o, y in zip(outs, all_y) if o == y)
+    per_ok = {}
+    for o, y in zip(outs, all_y):
+        per_ok.setdefault(y, [0, 0])
+        per_ok[y][1] += 1
+        if o == y:
+            per_ok[y][0] += 1
+    return ok, len(all_x), {k: (v[0], v[1]) for k, v in per_ok.items()}
+
+
 # ---------------------------------------------------------------------------
 # 训练 + 评估
 # ---------------------------------------------------------------------------
@@ -419,13 +659,14 @@ def main():
 
     emnist_tr = EMNISTDataset('train', augment=True)
     font_tr = FontDataset(augment=True)
-    train_ds = ConcatDataset([emnist_tr, font_tr])
+    stroke_tr = StrokeDataset()
+    train_ds = ConcatDataset([emnist_tr, stroke_tr, font_tr])
     test_ds = EMNISTDataset('test', augment=False)
     train_loader = DataLoader(train_ds, batch_size=BATCH, shuffle=True, num_workers=NUM_WORKERS,
                               persistent_workers=True, worker_init_fn=worker_init, drop_last=False)
     test_loader = DataLoader(test_ds, batch_size=512, shuffle=False, num_workers=2,
                              persistent_workers=True, worker_init_fn=worker_init)
-    print(f'[data] train={len(train_ds)} (EMNIST 124800 + 字体合成) test={len(test_ds)}')
+    print(f'[data] train={len(train_ds)} (EMNIST 124800 + 笔画渲染 {len(stroke_tr)} + 字体合成) test={len(test_ds)}')
 
     model = LetterCNN().to(device)
     n_params = sum(p.numel() for p in model.parameters())
@@ -520,6 +761,18 @@ def main():
         if old_sess:
             for name, (ok, total) in eval_fonts(old_sess, preprocess_old, jitter=jit).items():
                 print(f'  旧模型 {name}: {ok}/{total} = {ok / total * 100:.1f}%')
+
+    # ---------- 笔画渲染验收（真实手写代理指标，镜像浏览器蒙层测试台） ----------
+    stroke_json = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'test', 'emnist-strokes.json')
+    if os.path.exists(stroke_json):
+        for pen, pen_label in ((4.3, '当前app细笔 4.3px'), (18, '修复后app粗笔 18px')):
+            print(f'\n-- 笔画渲染验收（{pen_label}，360画布/150px字形）--')
+            for sess2, name2 in ((sess, '新模型'), (old_sess, '旧模型')):
+                if sess2 is None:
+                    continue
+                ok, total, per = eval_strokes(sess2, stroke_json, pen=pen)
+                worst = min(per.items(), key=lambda kv: kv[1][0] / kv[1][1])
+                print(f'  {name2}: {ok}/{total} = {ok / total * 100:.1f}%  最差: {worst[0]} {worst[1][0]}/{worst[1][1]}')
 
     print('\n[done]')
 

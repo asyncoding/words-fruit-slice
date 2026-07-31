@@ -926,7 +926,7 @@ function openHWOverlay(charData, idx) {
     const ctx2d = hc.getContext('2d');
     ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx2d.lineCap = 'round'; ctx2d.lineJoin = 'round';
-    ctx2d.lineWidth = Math.max(4, rect.width * 0.012);
+    ctx2d.lineWidth = Math.max(8, Math.min(rect.width, rect.height) * 0.05);
     ctx2d.strokeStyle = '#fff';
   };
   setupHWCanvas();
