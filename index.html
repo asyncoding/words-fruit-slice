@@ -22,9 +22,12 @@ canvas{display:block;width:100%;height:100%}
 #start-screen .section-picker{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:360px;margin-bottom:24px;max-height:200px;overflow-y:auto;padding:8px}
 #start-screen .section-picker .sec-btn{padding:6px 12px;border-radius:20px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);color:rgba(255,255,255,.7);font-size:12px;cursor:pointer;pointer-events:auto;transition:all .2s}
 #start-screen .section-picker .sec-btn.selected{background:#e94560;border-color:#e94560;color:#fff}
+#start-screen .section-picker .sec-btn.completed{border-color:#ffd700;box-shadow:0 0 8px rgba(255,215,0,.4)}
+#start-screen .section-picker .data-error{width:100%;padding:20px;text-align:center;color:#ff9a9a;font-size:14px;line-height:1.8}
 #start-screen .start-btn{padding:14px 48px;border-radius:30px;border:none;background:linear-gradient(135deg,#e94560,#0f3460);color:#fff;font-size:20px;font-weight:bold;cursor:pointer;pointer-events:auto;transition:transform .2s;box-shadow:0 4px 20px rgba(233,69,96,.4)}
 #start-screen .start-btn:active{transform:scale(.95)}
 #start-screen .sub-text{margin-top:12px;font-size:12px;color:rgba(255,255,255,.3)}
+#start-screen .shop-btn{position:absolute;top:16px;right:16px;padding:8px 16px;border-radius:20px;border:1px solid #ffd700;background:transparent;color:#ffd700;font-size:14px;cursor:pointer;pointer-events:auto}
 
 #complete-overlay{position:fixed;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.85);z-index:80}
 #complete-overlay .title{font-size:28px;margin-bottom:8px}
@@ -34,13 +37,6 @@ canvas{display:block;width:100%;height:100%}
 #complete-overlay .stats .stat{padding:10px 16px;background:rgba(255,255,255,.05);border-radius:12px;min-width:100px}
 #complete-overlay .stats .stat .num{font-size:24px;font-weight:bold;color:#4fc3f7}
 #complete-overlay .stats .stat .label{font-size:11px;color:rgba(255,255,255,.4);margin-top:2px}
-#complete-overlay .reward-section{margin-bottom:20px;width:100%;max-width:320px;text-align:center}
-#complete-overlay .reward-section h3{font-size:13px;color:rgba(255,255,255,.4);margin-bottom:8px}
-#complete-overlay .reward-list{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-#complete-overlay .reward-item{width:72px;height:72px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:11px;color:rgba(255,255,255,.5)}
-#complete-overlay .reward-item.unlocked{background:rgba(255,215,0,.1);border-color:#ffd700;color:#ffd700}
-#complete-overlay .reward-item .reward-icon{font-size:28px;margin-bottom:2px}
-#complete-overlay .reward-item .cost{font-size:9px;opacity:.6}
 #complete-overlay .btn-row{display:flex;gap:12px}
 #complete-overlay .btn-row button{padding:10px 28px;border-radius:24px;border:none;font-size:15px;font-weight:bold;cursor:pointer;pointer-events:auto;transition:transform .2s}
 #complete-overlay .btn-row button:active{transform:scale(.95)}
@@ -54,28 +50,78 @@ canvas{display:block;width:100%;height:100%}
 #dialog-box .dialog-btn{padding:10px 36px;border-radius:24px;border:none;background:linear-gradient(135deg,#e94560,#0f3460);color:#fff;font-size:16px;font-weight:bold;cursor:pointer;pointer-events:auto;transition:transform .2s}
 #dialog-box .dialog-btn:active{transform:scale(.95)}
 
+/* ============= Level 2 ============= */
 #level2-screen{position:fixed;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column;background:linear-gradient(180deg,#1a1a2e,#16213e);z-index:50}
-#level2-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(0,0,0,.2)}
-#level2-header .l2-title{font-size:15px;font-weight:bold}
-#level2-header .l2-coin{font-size:16px;color:#ffd700}
-#level2-header .l2-done{padding:6px 18px;border-radius:20px;border:none;background:linear-gradient(135deg,#e94560,#0f3460);color:#fff;font-size:14px;font-weight:bold;cursor:pointer;pointer-events:auto}
-#level2-chars{display:flex;flex-wrap:wrap;gap:6px;padding:10px 12px;min-height:56px;background:rgba(0,0,0,.15);justify-content:center;align-content:flex-start}
-#level2-chars .char-card{width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:bold;cursor:grab;pointer-events:auto;transition:all .2s;touch-action:none;position:relative}
-#level2-chars .char-card:active{cursor:grabbing;transform:scale(1.15);background:rgba(233,69,96,.3)}
-#level2-chars .char-card.used{opacity:.2;pointer-events:none}
-#level2-body{flex:1;padding:10px 12px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
-.l2-task{border-radius:14px;padding:12px 14px;background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.08);min-height:70px;transition:all .3s}
-.l2-task.drag-over{border-color:#e94560;background:rgba(233,69,96,.08)}
-.l2-task .task-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.l2-task .task-header .task-label{font-size:13px;font-weight:bold;color:rgba(255,255,255,.6)}
-.l2-task .task-header .task-coin{font-size:12px;color:#ffd700}
-.l2-task .task-char-area{display:flex;flex-wrap:wrap;gap:6px;min-height:32px;padding:4px;border-radius:8px;background:rgba(255,255,255,.03)}
-.l2-task .task-char-area .placed-char{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:6px;background:rgba(255,255,255,.08);font-size:14px}
-.l2-task .task-char-area .placed-char .remove-btn{font-size:10px;color:rgba(255,255,255,.3);cursor:pointer;pointer-events:auto}
-.l2-task input[type=text]{width:100%;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.3);color:#fff;font-size:14px;outline:none;pointer-events:auto}
-.l2-task input[type=text]:focus{border-color:#e94560}
-.l2-task textarea{width:100%;padding:8px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.1);background:rgba(0,0,0,.3);color:#fff;font-size:14px;outline:none;resize:none;min-height:60px;pointer-events:auto;font-family:inherit}
-.l2-task textarea:focus{border-color:#e94560}
+#l2-header{display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:rgba(0,0,0,.3)}
+#l2-header .l2-title{font-size:15px;font-weight:bold}
+#l2-header .l2-coin{font-size:14px;color:#ffd700}
+#l2-header .l2-finish-btn{padding:6px 16px;border-radius:16px;border:none;background:linear-gradient(135deg,#06d6a0,#0f3460);color:#fff;font-size:13px;font-weight:bold;cursor:pointer;pointer-events:auto;transition:transform .2s}
+#l2-header .l2-finish-btn:active{transform:scale(.95)}
+#l2-body{flex:1;padding:10px 12px;overflow-y:auto}
+#l2-tabs{display:flex;gap:6px;margin-bottom:10px}
+#l2-tabs .tab{padding:6px 16px;border-radius:16px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.6);font-size:13px;cursor:pointer;pointer-events:auto;transition:all .2s}
+#l2-tabs .tab.active{background:#e94560;border-color:#e94560;color:#fff}
+
+/* Chars grid in L2 */
+#l2-chars{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:12px}
+#l2-chars .char-card{width:48px;height:48px;border-radius:10px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;cursor:pointer;pointer-events:auto;transition:all .2s;border:2px solid transparent}
+#l2-chars .char-card:active{transform:scale(1.1)}
+#l2-chars .char-card.done{border-color:#06d6a0;background:rgba(6,214,160,.1)}
+
+/* ===== Pinyin Handwriting Overlay ===== */
+#hw-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;display:none;flex-direction:column;background:rgba(0,0,0,.92)}
+#hw-overlay .hw-top{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#222}
+#hw-overlay .hw-char{font-size:48px;color:#ffd700;font-weight:bold}
+#hw-overlay .hw-close-btn{padding:6px 16px;border-radius:16px;border:1px solid #888;background:transparent;color:#aaa;font-size:14px;cursor:pointer;pointer-events:auto}
+#hw-overlay .hw-status{font-size:13px;color:rgba(255,255,255,.5);text-align:center;padding:6px}
+#hw-overlay .hw-result-area{display:flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:4px 16px}
+#hw-overlay .hw-result-area .hw-letter{display:inline-flex;align-items:center;gap:2px;padding:4px 10px;border-radius:6px;background:rgba(255,215,0,.15);color:#ffd700;font-size:22px;font-weight:bold}
+#hw-overlay .hw-result-area .hw-letter .hw-del{cursor:pointer;pointer-events:auto;font-size:14px;color:rgba(255,255,255,.3);margin-left:4px}
+#hw-overlay .hw-canvas-wrap{flex:1;display:flex;position:relative;touch-action:none}
+#hw-overlay .hw-canvas-wrap canvas{flex:1;touch-action:none;display:block;background:#0a0a1a}
+#hw-overlay .hw-msg{text-align:center;padding:10px;font-size:16px;color:#06d6a0;font-weight:bold}
+
+/* ===== Word Matching ===== */
+#l2-word-section{display:none}
+#l2-word-section .word-drop-zone{min-height:50px;border:2px dashed rgba(255,255,255,.2);border-radius:12px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:8px;transition:all .2s}
+#l2-word-section .word-drop-zone .wd-char{padding:4px 10px;border-radius:6px;background:rgba(255,255,255,.08);font-size:18px;display:inline-flex;align-items:center;gap:4px}
+#l2-word-section .word-drop-zone .wd-char .wd-del{cursor:pointer;pointer-events:auto;font-size:12px;color:rgba(255,255,255,.3)}
+#l2-word-section .word-result{display:flex;flex-wrap:wrap;gap:6px;min-height:32px;padding:8px;background:rgba(0,0,0,.15);border-radius:10px;margin-top:8px}
+#l2-word-section .word-result .wr-word{padding:4px 12px;border-radius:6px;background:rgba(6,214,160,.12);border:1px solid rgba(6,214,160,.3);color:#06d6a0;font-size:16px}
+#l2-word-section .word-btn-row{display:flex;gap:8px;justify-content:center;margin-top:8px}
+#l2-word-section .word-btn-row button{padding:8px 20px;border-radius:20px;border:none;font-size:14px;font-weight:bold;cursor:pointer;pointer-events:auto}
+#l2-word-section .word-btn-row .confirm-btn{background:linear-gradient(135deg,#e94560,#0f3460);color:#fff}
+#l2-word-section .word-btn-row .clear-btn{background:rgba(255,255,255,.1);color:rgba(255,255,255,.6)}
+
+/* ===== Sentence Fill-in ===== */
+#l2-sentence-section{display:none;text-align:center;padding:0 8px}
+#l2-sentence-section .ss-progress{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:8px}
+#l2-sentence-section .ss-sentence{font-size:22px;line-height:2;padding:16px;background:rgba(0,0,0,.2);border-radius:14px;margin-bottom:10px;min-height:60px}
+#l2-sentence-section .ss-sentence .ss-blank{display:inline-block;min-width:28px;border-bottom:3px solid #e94560;margin:0 2px;color:#ffd700;font-weight:bold;cursor:default;transition:all .3s}
+#l2-sentence-section .ss-sentence .ss-blank.filled{color:#06d6a0;border-color:#06d6a0}
+#l2-sentence-section .ss-hint{font-size:13px;color:rgba(255,255,255,.35);margin-bottom:10px}
+#l2-sentence-section .ss-result{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:32px;padding:8px;background:rgba(0,0,0,.15);border-radius:10px}
+#l2-sentence-section .ss-result .ss-done-word{padding:4px 12px;border-radius:6px;background:rgba(6,214,160,.12);border:1px solid rgba(6,214,160,.3);color:#06d6a0;font-size:15px}
+
+/* ===== Shop Modal ===== */
+#shop-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:150;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.8)}
+#shop-box{background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:20px;padding:24px;max-width:360px;width:90%;border:1px solid rgba(255,255,255,.1);max-height:80vh;overflow-y:auto}
+#shop-box h2{text-align:center;font-size:22px;margin-bottom:4px}
+#shop-box .shop-balance{text-align:center;font-size:14px;color:#ffd700;margin-bottom:16px}
+#shop-box .shop-item{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:rgba(255,255,255,.04);margin-bottom:8px;border:1px solid rgba(255,255,255,.06)}
+#shop-box .shop-item .si-icon{font-size:28px;width:40px;text-align:center}
+#shop-box .shop-item .si-info{flex:1}
+#shop-box .shop-item .si-info .si-name{font-size:15px;font-weight:bold}
+#shop-box .shop-item .si-info .si-desc{font-size:11px;color:rgba(255,255,255,.4)}
+#shop-box .shop-item .si-action{font-size:12px;padding:4px 12px;border-radius:12px;border:none;cursor:pointer;pointer-events:auto;font-weight:bold}
+#shop-box .shop-item .si-action.equip{background:#06d6a0;color:#fff}
+#shop-box .shop-item .si-action.buy{background:linear-gradient(135deg,#e94560,#0f3460);color:#fff}
+#shop-box .shop-item .si-action.owned{background:rgba(255,255,255,.1);color:rgba(255,255,255,.4)}
+#shop-box .shop-item.equipped{border-color:#ffd700;background:rgba(255,215,0,.06)}
+#shop-box .shop-close{display:block;margin:12px auto 0;padding:8px 28px;border-radius:20px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.6);font-size:14px;cursor:pointer;pointer-events:auto}
+
+/* ===== Pinyin done chars ===== */
+.l2-pinyin-hint{font-size:12px;color:rgba(255,255,255,.3);text-align:center;padding:6px}
 </style>
 </head>
 <body>
@@ -92,32 +138,40 @@ canvas{display:block;width:100%;height:100%}
   <div class="section-picker" id="sectionPicker"></div>
   <button class="start-btn" id="startBtn">开始游戏</button>
   <div class="sub-text">选择要练习的课文</div>
+  <button class="shop-btn" id="menuShopBtn">🏪 商店</button>
 </div>
 
 <div id="level2-screen">
-  <div id="level2-header">
+  <div id="l2-header">
     <div>
-      <div class="l2-title">📝 第二关：写拼音·组词·造句</div>
-      <div class="l2-coin">🪙 <span id="l2-coin-count">0</span></div>
+      <div class="l2-title">📝 第二关：写拼音 · 组词 · 造句</div>
+      <div class="l2-coin">🪙 <span id="l2-coin-display">0</span></div>
     </div>
-    <button class="l2-done" id="l2Done">完成 ✓</button>
+    <button class="l2-finish-btn" id="l2FinishBtn">✅ 完成</button>
   </div>
-  <div id="level2-chars"></div>
-  <div id="level2-body">
-    <div class="l2-task" id="task-pinyin">
-      <div class="task-header"><span class="task-label">🔤 写拼音</span><span class="task-coin">+1 🪙/字</span></div>
-      <div class="task-char-area" id="pinyin-char-area"></div>
-      <input type="text" id="pinyin-input" placeholder="拖入生字后输入拼音..." autocomplete="off">
+  <div id="l2-tabs">
+    <div class="tab active" data-tab="pinyin">🔤 拼音</div>
+    <div class="tab" data-tab="word">📖 组词</div>
+    <div class="tab" data-tab="sentence">📝 造句</div>
+  </div>
+  <div id="l2-body">
+    <div id="l2-chars"></div>
+    <div class="l2-pinyin-hint">点击汉字，手写拼音。每个字母单独写，写完后自动识别。</div>
+    <div id="l2-word-section">
+      <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:6px">点击下方汉字添加到组词框，点击确认组词：</div>
+      <div class="word-drop-zone" id="wordDropZone"></div>
+      <div class="word-btn-row">
+        <button class="confirm-btn" id="wordConfirmBtn">✅ 确认组词</button>
+        <button class="clear-btn" id="wordClearBtn">🗑️ 清空</button>
+      </div>
+      <div style="font-size:13px;color:rgba(255,255,255,.4);margin-top:8px;margin-bottom:4px">组词成功：</div>
+      <div class="word-result" id="wordResult"></div>
     </div>
-    <div class="l2-task" id="task-word">
-      <div class="task-header"><span class="task-label">📖 组词</span><span class="task-coin">+1 🪙/字</span></div>
-      <div class="task-char-area" id="word-char-area"></div>
-      <input type="text" id="word-input" placeholder="拖入生字，或直接输入组词..." autocomplete="off">
-    </div>
-    <div class="l2-task" id="task-sentence">
-      <div class="task-header"><span class="task-label">✏️ 造句</span><span class="task-coin">+2 🪙/字(不含标点)</span></div>
-      <div class="task-char-area" id="sentence-char-area"></div>
-      <textarea id="sentence-input" placeholder="拖入生字，或直接输入句子..." rows="3"></textarea>
+    <div id="l2-sentence-section">
+      <div class="ss-progress" id="ssProgress">1 / 3</div>
+      <div class="ss-sentence" id="ssSentence"></div>
+      <div class="ss-hint">点击上方对应汉字填入空白</div>
+      <div class="ss-result" id="ssResult"></div>
     </div>
   </div>
 </div>
@@ -137,12 +191,8 @@ canvas{display:block;width:100%;height:100%}
   <div class="stats">
     <div class="stat"><div class="num" id="stat-chars">0</div><div class="label">收集生字</div></div>
     <div class="stat"><div class="num" id="stat-pinyins">0</div><div class="label">写过拼音</div></div>
-    <div class="stat"><div class="num" id="stat-words">0</div><div class="label">组过词</div></div>
-    <div class="stat"><div class="num" id="stat-sentences">0</div><div class="label">造过句</div></div>
-  </div>
-  <div class="reward-section">
-    <h3>🎁 金币兑换</h3>
-    <div class="reward-list" id="reward-list"></div>
+    <div class="stat"><div class="num" id="stat-words">0</div><div class="label">组词成功</div></div>
+    <div class="stat"><div class="num" id="stat-sentences">0</div><div class="label">造句完成</div></div>
   </div>
   <div class="btn-row">
     <button class="again-btn" id="againBtn">再来一次</button>
@@ -150,14 +200,119 @@ canvas{display:block;width:100%;height:100%}
   </div>
 </div>
 
+<!-- Handwriting Overlay -->
+<div id="hw-overlay">
+  <div class="hw-top">
+    <span>✏️ 手写拼音 — <span id="hw-target-char" class="hw-char">春</span></span>
+    <button class="hw-close-btn" id="hwCloseBtn">✕ 关闭</button>
+  </div>
+  <div class="hw-status">手写每个字母后会自动识别，识别错误的字母可点击删除。</div>
+  <div class="hw-result-area" id="hwResultArea"></div>
+  <div class="hw-canvas-wrap">
+    <canvas id="hwCanvas"></canvas>
+  </div>
+  <div class="hw-msg" id="hwMsg"></div>
+</div>
+
+<!-- Shop Overlay -->
+<div id="shop-overlay">
+  <div id="shop-box">
+    <h2>🏪 道具商店</h2>
+    <div class="shop-balance">🪙 金币余额：<span id="shop-balance">0</span></div>
+    <div id="shop-list"></div>
+    <button class="shop-close" id="shopCloseBtn">关闭商店</button>
+  </div>
+</div>
+
 <script>
 // ==================== GAME DATA ====================
 let GAME_DATA = { sections: [] };
+let gameDataLoaded = false;
 
-fetch('game-data.json')
-  .then(r => r.json())
-  .then(d => { GAME_DATA = d; initSectionPicker(); })
-  .catch(() => { initSectionPicker(); });
+function log(...args) { console.log('[game]', ...args); }
+function warn(...args) { console.warn('[game]', ...args); }
+
+function applyGameData(d, source) {
+  GAME_DATA = d;
+  gameDataLoaded = true;
+  log('data ok (' + source + '), sections:', d.sections.length);
+  try {
+    initSectionPicker();
+  } catch (err) {
+    warn('initSectionPicker failed:', err && err.message);
+    showDataError();
+  }
+}
+
+function loadGameData() {
+  if (window.__GAME_DATA) {
+    applyGameData(window.__GAME_DATA, 'inline script');
+    return;
+  }
+  log('fetching game-data.json ...');
+  fetch('game-data.json')
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(d => applyGameData(d, 'fetch'))
+    .catch(err => {
+      warn('fetch failed:', err && err.message);
+      warn('falling back to <script src="game-data.js">');
+      const s = document.createElement('script');
+      s.src = 'game-data.js';
+      s.onload = function () {
+        if (window.__GAME_DATA) {
+          applyGameData(window.__GAME_DATA, 'game-data.js fallback');
+        } else {
+          warn('fallback script loaded but no __GAME_DATA');
+          showDataError();
+        }
+      };
+      s.onerror = function () {
+        warn('game-data.js fallback failed to load');
+        showDataError();
+      };
+      document.head.appendChild(s);
+    });
+}
+
+function showDataError() {
+  const el = document.getElementById('sectionPicker');
+  if (!el) return;
+  el.innerHTML = '<div class="data-error">⚠️ 课文数据加载失败<br>请检查 game-data.json 与 game-data.js 是否在网页同目录</div>';
+}
+
+loadGameData();
+
+// ==================== KNIFE DATA ====================
+const KNIVES = [
+  { id: 'default', name: '木刀', icon: '✂️', cost: 0, color: 'rgba(255,255,255,0.6)', glow: '#888', desc: '基础刀光' },
+  { id: 'silver', name: '银刃', icon: '🪒', cost: 30, color: 'rgba(180,200,255,0.8)', glow: '#8ab4f8', desc: '银色刀光特效' },
+  { id: 'gold', name: '金刀', icon: '🔪', cost: 60, color: 'rgba(255,215,0,0.8)', glow: '#ffd700', desc: '金色刀光+粒子' },
+  { id: 'rainbow', name: '彩刃', icon: '🪓', cost: 100, color: 'rgba(255,150,200,0.7)', glow: '#ff66b2', desc: '彩虹刀光+星星' },
+  { id: 'fire', name: '焰刃', icon: '🪚', cost: 150, color: 'rgba(255,100,50,0.8)', glow: '#ff6633', desc: '火焰刀光+爆炸' },
+  { id: 'ocean', name: '浪刃', icon: '🗡️', cost: 200, color: 'rgba(50,150,255,0.8)', glow: '#3399ff', desc: '蓝色浪花背景' },
+  { id: 'star', name: '星刃', icon: '⚔️', cost: 300, color: 'rgba(150,100,255,0.8)', glow: '#9966ff', desc: '星空背景+流星' },
+  { id: 'legend', name: '传说', icon: '🏹', cost: 500, color: 'rgba(255,200,0,0.9)', glow: '#ffcc00', desc: '金色传说全套' },
+];
+
+// ==================== PERSISTENCE ====================
+function loadSave() {
+  let s;
+  try { s = JSON.parse(localStorage.getItem('wfs-save')); } catch(e) {}
+  if (!s || typeof s !== 'object') s = {};
+  if (typeof s.coins !== 'number') s.coins = 0;
+  if (!Array.isArray(s.ownedKnives)) s.ownedKnives = ['default'];
+  if (!s.equippedKnife) s.equippedKnife = 'default';
+  if (!Array.isArray(s.completedSections)) s.completedSections = [];
+  return s;
+}
+function writeSave() {
+  try { localStorage.setItem('wfs-save', JSON.stringify(save)); } catch(e) {}
+}
+
+let save = loadSave();
 
 // ==================== STATE ====================
 let state = {
@@ -165,21 +320,9 @@ let state = {
   section: null,
   collectedChars: [],
   coins: 0,
-  level2Data: { pinyins: [], words: [], sentences: [] },
+  level2Data: { pinyins: [], words: [] },
   usedCharIds: new Set()
 };
-
-// Rewards
-const REWARDS = [
-  { icon: '🔪', name: '木刀', cost: 10, desc: '基础刀光' },
-  { icon: '⚔️', name: '银刃', cost: 30, desc: '银色刀光特效' },
-  { icon: '🗡️', name: '金刀', cost: 60, desc: '金色刀光+粒子' },
-  { icon: '🌈', name: '彩虹', cost: 100, desc: '彩虹刀光+星星' },
-  { icon: '🔥', name: '火焰', cost: 150, desc: '火焰刀光+爆炸' },
-  { icon: '🌊', name: '海洋', cost: 200, desc: '蓝色浪花背景' },
-  { icon: '🌌', name: '星空', cost: 300, desc: '星空背景+流星' },
-  { icon: '👑', name: '传说', cost: 500, desc: '金色传说全套' },
-];
 
 // ==================== CANVAS SETUP ====================
 const canvas = document.getElementById('gameCanvas');
@@ -193,20 +336,16 @@ function resize() {
 window.addEventListener('resize', resize);
 resize();
 
-// ==================== AUDIO (Web Audio API) ====================
+// ==================== AUDIO ====================
 let audioCtx = null;
-
-function initAudio() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-}
+function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
 
 function playSlice() {
   try {
     initAudio();
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
+    osc.connect(gain); gain.connect(audioCtx.destination);
     osc.type = 'sawtooth';
     osc.frequency.setValueAtTime(800, audioCtx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.1);
@@ -222,8 +361,7 @@ function playCoin() {
     initAudio();
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
+    osc.connect(gain); gain.connect(audioCtx.destination);
     osc.type = 'sine';
     osc.frequency.setValueAtTime(1200, audioCtx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(2400, audioCtx.currentTime + 0.15);
@@ -240,8 +378,7 @@ function playComplete() {
     [0,0.1,0.2,0.3,0.4].forEach((delay,i) => {
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
+      osc.connect(gain); gain.connect(audioCtx.destination);
       osc.type = 'sine';
       osc.frequency.setValueAtTime([523,659,784,1047,784][i], audioCtx.currentTime + delay);
       gain.gain.setValueAtTime(0.15, audioCtx.currentTime + delay);
@@ -257,8 +394,7 @@ function playError() {
     initAudio();
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
+    osc.connect(gain); gain.connect(audioCtx.destination);
     osc.type = 'square';
     osc.frequency.setValueAtTime(150, audioCtx.currentTime);
     gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
@@ -277,16 +413,9 @@ let fruitsPresented = 0;
 let fruitsTarget = 8;
 let spawnTimer = 0;
 let gameTimer = 0;
-let gameDuration = 30;
+let gameEndTimer = 0;
 let swipePoints = [];
-
-const FRUIT_TYPES = [
-  { r: 38, color: '#4caf50', inner: '#81c784', name: '🍉' },
-  { r: 34, color: '#ff9800', inner: '#ffb74d', name: '🍊' },
-  { r: 30, color: '#f44336', inner: '#ef9a9a', name: '🍎' },
-  { r: 32, color: '#9c27b0', inner: '#ce93d8', name: '🍇' },
-  { r: 28, color: '#ffeb3b', inner: '#fff9c4', name: '🍋' },
-];
+let lastSwipeColor = 'rgba(255,255,255,0.6)';
 
 function createFruit() {
   const chars = state.section ? state.section.characters : [];
@@ -315,6 +444,14 @@ function createFruit() {
   };
 }
 
+const FRUIT_TYPES = [
+  { r: 38, color: '#4caf50', inner: '#81c784' },
+  { r: 34, color: '#ff9800', inner: '#ffb74d' },
+  { r: 30, color: '#f44336', inner: '#ef9a9a' },
+  { r: 32, color: '#9c27b0', inner: '#ce93d8' },
+  { r: 28, color: '#ffeb3b', inner: '#fff9c4' },
+];
+
 function spawnFruit() {
   const f = createFruit();
   if (f) fruits.push(f);
@@ -327,10 +464,7 @@ function checkSlice(x1, y1, x2, y2) {
     const dx = f.x - x1;
     const dy = f.y - y1;
     const dist = Math.sqrt(dx * dx + dy * dy);
-    if (dist < f.r + 20) {
-      sliceFruit(i);
-      return;
-    }
+    if (dist < f.r + 20) { sliceFruit(i); return; }
     const lineLen = Math.sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
     if (lineLen < 1) continue;
     const t = ((f.x - x1) * (x2 - x1) + (f.y - y1) * (y2 - y1)) / (lineLen * lineLen);
@@ -339,10 +473,7 @@ function checkSlice(x1, y1, x2, y2) {
     const closestY = y1 + clampedT * (y2 - y1);
     const ddx = f.x - closestX;
     const ddy = f.y - closestY;
-    if (Math.sqrt(ddx*ddx + ddy*ddy) < f.r + 15) {
-      sliceFruit(i);
-      return;
-    }
+    if (Math.sqrt(ddx*ddx + ddy*ddy) < f.r + 15) { sliceFruit(i); return; }
   }
 }
 
@@ -354,6 +485,7 @@ function sliceFruit(idx) {
   f.half = Math.random() > 0.5 ? 1 : -1;
   playSlice();
   slicedFruits.push(f);
+  fruits.splice(idx, 1);
   state.collectedChars.push(f.charData);
   spawnParticles(f.x, f.y, f.color);
 }
@@ -364,20 +496,7 @@ function spawnParticles(x, y, color) {
     const speed = 80 + Math.random() * 200;
     particles.push({
       x, y, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed - 80,
-      r: 3 + Math.random() * 5, color, life: 1, decay: 0.015 + Math.random() * 0.02,
-      gravity: 300
-    });
-  }
-}
-
-function spawnCoinParticles(x, y) {
-  for (let i = 0; i < 8; i++) {
-    const angle = -Math.PI/2 + (Math.random()-0.5) * Math.PI;
-    const speed = 100 + Math.random() * 150;
-    particles.push({
-      x, y, vx: Math.cos(angle)*speed, vy: Math.sin(angle)*speed - 100,
-      r: 4 + Math.random() * 3, color: '#ffd700', life: 1, decay: 0.02 + Math.random() * 0.015,
-      gravity: 200, coin: true
+      r: 3 + Math.random() * 5, color, life: 1, decay: 0.015 + Math.random() * 0.02, gravity: 300
     });
   }
 }
@@ -407,20 +526,14 @@ function drawFruit(f) {
   ctx.rotate(f.rotation);
   ctx.globalAlpha = f.opacity;
   const r = f.r;
-  ctx.beginPath();
-  ctx.arc(0, 0, r, 0, Math.PI * 2);
-  ctx.fillStyle = f.color;
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(-r*0.15, -r*0.15, r*0.6, 0, Math.PI*2);
-  ctx.fillStyle = f.inner;
-  ctx.fill();
+  ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2);
+  ctx.fillStyle = f.color; ctx.fill();
+  ctx.beginPath(); ctx.arc(-r*0.15, -r*0.15, r*0.6, 0, Math.PI*2);
+  ctx.fillStyle = f.inner; ctx.fill();
   ctx.fillStyle = '#fff';
   ctx.font = `bold ${Math.floor(r * 0.8)}px "PingFang SC","Microsoft YaHei",sans-serif`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.shadowColor = 'rgba(0,0,0,0.5)';
-  ctx.shadowBlur = 4;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.shadowColor = 'rgba(0,0,0,0.5)'; ctx.shadowBlur = 4;
   ctx.fillText(f.char, 0, 1);
   ctx.shadowBlur = 0;
   ctx.restore();
@@ -434,16 +547,12 @@ function drawSlicedFruit(f) {
   const r = f.r;
   for (let h = -1; h <= 1; h += 2) {
     ctx.save();
-    ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.arc(h * 3, 0, r, -Math.PI/2 * h, Math.PI/2 * h);
-    ctx.closePath();
-    ctx.fillStyle = f.color;
-    ctx.fill();
+    ctx.beginPath(); ctx.moveTo(0, 0);
+    ctx.arc(h * 3, 0, r, -Math.PI/2 * h, Math.PI/2 * h); ctx.closePath();
+    ctx.fillStyle = f.color; ctx.fill();
     ctx.fillStyle = '#fff';
     ctx.font = `bold ${Math.floor(r*0.6)}px sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
     ctx.fillText(f.char, h * 3, 0);
     ctx.restore();
   }
@@ -452,82 +561,72 @@ function drawSlicedFruit(f) {
 
 function drawSwipe() {
   if (swipePoints.length < 2) return;
-  ctx.beginPath();
-  ctx.moveTo(swipePoints[0].x, swipePoints[0].y);
-  for (let i = 1; i < swipePoints.length; i++) {
-    ctx.lineTo(swipePoints[i].x, swipePoints[i].y);
-  }
-  ctx.strokeStyle = 'rgba(255,255,255,0.6)';
-  ctx.lineWidth = 4;
+  const knife = KNIVES.find(k => k.id === save.equippedKnife) || KNIVES[0];
+  ctx.beginPath(); ctx.moveTo(swipePoints[0].x, swipePoints[0].y);
+  for (let i = 1; i < swipePoints.length; i++) ctx.lineTo(swipePoints[i].x, swipePoints[i].y);
+  ctx.strokeStyle = knife.color;
+  ctx.lineWidth = 5;
   ctx.lineCap = 'round';
+  ctx.shadowColor = knife.color;
+  ctx.shadowBlur = 10;
   ctx.stroke();
+  ctx.shadowBlur = 0;
   const last = swipePoints[swipePoints.length-1];
-  ctx.beginPath();
-  ctx.arc(last.x, last.y, 3, 0, Math.PI*2);
-  ctx.fillStyle = 'rgba(255,255,255,0.8)';
-  ctx.fill();
+  ctx.save();
+  ctx.shadowColor = knife.color;
+  ctx.shadowBlur = 12;
+  ctx.font = '20px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(knife.icon, last.x, last.y);
+  ctx.restore();
 }
 
 function drawHUD() {
-  ctx.fillStyle = 'rgba(0,0,0,0.3)';
-  ctx.fillRect(8, 8, 200, 36);
-  ctx.fillStyle = '#fff';
-  ctx.font = '14px sans-serif';
-  ctx.textAlign = 'left';
-  ctx.textBaseline = 'middle';
+  ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.fillRect(8, 8, 200, 36);
+  ctx.fillStyle = '#fff'; ctx.font = '14px sans-serif'; ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
   ctx.fillText(`📚 ${state.collectedChars.length}/${fruitsTarget}`, 16, 26);
   const remaining = Math.max(0, Math.ceil(gameDuration - gameTimer));
-  ctx.textAlign = 'right';
-  ctx.fillText(`⏱ ${remaining}s`, W - 16, 26);
+  ctx.textAlign = 'right'; ctx.fillText(`⏱ ${remaining}s`, W - 16, 26);
 }
 
 // ==================== GAME LOOP ====================
 let lastTime = 0;
+let gameDuration = 30;
 
 function update(dt) {
   if (!gameRunning) return;
   gameTimer += dt;
-  if (gameTimer >= gameDuration) {
-    endLevel1();
+  // End if all fruits done flying + sliced fruits faded + short pause
+  if (fruitsPresented >= fruitsTarget && fruits.length === 0 && slicedFruits.length === 0) {
+    gameEndTimer += dt;
+    if (gameEndTimer > 0.5) {
+      endLevel1();
+    }
     return;
   }
   spawnTimer += dt;
-  const spawnInterval = Math.max(0.6, 2.0 - gameTimer / 15 * 0.8);
+  const spawnInterval = Math.max(0.5, 2.0 - gameTimer / 15 * 0.8);
   if (spawnTimer >= spawnInterval && fruitsPresented < fruitsTarget) {
-    spawnFruit();
-    fruitsPresented++;
-    spawnTimer = 0;
+    spawnFruit(); fruitsPresented++; spawnTimer = 0;
   }
   for (let i = fruits.length - 1; i >= 0; i--) {
     const f = fruits[i];
     if (f.sliced) continue;
-    f.vy += f.gravity * dt;
-    f.x += f.vx * dt;
-    f.y += f.vy * dt;
+    f.vy += f.gravity * dt; f.x += f.vx * dt; f.y += f.vy * dt;
     f.rotation += f.rotSpeed * dt;
-    if (f.y > H + 100) {
-      fruits.splice(i, 1);
-    }
+    if (f.y > H + 100) fruits.splice(i, 1);
   }
   for (let i = slicedFruits.length - 1; i >= 0; i--) {
     const f = slicedFruits[i];
-    f.vy += f.gravity * dt;
-    f.x += f.vx * dt * 0.5;
-    f.y += f.vy * dt;
+    f.vy += f.gravity * dt; f.x += f.vx * dt * 0.5; f.y += f.vy * dt;
     f.opacity -= dt * 0.8;
-    if (f.opacity <= 0) {
-      slicedFruits.splice(i, 1);
-    }
+    if (f.opacity <= 0) slicedFruits.splice(i, 1);
   }
   for (let i = particles.length - 1; i >= 0; i--) {
     const p = particles[i];
-    p.vy += p.gravity * dt;
-    p.x += p.vx * dt;
-    p.y += p.vy * dt;
-    p.life -= p.decay;
-    if (p.life <= 0) {
-      particles.splice(i, 1);
-    }
+    p.vy += p.gravity * dt; p.x += p.vx * dt; p.y += p.vy * dt; p.life -= p.decay;
+    if (p.life <= 0) particles.splice(i, 1);
   }
   if (swipePoints.length > 0) {
     const now = performance.now();
@@ -540,22 +639,16 @@ function render() {
   for (const f of fruits) if (!f.sliced) drawFruit(f);
   for (const f of slicedFruits) drawSlicedFruit(f);
   for (const p of particles) {
-    ctx.beginPath();
-    ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
-    ctx.fillStyle = p.coin ? `rgba(255,215,0,${p.life})` : p.color;
-    ctx.globalAlpha = p.life;
-    ctx.fill();
-    ctx.globalAlpha = 1;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.r * p.life, 0, Math.PI * 2);
+    ctx.fillStyle = p.color; ctx.globalAlpha = p.life; ctx.fill(); ctx.globalAlpha = 1;
   }
-  drawSwipe();
-  drawHUD();
+  drawSwipe(); drawHUD();
 }
 
 function gameLoop(time) {
   const dt = Math.min((time - lastTime) / 1000, 0.05);
   lastTime = time;
-  update(dt);
-  render();
+  update(dt); render();
   requestAnimationFrame(gameLoop);
 }
 
@@ -563,9 +656,7 @@ function gameLoop(time) {
 canvas.addEventListener('mousedown', e => {
   if (state.phase !== 'playing') return;
   const r = canvas.getBoundingClientRect();
-  const x = (e.clientX - r.left) * (canvas.width / r.width);
-  const y = (e.clientY - r.top) * (canvas.height / r.height);
-  swipePoints = [{x, y, t: performance.now()}];
+  swipePoints = [{x: (e.clientX - r.left) * (canvas.width / r.width), y: (e.clientY - r.top) * (canvas.height / r.height), t: performance.now()}];
 });
 canvas.addEventListener('mousemove', e => {
   if (state.phase !== 'playing' || swipePoints.length === 0) return;
@@ -584,9 +675,7 @@ canvas.addEventListener('touchstart', e => {
   e.preventDefault();
   const touch = e.touches[0];
   const r = canvas.getBoundingClientRect();
-  const x = (touch.clientX - r.left) * (canvas.width / r.width);
-  const y = (touch.clientY - r.top) * (canvas.height / r.height);
-  swipePoints = [{x, y, t: performance.now()}];
+  swipePoints = [{x: (touch.clientX - r.left) * (canvas.width / r.width), y: (touch.clientY - r.top) * (canvas.height / r.height), t: performance.now()}];
 }, {passive: false});
 canvas.addEventListener('touchmove', e => {
   if (state.phase !== 'playing' || swipePoints.length === 0) return;
@@ -603,14 +692,13 @@ canvas.addEventListener('touchend', () => { swipePoints = []; });
 
 // ==================== LEVEL 1 FLOW ====================
 function startLevel1() {
-  fruits.length = 0;
-  slicedFruits.length = 0;
-  particles.length = 0;
-  state.collectedChars = [];
-  state.usedCharIds = new Set();
-  fruitsPresented = 0;
-  spawnTimer = 0;
-  gameTimer = 0;
+  fruits.length = 0; slicedFruits.length = 0; particles.length = 0;
+  state.collectedChars = []; state.usedCharIds = new Set();
+  fruitsPresented = 0; spawnTimer = 0; gameTimer = 0; gameEndTimer = 0;
+  if (state.section) {
+    save.completedSections = save.completedSections.filter(s => s !== state.section.title);
+    writeSave();
+  }
   gameRunning = true;
   state.phase = 'playing';
   document.getElementById('start-screen').style.display = 'none';
@@ -620,282 +708,559 @@ function startLevel1() {
   document.getElementById('coin-display').style.display = 'none';
   document.getElementById('level-title').style.display = 'block';
   canvas.style.display = 'block';
-  spawnFruit();
-  fruitsPresented++;
+  spawnFruit(); fruitsPresented++;
   lastTime = performance.now();
   requestAnimationFrame(gameLoop);
 }
 
 function endLevel1() {
+  if (!gameRunning) return;
   gameRunning = false;
   state.phase = 'dialog';
-  document.getElementById('dialog-title').textContent =
-    state.collectedChars.length > 0 ? '🎉 太棒了！' : '😅 再试试！';
-  document.getElementById('dialog-text').textContent =
-    state.collectedChars.length > 0
-      ? `你收集了 ${state.collectedChars.length} 个生字！完成第二关把它们兑换成金币吧！`
-      : '一个水果都没切到... 再玩一次吧！';
-  document.getElementById('dialogBtn').textContent =
-    state.collectedChars.length > 0 ? '进入第二关 →' : '再玩一次';
+  const isEmpty = state.collectedChars.length === 0;
+  document.getElementById('dialog-title').textContent = isEmpty ? '😅 再试试！' : '🎉 太棒了！';
+  document.getElementById('dialog-text').textContent = isEmpty
+    ? '一个水果都没切到... 再玩一次吧！'
+    : `你收集了 ${state.collectedChars.length} 个生字！完成第二关把它们兑换成金币吧！`;
+  document.getElementById('dialogBtn').textContent = isEmpty ? '再玩一次' : '进入第二关 →';
   document.getElementById('dialog-overlay').style.display = 'flex';
 }
 
 document.getElementById('dialogBtn').addEventListener('click', () => {
   document.getElementById('dialog-overlay').style.display = 'none';
-  if (state.collectedChars.length > 0) {
-    startLevel2();
-  } else {
-    startLevel1();
-  }
+  if (state.collectedChars.length > 0) startLevel2();
+  else startLevel1();
 });
 
 // ==================== LEVEL 2 ====================
-let dragChar = null;
+let l2 = { pinyinDone: [], wordDropped: [], wordSuccess: [], sentenceDone: [], sentenceIdx: 0, sentenceFilled: false };
 
 function startLevel2() {
   state.phase = 'level2';
-  state.level2Data = { pinyins: [], words: [], sentences: [] };
-  state.coins = 0;
   document.getElementById('coin-display').style.display = 'block';
   document.getElementById('level-title').style.display = 'none';
   canvas.style.display = 'none';
+  document.getElementById('complete-overlay').style.display = 'none';
   document.getElementById('level2-screen').style.display = 'flex';
-  renderLevel2Chars();
-  document.getElementById('l2-coin-count').textContent = '0';
-  document.getElementById('coin-count').textContent = '0';
-  clearInputs();
-  setupDragDrop();
+  l2 = { pinyinDone: [], wordDropped: [], wordSuccess: [], sentenceDone: [], sentenceIdx: 0, sentenceFilled: false };
+  updateCoinDisplay();
+  renderL2Chars();
+  showTab('pinyin');
+  initJieba();
 }
 
-function renderLevel2Chars() {
-  const container = document.getElementById('level2-chars');
+function renderL2Chars() {
+  const container = document.getElementById('l2-chars');
   container.innerHTML = '';
   state.collectedChars.forEach((c, idx) => {
     const div = document.createElement('div');
     div.className = 'char-card';
-    div.draggable = true;
-    div.dataset.idx = idx;
+    if (l2.pinyinDone.some(p => p.idx === idx)) div.classList.add('done');
     div.textContent = c.character;
-    div.addEventListener('dragstart', e => {
-      dragChar = { idx, char: c };
-      e.dataTransfer.effectAllowed = 'move';
-      div.classList.add('used');
+    div.dataset.idx = idx;
+    div.addEventListener('click', () => {
+      const tabEl = document.querySelector('.tab.active');
+      const tab = tabEl ? tabEl.dataset.tab : '';
+      if (tab === 'pinyin') openHWOverlay(c, idx);
+      else if (tab === 'word') addToWordDrop(idx);
+      else if (tab === 'sentence') fillSentenceBlank(c);
     });
-    div.addEventListener('dragend', () => {
-      if (!dragChar) return;
-      // Only mark as used if it was placed somewhere
-    });
-    // Touch drag
-    let touchClone = null;
-    div.addEventListener('touchstart', e => {
-      const touch = e.touches[0];
-      dragChar = { idx, char: c };
-      touchClone = div.cloneNode(true);
-      touchClone.style.position = 'fixed';
-      touchClone.style.width = '50px';
-      touchClone.style.height = '50px';
-      touchClone.style.pointerEvents = 'none';
-      touchClone.style.zIndex = '999';
-      touchClone.style.left = (touch.clientX - 25) + 'px';
-      touchClone.style.top = (touch.clientY - 25) + 'px';
-      document.body.appendChild(touchClone);
-      div.style.opacity = '0.3';
-    }, {passive: true});
-    div.addEventListener('touchmove', e => {
-      e.preventDefault();
-      if (!touchClone) return;
-      const touch = e.touches[0];
-      touchClone.style.left = (touch.clientX - 25) + 'px';
-      touchClone.style.top = (touch.clientY - 25) + 'px';
-      // Check drop zones
-      ['task-pinyin','task-word','task-sentence'].forEach(id => {
-        const el = document.getElementById(id);
-        const rect = el.getBoundingClientRect();
-        if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
-            touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
-          el.classList.add('drag-over');
-        } else {
-          el.classList.remove('drag-over');
-        }
-      });
-    }, {passive: false});
-    div.addEventListener('touchend', e => {
-      if (touchClone) { touchClone.remove(); touchClone = null; }
-      div.style.opacity = '1';
-      const touch = e.changedTouches[0];
-      ['task-pinyin','task-word','task-sentence'].forEach(id => {
-        document.getElementById(id).classList.remove('drag-over');
-      });
-      // Find drop zone
-      let dropped = false;
-      ['task-pinyin','task-word','task-sentence'].forEach(id => {
-        const el = document.getElementById(id);
-        const rect = el.getBoundingClientRect();
-        if (touch.clientX >= rect.left && touch.clientX <= rect.right &&
-            touch.clientY >= rect.top && touch.clientY <= rect.bottom) {
-          dropped = true;
-          if (id === 'task-pinyin') {
-            addToPinyinArea(c, idx);
-          } else if (id === 'task-word') {
-            addToWordArea(c, idx);
-          } else if (id === 'task-sentence') {
-            addToSentenceArea(c, idx);
-          }
-        }
-      });
-    }, {passive: true});
     container.appendChild(div);
   });
 }
 
-function addToPinyinArea(char, idx) {
-  const area = document.getElementById('pinyin-char-area');
-  const existing = area.querySelectorAll('.placed-char');
-  if (existing.length > 0) {
-    area.innerHTML = '';
-    const prevIdx = parseInt(existing[0].dataset.idx);
-    const prevCard = document.querySelector(`.char-card[data-idx="${prevIdx}"]`);
-    if (prevCard) prevCard.style.opacity = '1';
-    state.level2Data.pinyins = [];
-  }
-  const span = document.createElement('span');
-  span.className = 'placed-char';
-  span.dataset.idx = idx;
-  span.innerHTML = `${char.character} <span class="remove-btn" data-area="pinyin">✕</span>`;
-  span.querySelector('.remove-btn').addEventListener('click', () => {
-    span.remove();
-    const card = document.querySelector(`.char-card[data-idx="${idx}"]`);
-    if (card) card.style.opacity = '1';
-    state.level2Data.pinyins = state.level2Data.pinyins.filter(p => p.idx !== idx);
-    updateCoinDisplay();
-  });
-  area.appendChild(span);
-  const card = document.querySelector(`.char-card[data-idx="${idx}"]`);
-  if (card) card.style.opacity = '0.3';
-  state.level2Data.pinyins.push({ idx, char });
-  updateCoinDisplay();
+// ==================== TABS ====================
+function showTab(name) {
+  document.getElementById('l2-word-section').style.display = name === 'word' ? 'block' : 'none';
+  document.getElementById('l2-sentence-section').style.display = name === 'sentence' ? 'block' : 'none';
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
+  document.querySelector('.l2-pinyin-hint').style.display = name === 'pinyin' ? 'block' : 'none';
+  if (name === 'sentence') initSentenceGame();
 }
 
-function addToWordArea(char, idx) {
-  const area = document.getElementById('word-char-area');
-  const span = document.createElement('span');
-  span.className = 'placed-char';
-  span.dataset.idx = idx;
-  span.innerHTML = `${char.character} <span class="remove-btn" data-area="word">✕</span>`;
-  span.querySelector('.remove-btn').addEventListener('click', () => {
-    span.remove();
-    const card = document.querySelector(`.char-card[data-idx="${idx}"]`);
-    if (card) card.style.opacity = '1';
-    state.level2Data.words = state.level2Data.words.filter(w => w.idx !== idx);
-    updateCoinDisplay();
-  });
-  area.appendChild(span);
-  const card = document.querySelector(`.char-card[data-idx="${idx}"]`);
-  if (card) card.style.opacity = '0.3';
-  state.level2Data.words.push({ idx, char });
-  updateCoinDisplay();
-}
-
-function addToSentenceArea(char, idx) {
-  const area = document.getElementById('sentence-char-area');
-  const span = document.createElement('span');
-  span.className = 'placed-char';
-  span.dataset.idx = idx;
-  span.innerHTML = `${char.character} <span class="remove-btn" data-area="sentence">✕</span>`;
-  span.querySelector('.remove-btn').addEventListener('click', () => {
-    span.remove();
-    const card = document.querySelector(`.char-card[data-idx="${idx}"]`);
-    if (card) card.style.opacity = '1';
-    state.level2Data.sentences = state.level2Data.sentences.filter(s => s.idx !== idx);
-    updateCoinDisplay();
-  });
-  area.appendChild(span);
-  const card = document.querySelector(`.char-card[data-idx="${idx}"]`);
-  if (card) card.style.opacity = '0.3';
-  state.level2Data.sentences.push({ idx, char });
-  updateCoinDisplay();
-}
-
-function setupDragDrop() {
-  ['task-pinyin','task-word','task-sentence'].forEach(id => {
-    const el = document.getElementById(id);
-    el.addEventListener('dragover', e => { e.preventDefault(); el.classList.add('drag-over'); });
-    el.addEventListener('dragleave', () => el.classList.remove('drag-over'));
-    el.addEventListener('drop', e => {
-      e.preventDefault();
-      el.classList.remove('drag-over');
-      if (!dragChar) return;
-      if (id === 'task-pinyin') addToPinyinArea(dragChar.char, dragChar.idx);
-      else if (id === 'task-word') addToWordArea(dragChar.char, dragChar.idx);
-      else if (id === 'task-sentence') addToSentenceArea(dragChar.char, dragChar.idx);
-      dragChar = null;
-    });
-  });
-}
-
-function clearInputs() {
-  document.getElementById('pinyin-input').value = '';
-  document.getElementById('word-input').value = '';
-  document.getElementById('sentence-input').value = '';
-  document.getElementById('pinyin-char-area').innerHTML = '';
-  document.getElementById('word-char-area').innerHTML = '';
-  document.getElementById('sentence-char-area').innerHTML = '';
-}
-
-function updateCoinDisplay() {
-  let coins = 0;
-  const pinyinArea = document.getElementById('pinyin-char-area');
-  const wordArea = document.getElementById('word-char-area');
-  const sentenceArea = document.getElementById('sentence-char-area');
-  const pinyinInput = document.getElementById('pinyin-input').value.trim();
-  const wordInput = document.getElementById('word-input').value.trim();
-  const sentenceInput = document.getElementById('sentence-input').value.trim();
-  if (pinyinArea.children.length > 0 && pinyinInput.length > 0) coins += 1;
-  if (wordInput.length > 0) coins += wordInput.replace(/\s/g, '').length;
-  const punct = `，。、！？；：""''（）【】《》—…·,.;:!?()[]{}`;
-  const cleanSentence = sentenceInput.split('').filter(c => !punct.includes(c)).join('');
-  if (cleanSentence.length > 0) coins += cleanSentence.length * 2;
-  state.coins = coins;
-  document.getElementById('l2-coin-count').textContent = coins;
-  document.getElementById('coin-count').textContent = coins;
-}
-
-document.getElementById('pinyin-input').addEventListener('input', updateCoinDisplay);
-document.getElementById('word-input').addEventListener('input', updateCoinDisplay);
-document.getElementById('sentence-input').addEventListener('input', updateCoinDisplay);
-
-document.getElementById('l2Done').addEventListener('click', () => {
-  showComplete();
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => showTab(tab.dataset.tab));
 });
+
+// ==================== Pinyin Handwriting with CNN ====================
+let hwCNNLoaded = false;
+let hwCharData = null;
+let hwCharIdx = -1;
+let hwRecognized = [];
+let hwDrawing = false;
+let hwLastPt = null;
+
+let hwORTLoading = null;
+async function loadCNNModel() {
+  if (hwCNNLoaded) return;
+  if (typeof ort === 'undefined') {
+    if (!hwORTLoading) {
+      hwORTLoading = new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/ort.min.js';
+        s.onload = resolve;
+        s.onerror = () => reject(new Error('onnxruntime-web failed to load'));
+        document.head.appendChild(s);
+      });
+    }
+    try { await hwORTLoading; } catch(e) { console.warn('onnxruntime-web load failed:', e); return; }
+  }
+  try {
+    window.__emnistSession = await ort.InferenceSession.create('emnist_cnn.onnx', {
+      executionProviders: ['wasm'],
+      graphOptimizationLevel: 'all',
+    });
+    hwCNNLoaded = true;
+    console.log('CNN model loaded');
+  } catch(e) { console.warn('CNN model load failed:', e); }
+}
+
+async function recognizeLetterCNN(canvasEl) {
+  if (!window.__emnistSession) return null;
+  const ctx2d = canvasEl.getContext('2d');
+  const w = canvasEl.width, h = canvasEl.height;
+  const imageData = ctx2d.getImageData(0, 0, w, h);
+  const pixels = imageData.data;
+
+  let minX = w, minY = h, maxX = 0, maxY = 0;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (pixels[(y * w + x) * 4 + 3] > 20) {
+        if (x < minX) minX = x; if (y < minY) minY = y;
+        if (x > maxX) maxX = x; if (y > maxY) maxY = y;
+      }
+    }
+  }
+  if (minX > maxX || minY > maxY) return null;
+
+  const bw = maxX - minX + 1, bh = maxY - minY + 1;
+  const pad = Math.max(6, Math.round(Math.max(bw, bh) * 0.15));
+  minX = Math.max(0, minX - pad); minY = Math.max(0, minY - pad);
+  maxX = Math.min(w - 1, maxX + pad); maxY = Math.min(h - 1, maxY + pad);
+
+  const cropW = maxX - minX + 1, cropH = maxY - minY + 1;
+  const size = Math.max(cropW, cropH);
+  const offX = Math.floor((size - cropW) / 2);
+  const offY = Math.floor((size - cropH) / 2);
+
+  const tmp = document.createElement('canvas');
+  tmp.width = 28; tmp.height = 28;
+  const tmpCtx = tmp.getContext('2d');
+  tmpCtx.fillStyle = '#000000';
+  tmpCtx.fillRect(0, 0, 28, 28);
+  tmpCtx.drawImage(canvasEl, minX, minY, cropW, cropH, offX * 28 / size, offY * 28 / size, cropW * 28 / size, cropH * 28 / size);
+
+  const tmpData = tmpCtx.getImageData(0, 0, 28, 28);
+  const floatArray = new Float32Array(28 * 28);
+  for (let i = 0; i < 28 * 28; i++) {
+    floatArray[i] = (0.299 * tmpData.data[i * 4] + 0.587 * tmpData.data[i * 4 + 1] + 0.114 * tmpData.data[i * 4 + 2]) / 255.0;
+  }
+
+  const tensor = new ort.Tensor('float32', floatArray, [1, 1, 28, 28]);
+  const results = await window.__emnistSession.run({ input: tensor });
+  const probs = results.output.data;
+  let bestIdx = 0;
+  for (let i = 1; i < 26; i++) if (probs[i] > probs[bestIdx]) bestIdx = i;
+  return { letter: String.fromCharCode(97 + bestIdx), confidence: Math.round(probs[bestIdx] * 100) / 100 };
+}
+
+function openHWOverlay(charData, idx) {
+  if (l2.pinyinDone.some(p => p.idx === idx)) return;
+  hwCharData = charData;
+  hwCharIdx = idx;
+  hwRecognized = [];
+
+  document.getElementById('hw-target-char').textContent = charData.character;
+  document.getElementById('hwResultArea').innerHTML = '';
+  document.getElementById('hwMsg').textContent = '';
+
+  const overlay = document.getElementById('hw-overlay');
+  overlay.style.display = 'flex';
+
+  // Setup canvas
+  const hc = document.getElementById('hwCanvas');
+  const setupHWCanvas = () => {
+    const rect = hc.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) { setTimeout(setupHWCanvas, 50); return; }
+    const dpr = window.devicePixelRatio || 1;
+    hc.width = rect.width * dpr;
+    hc.height = rect.height * dpr;
+    const ctx2d = hc.getContext('2d');
+    ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx2d.lineCap = 'round'; ctx2d.lineJoin = 'round';
+    ctx2d.lineWidth = Math.max(4, rect.width * 0.012);
+    ctx2d.strokeStyle = '#fff';
+  };
+  setupHWCanvas();
+  hc.style.touchAction = 'none';
+
+  const getPos = (e) => {
+    const rect = hc.getBoundingClientRect();
+    return { x: (e.clientX || 0) - rect.left, y: (e.clientY || 0) - rect.top };
+  };
+
+  const startDraw = (e) => { hwDrawing = true; hwLastPt = getPos(e); };
+  const moveDraw = (e) => {
+    if (!hwDrawing) return; e.preventDefault();
+    const pt = getPos(e);
+    const ctx2d = hc.getContext('2d');
+    ctx2d.beginPath(); ctx2d.moveTo(hwLastPt.x, hwLastPt.y);
+    ctx2d.lineTo(pt.x, pt.y); ctx2d.stroke();
+    hwLastPt = pt;
+  };
+  const endDraw = async () => {
+    hwDrawing = false;
+    // Auto recognize after short pause
+    await new Promise(r => setTimeout(r, 400));
+    if (!hwDrawing) await doHWRecognize(hc);
+  };
+
+  hc.onpointerdown = startDraw;
+  hc.onpointermove = moveDraw;
+  hc.onpointerup = endDraw;
+  hc.onpointercancel = () => { hwDrawing = false; };
+
+  loadCNNModel();
+}
+
+async function doHWRecognize(hc) {
+  const result = await recognizeLetterCNN(hc);
+  if (!result) return;
+
+  hwRecognized.push(result.letter);
+  renderHWResult();
+
+  // Clear canvas
+  const ctx2d = hc.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx2d.clearRect(0, 0, hc.width, hc.height);
+
+  // Check if recognized pinyin matches
+  const guessed = hwRecognized.join('');
+  const stripTones = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const expected = stripTones(hwCharData.pinyin);
+  if (guessed === expected) {
+    document.getElementById('hwMsg').textContent = '🎉 你真棒！拼音正确！';
+    playCoin();
+    setTimeout(() => {
+      document.getElementById('hw-overlay').style.display = 'none';
+      l2.pinyinDone.push({ idx: hwCharIdx, char: hwCharData, pinyin: guessed });
+      renderL2Chars();
+      updateL2Coins();
+    }, 1000);
+  }
+}
+
+function renderHWResult() {
+  const area = document.getElementById('hwResultArea');
+  area.innerHTML = '';
+  hwRecognized.forEach((letter, i) => {
+    const span = document.createElement('span');
+    span.className = 'hw-letter';
+    span.innerHTML = `${letter} <span class="hw-del" data-idx="${i}">✕</span>`;
+    span.querySelector('.hw-del').addEventListener('click', () => {
+      hwRecognized.splice(i, 1);
+      renderHWResult();
+    });
+    area.appendChild(span);
+  });
+}
+
+document.getElementById('hwCloseBtn').addEventListener('click', () => {
+  document.getElementById('hw-overlay').style.display = 'none';
+});
+
+function updateL2Coins() {
+  const pinyinCoins = l2.pinyinDone.length * 2;
+  const wordCoins = [...new Set(l2.wordSuccess.map(w => w.word))].length * 3;
+  const sentenceCoins = l2.sentenceDone.length * 3;
+  const total = pinyinCoins + wordCoins + sentenceCoins;
+  state.coins = total;
+  document.getElementById('l2-coin-display').textContent = total;
+  updateCoinDisplay();
+}
+
+// ==================== Sentence Fill-in ====================
+function initSentenceGame() {
+  if (l2.sentenceDone.length >= state.collectedChars.length) {
+    document.getElementById('ssSentence').innerHTML = '<span style="color:#06d6a0;font-size:18px">🎉 所有造句已完成！</span>';
+    document.getElementById('ssProgress').textContent = `${state.collectedChars.length} / ${state.collectedChars.length}`;
+    return;
+  }
+  l2.sentenceFilled = false;
+  renderSentence();
+}
+
+function renderSentence() {
+  l2.sentenceFilled = false;
+  if (l2.sentenceDone.length >= state.collectedChars.length) {
+    document.getElementById('ssSentence').innerHTML = '<span style="color:#06d6a0;font-size:18px">🎉 所有造句已完成！</span>';
+    document.getElementById('ssProgress').textContent = `${state.collectedChars.length} / ${state.collectedChars.length}`;
+    return;
+  }
+  const idx = l2.sentenceIdx;
+  const charData = state.collectedChars[idx];
+  if (!charData) return;
+  const sentence = charData.sentence;
+  const targetChar = charData.character;
+  const parts = sentence.split(targetChar);
+  let html = '';
+  for (let i = 0; i < parts.length; i++) {
+    html += escapeHtml(parts[i]);
+    if (i < parts.length - 1) {
+      html += `<span class="ss-blank" data-expected="${targetChar}">?</span>`;
+    }
+  }
+  document.getElementById('ssSentence').innerHTML = html;
+  document.getElementById('ssProgress').textContent = `${l2.sentenceDone.length + 1} / ${state.collectedChars.length}`;
+}
+
+function escapeHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function fillSentenceBlank(charData) {
+  if (l2.sentenceFilled) return;
+  if (l2.sentenceDone.length >= state.collectedChars.length) return;
+  const currentIdx = l2.sentenceIdx;
+  const currentChar = state.collectedChars[currentIdx];
+  if (!currentChar) return;
+  if (charData.character !== currentChar.character) {
+    playError();
+    return;
+  }
+  l2.sentenceDone.push({ idx: currentIdx, char: currentChar });
+  l2.sentenceFilled = true;
+  const blanks = document.querySelectorAll('#ssSentence .ss-blank');
+  blanks.forEach(b => { b.textContent = currentChar.character; b.classList.add('filled'); });
+  playCoin();
+  const msg = document.createElement('div');
+  msg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:100;background:rgba(0,0,0,.9);padding:20px 40px;border-radius:16px;font-size:24px;border:2px solid #06d6a0;color:#06d6a0;text-align:center';
+  msg.textContent = `🎉 你真棒！「${currentChar.character}」造句成功！`;
+  document.body.appendChild(msg);
+  setTimeout(() => msg.remove(), 1200);
+  // Add to result display
+  const resultDiv = document.getElementById('ssResult');
+  const span = document.createElement('span');
+  span.className = 'ss-done-word';
+  span.textContent = `${currentChar.character}：${currentChar.sentence}`;
+  resultDiv.appendChild(span);
+  updateL2Coins();
+  setTimeout(() => {
+    l2.sentenceIdx = (l2.sentenceDone.length < state.collectedChars.length) ? currentIdx + 1 : 0;
+    renderSentence();
+  }, 1200);
+}
+
+// ==================== Word Matching with Jieba ====================
+let jiebaReady = false;
+
+async function initJieba() {
+  if (jiebaReady) return;
+  try {
+    const mod = await import('https://cdn.jsdelivr.net/npm/jieba-wasm@2.4.0/pkg/web/jieba_rs_wasm.js');
+    await mod.default();
+    window.__jiebaCut = mod.cut;
+    window.__jiebaAddWord = mod.add_word;
+    jiebaReady = true;
+    console.log('jieba-wasm loaded');
+  } catch(e) {
+    console.warn('jieba-wasm failed to load:', e);
+  }
+}
+
+function wordExists(word) {
+  if (!window.__jiebaCut) return false;
+  if (word.length === 1) {
+    const chars = state.collectedChars.map(c => c.character);
+    return chars.includes(word);
+  }
+  const result = window.__jiebaCut(word, false);
+  return result.length === 1 && result[0] === word;
+}
+
+// Click-based word matching
+function addToWordDrop(idx) {
+  if (l2.pinyinDone.some(p => p.idx === idx)) return;
+  const char = state.collectedChars[idx];
+  if (!char) return;
+  l2.wordDropped.push({ idx, char: char.character });
+  renderWordDropZone();
+}
+
+function renderWordDropZone() {
+  const zone = document.getElementById('wordDropZone');
+  zone.innerHTML = '';
+  l2.wordDropped.forEach((item, i) => {
+    const span = document.createElement('span');
+    span.className = 'wd-char';
+    span.innerHTML = `${item.char} <span class="wd-del" data-idx="${i}">✕</span>`;
+    span.querySelector('.wd-del').addEventListener('click', () => {
+      l2.wordDropped.splice(i, 1);
+      renderWordDropZone();
+    });
+    zone.appendChild(span);
+  });
+  if (l2.wordDropped.length === 0) {
+    zone.textContent = 'Drag characters here...';
+    zone.style.color = 'rgba(255,255,255,.2)';
+  } else {
+    zone.style.color = '';
+  }
+}
+
+document.getElementById('wordConfirmBtn').addEventListener('click', async () => {
+  const word = l2.wordDropped.map(w => w.char).join('');
+  if (word.length < 2) { playError(); return; }
+
+  await initJieba();
+  if (!window.__jiebaCut) { playError(); return; }
+
+  const exists = wordExists(word);
+  if (exists && !l2.wordSuccess.some(w => w.word === word)) {
+    l2.wordSuccess.push({ word });
+    playCoin();
+    const msg = document.createElement('div');
+    msg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:100;background:rgba(0,0,0,.9);padding:20px 40px;border-radius:16px;font-size:24px;border:2px solid #06d6a0;color:#06d6a0';
+    msg.textContent = `🎉 你真棒！「${word}」组词成功！`;
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 1500);
+    l2.wordDropped = [];
+    renderWordDropZone();
+    renderWordResult();
+  } else {
+    playError();
+    const msg = document.createElement('div');
+    msg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:100;background:rgba(0,0,0,.9);padding:20px 40px;border-radius:16px;font-size:20px;border:2px solid #e74c3c;color:#e74c3c';
+    msg.textContent = `「${word}」不是有效词语，再试试！`;
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 1500);
+  }
+  updateL2Coins();
+});
+
+document.getElementById('wordClearBtn').addEventListener('click', () => {
+  l2.wordDropped = [];
+  renderWordDropZone();
+});
+
+function renderWordResult() {
+  const container = document.getElementById('wordResult');
+  container.innerHTML = '';
+  const unique = [...new Set(l2.wordSuccess.map(w => w.word))];
+  unique.forEach(w => {
+    const span = document.createElement('span');
+    span.className = 'wr-word';
+    span.textContent = w;
+    container.appendChild(span);
+  });
+}
+
+// ==================== COIN SHOP ====================
+function renderShop() {
+  const list = document.getElementById('shop-list');
+  list.innerHTML = '';
+  document.getElementById('shop-balance').textContent = save.coins;
+
+  [...KNIVES].sort((a, b) => a.cost - b.cost).forEach(knife => {
+    const owned = save.ownedKnives.includes(knife.id);
+    const equipped = save.equippedKnife === knife.id;
+    const affordable = save.coins >= knife.cost;
+
+    const item = document.createElement('div');
+    item.className = 'shop-item' + (equipped ? ' equipped' : '');
+
+    const icon = document.createElement('div');
+    icon.className = 'si-icon';
+    icon.textContent = knife.icon;
+    if (equipped) {
+      icon.style.textShadow = `0 0 12px ${knife.glow}, 0 0 24px ${knife.glow}`;
+      icon.style.filter = `drop-shadow(0 0 6px ${knife.glow})`;
+    }
+
+    const info = document.createElement('div');
+    info.className = 'si-info';
+    info.innerHTML = `<div class="si-name">${knife.name}</div><div class="si-desc">${knife.desc}</div>`;
+
+    const action = document.createElement('button');
+    action.className = 'si-action';
+
+    if (equipped) {
+      action.textContent = '✓ 已装备';
+      action.className = 'si-action owned';
+    } else if (owned) {
+      action.textContent = '装备';
+      action.className = 'si-action equip';
+      action.addEventListener('click', () => {
+        save.equippedKnife = knife.id;
+        writeSave();
+        renderShop();
+      });
+    } else if (affordable) {
+      action.textContent = `${knife.cost} 🪙 购买`;
+      action.className = 'si-action buy';
+      action.addEventListener('click', () => {
+        save.coins -= knife.cost;
+        save.ownedKnives.push(knife.id);
+        writeSave();
+        renderShop();
+      });
+    } else {
+      action.textContent = `${knife.cost} 🪙`;
+      action.className = 'si-action owned';
+    }
+
+    item.appendChild(icon);
+    item.appendChild(info);
+    item.appendChild(action);
+    list.appendChild(item);
+  });
+}
+
+document.getElementById('menuShopBtn').addEventListener('click', () => {
+  renderShop();
+  document.getElementById('shop-overlay').style.display = 'flex';
+});
+
+document.getElementById('shopCloseBtn').addEventListener('click', () => {
+  document.getElementById('shop-overlay').style.display = 'none';
+});
+
+document.getElementById('l2FinishBtn').addEventListener('click', showComplete);
 
 // ==================== COMPLETE SCREEN ====================
 function showComplete() {
   state.phase = 'complete';
   document.getElementById('level2-screen').style.display = 'none';
   document.getElementById('complete-overlay').style.display = 'flex';
-  document.getElementById('final-coins').textContent = state.coins;
-  document.getElementById('stat-chars').textContent = state.collectedChars.length;
-  document.getElementById('stat-pinyins').textContent = state.level2Data.pinyins.length;
-  document.getElementById('stat-words').textContent = document.getElementById('word-input').value.trim().split(/[\s,，、]+/).filter(w => w.length > 0).length;
-  document.getElementById('stat-sentences').textContent = state.level2Data.sentences.length;
-  if (state.coins > 0) {
-    playComplete();
-    spawnCoinParticles(W/2, H/2);
-  }
-  renderRewards();
-  updateCoinDisplay();
-}
+  const uniqueWords = [...new Set(l2.wordSuccess.map(w => w.word))];
+  const totalCoins = l2.pinyinDone.length * 2 + uniqueWords.length * 3 + l2.sentenceDone.length * 3;
+  state.coins = totalCoins;
+  save.coins += totalCoins;
+  writeSave();
 
-function renderRewards() {
-  const container = document.getElementById('reward-list');
-  container.innerHTML = '';
-  let totalCoins = state.coins;
-  REWARDS.forEach(r => {
-    const div = document.createElement('div');
-    div.className = 'reward-item' + (totalCoins >= r.cost ? ' unlocked' : '');
-    div.innerHTML = `<div class="reward-icon">${r.icon}</div><div>${r.name}</div><div class="cost">${r.cost}🪙</div>`;
-    container.appendChild(div);
-  });
+  document.getElementById('final-coins').textContent = totalCoins;
+  document.getElementById('stat-chars').textContent = state.collectedChars.length;
+  document.getElementById('stat-pinyins').textContent = l2.pinyinDone.length;
+  document.getElementById('stat-words').textContent = uniqueWords.length;
+  document.getElementById('stat-sentences').textContent = l2.sentenceDone.length;
+  if (totalCoins > 0) playComplete();
+  updateCoinDisplay();
+
+  // Mark section completed if all chars collected + all pinyin + all sentence done
+  if (state.section) {
+    const totalChars = state.section.characters.length;
+    const allCollected = state.collectedChars.length >= totalChars;
+    const allPinyinDone = l2.pinyinDone.length >= totalChars;
+    const allSentenceDone = l2.sentenceDone.length >= totalChars;
+    if (allCollected && allPinyinDone && allSentenceDone) {
+      if (!save.completedSections.includes(state.section.title)) {
+        save.completedSections.push(state.section.title);
+        writeSave();
+      }
+    }
+  }
 }
 
 document.getElementById('againBtn').addEventListener('click', () => {
@@ -908,7 +1273,13 @@ document.getElementById('exitBtn').addEventListener('click', () => {
   document.getElementById('complete-overlay').style.display = 'none';
   state.phase = 'menu';
   document.getElementById('start-screen').style.display = 'flex';
+  initSectionPicker();
 });
+
+// ==================== UTILITY ====================
+function updateCoinDisplay() {
+  document.getElementById('coin-count').textContent = save.coins;
+}
 
 // ==================== SECTION PICKER ====================
 function initSectionPicker() {
@@ -917,6 +1288,7 @@ function initSectionPicker() {
   GAME_DATA.sections.forEach((sec, idx) => {
     const btn = document.createElement('button');
     btn.className = 'sec-btn';
+    if (save.completedSections.includes(sec.title)) btn.classList.add('completed');
     btn.textContent = sec.title || `课文 ${sec.num || idx + 1}`;
     btn.dataset.idx = idx;
     btn.addEventListener('click', () => {
@@ -928,9 +1300,7 @@ function initSectionPicker() {
     });
     container.appendChild(btn);
   });
-  if (GAME_DATA.sections.length > 0) {
-    container.children[0].click();
-  }
+  if (GAME_DATA.sections.length > 0) container.children[0].click();
 }
 
 document.getElementById('startBtn').addEventListener('click', () => {
@@ -938,39 +1308,9 @@ document.getElementById('startBtn').addEventListener('click', () => {
   startLevel1();
 });
 
-// ==================== LOCAL STORAGE ====================
-function saveProgress() {
-  try {
-    const data = {
-      coins: state.coins,
-      totalChars: state.collectedChars.length,
-      date: new Date().toISOString()
-    };
-    localStorage.setItem('words-fruit-slice', JSON.stringify(data));
-  } catch(e) {}
-}
-
-function loadProgress() {
-  try {
-    const raw = localStorage.getItem('words-fruit-slice');
-    if (raw) {
-      const data = JSON.parse(raw);
-      document.getElementById('coin-count').textContent = data.coins || 0;
-    }
-  } catch(e) {}
-}
-
-loadProgress();
-
-// Override save on complete
-const origShowComplete = showComplete;
-showComplete = function() {
-  saveProgress();
-  origShowComplete.call(this);
-};
-
+updateCoinDisplay();
 console.log('🍉 识字切西瓜 loaded!');
-console.log(`📚 ${GAME_DATA.sections.length} sections, ${GAME_DATA.sections.reduce((a,s) => a + s.characters.length, 0)} characters`);
+console.log(`📚 ${GAME_DATA.sections.length} sections, coins: ${save.coins}`);
 </script>
 </body>
 </html>

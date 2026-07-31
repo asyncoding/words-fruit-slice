@@ -3,3 +3,6 @@
 __pycache__/
 node_modules/
 .gstack/
+# Cocos工程为独立嵌套git仓库，自身版本管理
+WordsFruitSlice/
+test/

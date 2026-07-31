@@ -1,0 +1,39 @@
+{
+  "description": "识字切西瓜 - 一年级识字小游戏",
+  "setting": {
+    "urlCheck": true,
+    "es6": true,
+    "postcss": false,
+    "minified": true,
+    "ignoreDevUnusedFiles": false,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "enhance": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "appid": "wxab3239bb0ea4fc71",
+  "projectname": "words-fruit-slice",
+  "compileType": "game",
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "isGameTourist": false,
+  "editorSetting": {}
+}
