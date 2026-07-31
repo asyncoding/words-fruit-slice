@@ -171,6 +171,7 @@ async function loadModel() {
   if (session) return;
   setStatus('⏳ 加载 onnxruntime + emnist_cnn.onnx…', 'busy');
   const t0 = performance.now();
+  ort.env.wasm.wasmPaths = new URL('../vendor/ort/', document.baseURI).href;
   session = await ort.InferenceSession.create('../emnist_cnn.onnx', {
     executionProviders: ['wasm'],
     graphOptimizationLevel: 'all',
