@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>拼音识别验收测试 — 识字切西瓜</title>
+<script src="https://cdn.jsdelivr.net/npm/onnxruntime-web@1.21.0/dist/ort.min.js"></script>
+<style>
+  :root { --bg:#0f1420; --card:#1a2233; --line:#2a3550; --txt:#e8ecf5; --dim:#8b96ab; --ok:#06d6a0; --err:#ff6b6b; --gold:#ffd700; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--bg); color:var(--txt); font-family:"PingFang SC","Microsoft YaHei",sans-serif; padding:20px; }
+  h1 { font-size:20px; margin-bottom:4px; }
+  .sub { color:var(--dim); font-size:12px; margin-bottom:16px; }
+  #status { padding:10px 14px; background:var(--card); border:1px solid var(--line); border-radius:8px; margin-bottom:16px; font-size:14px; }
+  #status .ok { color:var(--ok); } #status .err { color:var(--err); } #status .busy { color:var(--gold); }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin-bottom:20px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; }
+  .card .num { font-size:28px; font-weight:bold; }
+  .card .lbl { font-size:12px; color:var(--dim); margin-bottom:6px; }
+  .card .note { font-size:11px; color:var(--dim); margin-top:4px; }
+  .card.good .num { color:var(--ok); } .card.bad .num { color:var(--err); } .card.warn .num { color:var(--gold); }
+  h2 { font-size:15px; margin:20px 0 10px; color:var(--gold); }
+  table { border-collapse:collapse; font-size:12px; width:100%; background:var(--card); }
+  th,td { border:1px solid var(--line); padding:4px 6px; text-align:center; }
+  th { background:#222d47; font-weight:normal; color:var(--dim); }
+  td.l { text-align:left; }
+  .okc { color:var(--ok); font-weight:bold; } .errc { color:var(--err); font-weight:bold; }
+  .cm-wrap { overflow:auto; max-height:520px; }
+  .cm td.cm-cell { padding:0; font-size:10px; width:26px; height:20px; }
+  .cm td.cm-cell.diag { outline:2px solid var(--gold); }
+  .btn { padding:8px 16px; border-radius:8px; border:1px solid var(--line); background:#222d47; color:var(--txt); cursor:pointer; font-size:13px; margin-right:8px; }
+  .btn:hover { border-color:var(--gold); }
+  #manual { display:flex; gap:14px; align-items:flex-start; margin-top:10px; }
+  #manual canvas { background:#0a0a1a; border:1px solid var(--line); border-radius:8px; }
+  .mrow { margin-bottom:6px; font-size:12px; }
+  .section { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:14px; margin-bottom:14px; }
+</style>
+</head>
+<body>
+  <h1>🔤 拼音手写识别验收测试</h1>
+  <div class="sub">镜像 index.html recognizeLetterCNN 预处理与推理逻辑 · 模型 emnist_cnn.onnx · 拒识阈值 HW_MIN_CONF=0.30 · 支持 ?allowed=da 快速单字母测试</div>
+
+  <div id="status">⏳ 初始化…</div>
+
+  <div class="cards" id="cards">
+    <div class="card"><div class="lbl">① 单字母准确率（无候选集）</div><div class="num" id="c1">-</div><div class="note" id="c1n"></div></div>
+    <div class="card"><div class="lbl">② 候选集约束准确率</div><div class="num" id="c2">-</div><div class="note" id="c2n"></div></div>
+    <div class="card"><div class="lbl">③ 回退保底（候选集不含真字母）</div><div class="num" id="c3">-</div><div class="note" id="c3n"></div></div>
+    <div class="card"><div class="lbl">④ 拒识（垃圾输入 conf&lt;0.30）</div><div class="num" id="c4">-</div><div class="note" id="c4n"></div></div>
+  </div>
+
+  <div class="section" id="sec-quick" style="display:none">
+    <h2 style="margin-top:0">⚡ 快速单字母测试（?allowed=…）</h2>
+    <div id="quick-out"></div>
+  </div>
+
+  <h2>📊 每字母识别准确率（无候选集，6 变体）</h2>
+  <div class="section">
+    <table id="per-letter"><thead><tr><th>字母</th><th>正确</th><th>总数</th><th>准确率</th><th>最常误识为</th></tr></thead><tbody></tbody></table>
+  </div>
+
+  <h2>🧩 混淆矩阵（行=真字母，列=识别结果）</h2>
+  <div class="section"><div class="cm-wrap"><table class="cm" id="cm"></table></div></div>
+
+  <h2>🚫 拒识样本（直线/圆点/乱画）</h2>
+  <div class="section"><table id="rej"><thead><tr><th>形状</th><th>无候选集 → 字母 (conf)</th><th>候选集[c,h,u,n] → 字母 (conf)</th><th>lowConf</th><th>模拟游戏判定（conf≥0.30 采纳）</th></tr></thead><tbody></tbody></table></div>
+
+  <h2>✍️ 手动测试</h2>
+  <div class="section" id="manual">
+    <canvas id="manualCanvas" width="220" height="220"></canvas>
+    <div>
+      <div class="mrow"><button class="btn" id="btnManualNone">识别（无候选）</button><button class="btn" id="btnManualCand">识别（候选 c,h,u,n）</button></div>
+      <div class="mrow" id="manualOut">-</div>
+      <div class="mrow"><button class="btn" id="btnManualClear">清空</button></div>
+    </div>
+  </div>
+
+  <script src="recognition-test.js"></script>
+</body>
+</html>
