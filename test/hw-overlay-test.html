@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>拼音蒙层手写识别测试台</title>
+<style>
+body{background:#111;color:#eee;font-family:-apple-system,sans-serif;margin:0}
+#batchReport{padding:12px;font-size:13px;white-space:pre-wrap}
+#batchReport table{border-collapse:collapse;font-size:12px}
+#batchReport td,#batchReport th{border:1px solid #444;padding:2px 6px;text-align:center}
+/* ===== 以下蒙层样式同步自 index.html ===== */
+#hw-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;display:none;flex-direction:column;background:rgba(0,0,0,.92)}
+#hw-overlay .hw-top{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#222}
+#hw-overlay .hw-char{font-size:48px;color:#ffd700;font-weight:bold}
+#hw-overlay .hw-close-btn{padding:6px 16px;border-radius:16px;border:1px solid #888;background:transparent;color:#aaa;font-size:14px;cursor:pointer;pointer-events:auto}
+#hw-overlay .hw-status{font-size:13px;color:rgba(255,255,255,.5);text-align:center;padding:6px}
+#hw-overlay .hw-result-area{display:flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:4px 16px}
+#hw-overlay .hw-result-area .hw-letter{display:inline-flex;align-items:center;gap:2px;padding:4px 10px;border-radius:6px;background:rgba(255,215,0,.15);color:#ffd700;font-size:22px;font-weight:bold}
+#hw-overlay .hw-result-area .hw-letter .hw-del{cursor:pointer;pointer-events:auto;font-size:14px;color:rgba(255,255,255,.3);margin-left:4px}
+#hw-overlay .hw-canvas-wrap{flex:1;display:flex;position:relative;touch-action:none}
+#hw-overlay .hw-canvas-wrap canvas{flex:1;touch-action:none;display:block;background:#0a0a1a}
+#hw-overlay .hw-msg{text-align:center;padding:10px;font-size:16px;color:#06d6a0;font-weight:bold}
+#hw-overlay .hw-msg.error{color:#ff6b6b}
+#hw-overlay #hwCanvas{flex:none;width:360px;height:420px}
+</style>
+</head>
+<body>
+<div id="batchReport">加载中…</div>
+
+<!-- Handwriting Overlay: 结构同步自 index.html -->
+<div id="hw-overlay">
+  <div class="hw-top">
+    <span>✏️ 手写拼音 — <span id="hw-target-char" class="hw-char">测</span></span>
+    <button class="hw-close-btn" id="hwCloseBtn">✕ 关闭</button>
+  </div>
+  <div class="hw-status">手写每个字母后会自动识别，识别错误的字母可点击删除。</div>
+  <div class="hw-result-area" id="hwResultArea"></div>
+  <div class="hw-canvas-wrap">
+    <canvas id="hwCanvas"></canvas>
+  </div>
+  <div class="hw-msg" id="hwMsg"></div>
+</div>
+
+<script>
+// ==================== 同步自 index.html (识别核心，勿改逻辑) ====================
+const HW_MIN_CONF = 0.30;
+let hwCNNLoaded = false;
+let hwCharData = null;
+let hwCharIdx = -1;
+let hwRecognized = [];
+let hwDrawing = false;
+let hwLastPt = null;
+let l2 = { pinyinDone: [] };
+window.__hwCloseTimer = null;
+
+const MODEL_URL = new URLSearchParams(location.search).get('model') === 'old'
+  ? '/tools/train/emnist_cnn_old.onnx' : '/emnist_cnn.onnx';
+
+const DILATE = parseInt(new URLSearchParams(location.search).get('thick') || '0', 10) || 0;
+const PEN = parseInt(new URLSearchParams(location.search).get('pen') || '0', 10) || 0;
+
+let hwORTLoading = null;
+async function loadCNNModel() {
+  if (hwCNNLoaded) return;
+  if (typeof ort === 'undefined') {
+    if (!hwORTLoading) {
+      hwORTLoading = new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = '../vendor/ort/ort.min.js';
+        s.onload = resolve;
+        s.onerror = () => reject(new Error('onnxruntime-web failed to load'));
+        document.head.appendChild(s);
+      });
+    }
+    try { await hwORTLoading; } catch(e) { console.warn('onnxruntime-web load failed:', e); return; }
+  }
+  try {
+    ort.env.wasm.wasmPaths = new URL('../vendor/ort/', document.baseURI).href;
+    window.__emnistSession = await ort.InferenceSession.create(MODEL_URL, {
+      executionProviders: ['wasm'],
+      graphOptimizationLevel: 'all',
+    });
+    hwCNNLoaded = true;
+    console.log('CNN model loaded:', MODEL_URL);
+  } catch(e) { console.warn('CNN model load failed:', e); }
+}
+
+async function recognizeLetterCNN(canvasEl, allowedLetters) {
+  if (!window.__emnistSession) return null;
+  const ctx2d = canvasEl.getContext('2d');
+  const w = canvasEl.width, h = canvasEl.height;
+  const imageData = ctx2d.getImageData(0, 0, w, h);
+  const pixels = imageData.data;
+
+  let minX = w, minY = h, maxX = 0, maxY = 0;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (pixels[(y * w + x) * 4 + 3] > 20) {
+        if (x < minX) minX = x; if (y < minY) minY = y;
+        if (x > maxX) maxX = x; if (y > maxY) maxY = y;
+      }
+    }
+  }
+  if (minX > maxX || minY > maxY) return null;
+
+  const bw = maxX - minX + 1, bh = maxY - minY + 1;
+  const scale20 = 20 / Math.max(bw, bh);
+  const dw = Math.max(1, Math.round(bw * scale20)), dh = Math.max(1, Math.round(bh * scale20));
+
+  const tmp = document.createElement('canvas');
+  tmp.width = 28; tmp.height = 28;
+  const tmpCtx = tmp.getContext('2d');
+  tmpCtx.drawImage(canvasEl, minX, minY, bw, bh, Math.floor((28 - dw) / 2), Math.floor((28 - dh) / 2), dw, dh);
+
+  const tmpData = tmpCtx.getImageData(0, 0, 28, 28);
+  let cx = 0, cy = 0, cnt = 0, tMinX = 28, tMinY = 28, tMaxX = 0, tMaxY = 0;
+  for (let y = 0; y < 28; y++) {
+    for (let x = 0; x < 28; x++) {
+      if (tmpData.data[(y * 28 + x) * 4 + 3] > 20) {
+        cx += x; cy += y; cnt++;
+        if (x < tMinX) tMinX = x; if (x > tMaxX) tMaxX = x;
+        if (y < tMinY) tMinY = y; if (y > tMaxY) tMaxY = y;
+      }
+    }
+  }
+  if (!cnt) return null;
+  let dx = Math.round(14 - cx / cnt), dy = Math.round(14 - cy / cnt);
+  dx = Math.max(-tMinX, Math.min(dx, 27 - tMaxX));
+  dy = Math.max(-tMinY, Math.min(dy, 27 - tMaxY));
+
+  const floatArray = new Float32Array(28 * 28);
+  for (let y = 0; y < 28; y++) {
+    const sy = y - dy;
+    if (sy < 0 || sy >= 28) continue;
+    for (let x = 0; x < 28; x++) {
+      const sx = x - dx;
+      if (sx < 0 || sx >= 28) continue;
+      const i = (sy * 28 + sx) * 4;
+      const a = tmpData.data[i + 3] / 255.0;
+      floatArray[y * 28 + x] = (0.299 * tmpData.data[i] + 0.587 * tmpData.data[i + 1] + 0.114 * tmpData.data[i + 2]) * a / 255.0;
+    }
+  }
+
+  for (let d = 0; d < DILATE; d++) {
+    const src = floatArray.slice();
+    for (let y = 0; y < 28; y++) for (let x = 0; x < 28; x++) {
+      let m = 0;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+        const yy = y + dy, xx = x + dx;
+        if (yy < 0 || yy >= 28 || xx < 0 || xx >= 28) continue;
+        const v = src[yy * 28 + xx];
+        if (v > m) m = v;
+      }
+      floatArray[y * 28 + x] = m;
+    }
+  }
+
+  const tensor = new ort.Tensor('float32', floatArray, [1, 1, 28, 28]);
+  const results = await window.__emnistSession.run({ input: tensor });
+  const probs = results.output.data;
+  let bestIdx = 0, lowConf = false;
+  if (allowedLetters && allowedLetters.length) {
+    const allowedSet = new Set(allowedLetters.map(l => l.charCodeAt(0) - 97));
+    let bestAllowed = -1;
+    for (const idx of allowedSet) {
+      if (idx >= 0 && idx < 26 && (bestAllowed < 0 || probs[idx] > probs[bestAllowed])) bestAllowed = idx;
+    }
+    if (bestAllowed >= 0 && probs[bestAllowed] >= HW_MIN_CONF) {
+      bestIdx = bestAllowed;
+    } else if (bestAllowed >= 0) {
+      for (let i = 1; i < 26; i++) if (probs[i] > probs[bestIdx]) bestIdx = i;
+      lowConf = true;
+    }
+  } else {
+    for (let i = 1; i < 26; i++) if (probs[i] > probs[bestIdx]) bestIdx = i;
+  }
+  return { letter: String.fromCharCode(97 + bestIdx), confidence: Math.round(probs[bestIdx] * 100) / 100, lowConf };
+}
+
+function openHWOverlay(charData, idx) {
+  if (l2.pinyinDone.some(p => p.idx === idx)) return;
+  hwCharData = charData;
+  hwCharIdx = idx;
+  hwRecognized = [];
+
+  document.getElementById('hw-target-char').textContent = charData.character;
+  document.getElementById('hwResultArea').innerHTML = '';
+  document.getElementById('hwMsg').textContent = '';
+  document.getElementById('hwMsg').classList.remove('error');
+
+  const overlay = document.getElementById('hw-overlay');
+  overlay.style.display = 'flex';
+
+  const hc = document.getElementById('hwCanvas');
+  const setupHWCanvas = () => {
+    const rect = hc.getBoundingClientRect();
+    if (rect.width === 0 || rect.height === 0) { setTimeout(setupHWCanvas, 50); return; }
+    const dpr = window.devicePixelRatio || 1;
+    hc.width = rect.width * dpr;
+    hc.height = rect.height * dpr;
+    const ctx2d = hc.getContext('2d');
+    ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx2d.lineCap = 'round'; ctx2d.lineJoin = 'round';
+    ctx2d.lineWidth = PEN || Math.max(8, Math.min(rect.width, rect.height) * 0.05);
+    ctx2d.strokeStyle = '#fff';
+  };
+  setupHWCanvas();
+  hc.style.touchAction = 'none';
+
+  const getPos = (e) => {
+    const rect = hc.getBoundingClientRect();
+    return { x: (e.clientX || 0) - rect.left, y: (e.clientY || 0) - rect.top };
+  };
+
+  let hwRecTimer = null;
+  const startDraw = (e) => {
+    hwDrawing = true; hwLastPt = getPos(e);
+    clearTimeout(hwRecTimer);
+  };
+  const moveDraw = (e) => {
+    if (!hwDrawing) return; e.preventDefault();
+    const pt = getPos(e);
+    const ctx2d = hc.getContext('2d');
+    ctx2d.beginPath(); ctx2d.moveTo(hwLastPt.x, hwLastPt.y);
+    ctx2d.lineTo(pt.x, pt.y); ctx2d.stroke();
+    hwLastPt = pt;
+  };
+  const endDraw = () => {
+    hwDrawing = false;
+    clearTimeout(hwRecTimer);
+    hwRecTimer = setTimeout(() => { if (!hwDrawing) doHWRecognize(hc); }, 900);
+  };
+
+  hc.onpointerdown = startDraw;
+  hc.onpointermove = moveDraw;
+  hc.onpointerup = endDraw;
+  hc.onpointercancel = () => { hwDrawing = false; };
+
+  loadCNNModel();
+}
+
+async function doHWRecognize(hc) {
+  const stripTones = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const expected = stripTones(hwCharData.pinyin);
+  const expectedLetters = [...new Set(expected.split(''))];
+  const result = await recognizeLetterCNN(hc, expectedLetters);
+  if (result) { window.__lastHWResult = result; }
+  if (!result) return;
+
+  const ctx2d = hc.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx2d.clearRect(0, 0, hc.width, hc.height);
+
+  const msgEl = document.getElementById('hwMsg');
+  if (result.lowConf || result.confidence < HW_MIN_CONF) {
+    msgEl.textContent = '✍️ 没看清，再写一次';
+    msgEl.classList.add('error');
+    return;
+  }
+
+  hwRecognized.push(result.letter);
+  renderHWResult();
+
+  const guessed = hwRecognized.join('');
+  if (guessed === expected) {
+    msgEl.textContent = '🎉 你真棒！拼音正确！';
+    msgEl.classList.remove('error');
+    playCoin();
+    window.__hwCloseTimer = setTimeout(() => {
+      document.getElementById('hw-overlay').style.display = 'none';
+      l2.pinyinDone.push({ idx: hwCharIdx, char: hwCharData, pinyin: guessed });
+    }, 1000);
+  } else if (guessed.length >= expected.length || !expected.startsWith(guessed)) {
+    msgEl.textContent = `❌ 第${guessed.length}个字母不对，点字母上的✕重写`;
+    msgEl.classList.add('error');
+  } else {
+    msgEl.textContent = '';
+    msgEl.classList.remove('error');
+  }
+}
+
+function renderHWResult() {
+  const area = document.getElementById('hwResultArea');
+  area.innerHTML = '';
+  hwRecognized.forEach((letter, i) => {
+    const span = document.createElement('span');
+    span.className = 'hw-letter';
+    span.innerHTML = `${letter} <span class="hw-del" data-idx="${i}">✕</span>`;
+    span.querySelector('.hw-del').addEventListener('click', () => {
+      hwRecognized.splice(i, 1);
+      renderHWResult();
+    });
+    area.appendChild(span);
+  });
+}
+
+function playCoin() {}
+
+document.getElementById('hwCloseBtn').addEventListener('click', () => {
+  document.getElementById('hw-overlay').style.display = 'none';
+});
+// ==================== 同步自 index.html 结束 ====================
+
+const report = document.getElementById('batchReport');
+const hc = document.getElementById('hwCanvas');
+function setReport(t) { report.textContent = t; }
+
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+function firePointer(type, x, y) {
+  const r = hc.getBoundingClientRect();
+  hc.dispatchEvent(new PointerEvent(type, {
+    bubbles: true, cancelable: true, pointerId: 1, pointerType: 'touch', isPrimary: true,
+    clientX: r.left + x, clientY: r.top + y, view: window,
+  }));
+}
+
+async function runBatch() {
+  const params = new URLSearchParams(location.search);
+  const samplesPer = parseInt(params.get('samples') || '12', 10);
+  const only = params.get('letters'); // 可指定字母子集，如 letters=ail
+  let data = await (await fetch('emnist-strokes.json')).json();
+  if (only) data = data.filter(d => only.includes(d.letter));
+  const samples = [];
+  for (const letter of 'abcdefghijklmnopqrstuvwxyz') {
+    if (only && !only.includes(letter)) continue;
+    samples.push(...data.filter(d => d.letter === letter).slice(0, samplesPer));
+  }
+  setReport('模型加载中… (' + MODEL_URL + ')');
+  await loadCNNModel();
+  if (!window.__emnistSession) { setReport('❌ 模型加载失败'); return; }
+
+  openHWOverlay({ character: '测', pinyin: 'a' }, -1);
+  await sleep(120);
+  const rect = hc.getBoundingClientRect();
+  const W = rect.width, H = rect.height;
+  const dpr = window.devicePixelRatio || 1;
+  const ctx2d = hc.getContext('2d');
+
+  const results = [];
+  for (let si = 0; si < samples.length; si++) {
+    const smp = samples[si];
+    hwRecognized = [];
+    if (window.__hwCloseTimer) { clearTimeout(window.__hwCloseTimer); window.__hwCloseTimer = null; }
+    hwCharData = { character: smp.letter, pinyin: smp.letter };
+    document.getElementById('hw-overlay').style.display = 'flex';
+    ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx2d.clearRect(0, 0, hc.width, hc.height);
+    document.getElementById('hwMsg').textContent = '';
+    document.getElementById('hwMsg').classList.remove('error');
+
+    let minX = 99, minY = 99, maxX = -1, maxY = -1;
+    for (const s of smp.strokes) for (const [x, y] of s) {
+      if (x < minX) minX = x; if (x > maxX) maxX = x;
+      if (y < minY) minY = y; if (y > maxY) maxY = y;
+    }
+    const bw = Math.max(1, maxX - minX + 1), bh = Math.max(1, maxY - minY + 1);
+    const scale = 150 / Math.max(bw, bh);
+    const offX = (W - bw * scale) / 2, offY = (H - bh * scale) / 2;
+    const px = (x) => offX + (x - minX) * scale;
+    const py = (y) => offY + (y - minY) * scale;
+
+    for (const stroke of smp.strokes) {
+      if (!stroke.length) continue;
+      firePointer('pointerdown', px(stroke[0][0]), py(stroke[0][1]));
+      if (stroke.length === 1) {
+        firePointer('pointermove', px(stroke[0][0]) + 0.4, py(stroke[0][1]) + 0.4);
+      } else {
+        for (let i = 1; i < stroke.length; i++) {
+          firePointer('pointermove', px(stroke[i][0]), py(stroke[i][1]));
+          await sleep(6);
+        }
+      }
+      firePointer('pointerup', px(stroke[stroke.length - 1][0]), py(stroke[stroke.length - 1][1]));
+    }
+    await sleep(1200);
+
+    const got = hwRecognized.join('');
+    const r = window.__lastHWResult;
+    results.push({
+      exp: smp.letter, got: got, conf: r ? r.confidence : -1,
+      low: r ? r.lowConf : false, w: r ? r.letter : '', msg: document.getElementById('hwMsg').textContent,
+    });
+    if ((si + 1) % 52 === 0) {
+      setReport(`进行中… ${si + 1}/${samples.length}`);
+      await sleep(0);
+    }
+  }
+
+  const perLetter = {};
+  let correct = 0;
+  const confusions = {};
+  for (const r of results) {
+    if (!perLetter[r.exp]) perLetter[r.exp] = { ok: 0, total: 0, wrongs: {} };
+    perLetter[r.exp].total++;
+    const hit = r.got === r.exp;
+    if (hit) { correct++; perLetter[r.exp].ok++; }
+    else {
+      const w = r.got || '(拒识)';
+      perLetter[r.exp].wrongs[w] = (perLetter[r.exp].wrongs[w] || 0) + 1;
+      confusions[`${r.exp}→${w}`] = (confusions[`${r.exp}→${w}`] || 0) + 1;
+    }
+  }
+  const acc = correct / results.length;
+  let out = `模型: ${MODEL_URL}\n样本数: ${results.length}  总准确率: ${(acc * 100).toFixed(1)}%\n\n`;
+  out += '字母 | 正确/总数 | 误识\n';
+  for (const letter of 'abcdefghijklmnopqrstuvwxyz') {
+    const p = perLetter[letter];
+    if (!p) continue;
+    const wrongs = Object.entries(p.wrongs).map(([k, v]) => `${k}×${v}`).join(' ') || '—';
+    out += `${letter} | ${p.ok}/${p.total} | ${wrongs}\n`;
+  }
+  const lowConfCount = results.filter(r => r.low).length;
+  const rejectedCount = results.filter(r => r.got === '').length;
+  out += `\n拒识次数: ${rejectedCount} (${(rejectedCount / results.length * 100).toFixed(1)}%)  低置信次数: ${lowConfCount}\n`;
+  if (params.get('dump') === '1') {
+    console.log('[batch-detail]', JSON.stringify(results.map(r => ({ e: r.exp, g: r.got, c: r.conf, l: r.low, w: r.w, m: r.msg }))));
+  }
+  setReport(out);
+  console.log('[batch-result]', JSON.stringify({
+    model: MODEL_URL, samples: results.length, acc: Math.round(acc * 10000) / 10000,
+    perLetter: Object.fromEntries(Object.entries(perLetter).map(([k, v]) => [k, { ok: v.ok, total: v.total }])),
+    topConfusions: Object.entries(confusions).sort((a, b) => b[1] - a[1]).slice(0, 15),
+    rejected: rejectedCount, lowConf: lowConfCount,
+  }));
+}
+
+if (new URLSearchParams(location.search).get('mode') !== 'manual') {
+  runBatch();
+}
+</script>
+</body>
+</html>
