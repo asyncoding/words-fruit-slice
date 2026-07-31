@@ -959,9 +959,9 @@ async function doHWRecognize(hc) {
   ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx2d.clearRect(0, 0, hc.width, hc.height);
 
-  // 置信度拒识：置信度太低则不采纳该字母，提示重写（已识别字母保留）
+  // 置信度拒识：候选集内无够信心答案(lowConf) 或 置信度过低 → 不采纳，提示重写（已识别字母保留）
   const msgEl = document.getElementById('hwMsg');
-  if (result.confidence < HW_MIN_CONF) {
+  if (result.lowConf || result.confidence < HW_MIN_CONF) {
     msgEl.textContent = '✍️ 没看清，再写一次';
     msgEl.classList.add('error');
     return;
