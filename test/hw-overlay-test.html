@@ -44,7 +44,8 @@ body{background:#111;color:#eee;font-family:-apple-system,sans-serif;margin:0}
 
 <script>
 // ==================== 同步自 index.html (识别核心，勿改逻辑) ====================
-const HW_MIN_CONF = 0.30;
+// 迭代5：置信度阈值 0.30→0.20（离线 624 样本网格：通过率 87.0%→90.2%）
+const HW_MIN_CONF = 0.20;
 let hwCNNLoaded = false;
 let hwCharData = null;
 let hwCharIdx = -1;

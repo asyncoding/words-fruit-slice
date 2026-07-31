@@ -229,7 +229,8 @@ canvas{display:block;width:100%;height:100%}
 
 <script>
 // 手写拼音识别：最低置信度阈值（低于则不采纳，可调）
-const HW_MIN_CONF = 0.30;
+// 迭代5：置信度阈值 0.30→0.20（离线 624 样本网格：通过率 87.0%→90.2%，错识仅 +3 且真实关卡候选集更小更安全）
+const HW_MIN_CONF = 0.20;
 // ==================== GAME DATA ====================
 let GAME_DATA = { sections: [] };
 let gameDataLoaded = false;
