@@ -80,6 +80,7 @@ canvas{display:block;width:100%;height:100%}
 #hw-overlay .hw-canvas-wrap{flex:1;display:flex;position:relative;touch-action:none}
 #hw-overlay .hw-canvas-wrap canvas{flex:1;touch-action:none;display:block;background:#0a0a1a}
 #hw-overlay .hw-msg{text-align:center;padding:10px;font-size:16px;color:#06d6a0;font-weight:bold}
+#hw-overlay .hw-msg.error{color:#ff6b6b}
 
 /* ===== Word Matching ===== */
 #l2-word-section{display:none}
@@ -225,6 +226,8 @@ canvas{display:block;width:100%;height:100%}
 </div>
 
 <script>
+// 手写拼音识别：最低置信度阈值（低于则不采纳，可调）
+const HW_MIN_CONF = 0.30;
 // ==================== GAME DATA ====================
 let GAME_DATA = { sections: [] };
 let gameDataLoaded = false;
@@ -815,7 +818,7 @@ async function loadCNNModel() {
   } catch(e) { console.warn('CNN model load failed:', e); }
 }
 
-async function recognizeLetterCNN(canvasEl) {
+async function recognizeLetterCNN(canvasEl, allowedLetters) {
   if (!window.__emnistSession) return null;
   const ctx2d = canvasEl.getContext('2d');
   const w = canvasEl.width, h = canvasEl.height;
@@ -859,9 +862,25 @@ async function recognizeLetterCNN(canvasEl) {
   const tensor = new ort.Tensor('float32', floatArray, [1, 1, 28, 28]);
   const results = await window.__emnistSession.run({ input: tensor });
   const probs = results.output.data;
-  let bestIdx = 0;
-  for (let i = 1; i < 26; i++) if (probs[i] > probs[bestIdx]) bestIdx = i;
-  return { letter: String.fromCharCode(97 + bestIdx), confidence: Math.round(probs[bestIdx] * 100) / 100 };
+  let bestIdx = 0, lowConf = false;
+  if (allowedLetters && allowedLetters.length) {
+    // 候选集约束：只在期望拼音去重后的字母集合内取最大概率
+    const allowedSet = new Set(allowedLetters.map(l => l.charCodeAt(0) - 97));
+    let bestAllowed = -1;
+    for (const idx of allowedSet) {
+      if (idx >= 0 && idx < 26 && (bestAllowed < 0 || probs[idx] > probs[bestAllowed])) bestAllowed = idx;
+    }
+    if (bestAllowed >= 0 && probs[bestAllowed] >= HW_MIN_CONF) {
+      bestIdx = bestAllowed;
+    } else if (bestAllowed >= 0) {
+      // 允许集合内概率过低 → 退回全 26 类全局最大概率（保底），标记低置信
+      for (let i = 1; i < 26; i++) if (probs[i] > probs[bestIdx]) bestIdx = i;
+      lowConf = true;
+    }
+  } else {
+    for (let i = 1; i < 26; i++) if (probs[i] > probs[bestIdx]) bestIdx = i;
+  }
+  return { letter: String.fromCharCode(97 + bestIdx), confidence: Math.round(probs[bestIdx] * 100) / 100, lowConf };
 }
 
 function openHWOverlay(charData, idx) {
@@ -873,6 +892,7 @@ function openHWOverlay(charData, idx) {
   document.getElementById('hw-target-char').textContent = charData.character;
   document.getElementById('hwResultArea').innerHTML = '';
   document.getElementById('hwMsg').textContent = '';
+  document.getElementById('hwMsg').classList.remove('error');
 
   const overlay = document.getElementById('hw-overlay');
   overlay.style.display = 'flex';
@@ -924,24 +944,35 @@ function openHWOverlay(charData, idx) {
 }
 
 async function doHWRecognize(hc) {
-  const result = await recognizeLetterCNN(hc);
+  // 期望拼音去声调后去重，作为候选集约束
+  const stripTones = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const expected = stripTones(hwCharData.pinyin);
+  const expectedLetters = [...new Set(expected.split(''))];
+  const result = await recognizeLetterCNN(hc, expectedLetters);
   if (!result) return;
 
-  hwRecognized.push(result.letter);
-  renderHWResult();
-
-  // Clear canvas
+  // 清空画布（两种结果路径都要清）
   const ctx2d = hc.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
   ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx2d.clearRect(0, 0, hc.width, hc.height);
 
+  // 置信度拒识：置信度太低则不采纳该字母，提示重写（已识别字母保留）
+  const msgEl = document.getElementById('hwMsg');
+  if (result.confidence < HW_MIN_CONF) {
+    msgEl.textContent = '✍️ 没看清，再写一次';
+    msgEl.classList.add('error');
+    return;
+  }
+
+  hwRecognized.push(result.letter);
+  renderHWResult();
+
   // Check if recognized pinyin matches
   const guessed = hwRecognized.join('');
-  const stripTones = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  const expected = stripTones(hwCharData.pinyin);
   if (guessed === expected) {
-    document.getElementById('hwMsg').textContent = '🎉 你真棒！拼音正确！';
+    msgEl.textContent = '🎉 你真棒！拼音正确！';
+    msgEl.classList.remove('error');
     playCoin();
     setTimeout(() => {
       document.getElementById('hw-overlay').style.display = 'none';
@@ -949,6 +980,14 @@ async function doHWRecognize(hc) {
       renderL2Chars();
       updateL2Coins();
     }, 1000);
+  } else if (guessed.length >= expected.length || !expected.startsWith(guessed)) {
+    // 前缀实时反馈：当前串不是期望前缀（或已写满仍不相等）→ 提示删除重写
+    msgEl.textContent = `❌ 第${guessed.length}个字母不对，点字母上的✕重写`;
+    msgEl.classList.add('error');
+  } else {
+    // 前缀正确：清掉之前错误提示
+    msgEl.textContent = '';
+    msgEl.classList.remove('error');
   }
 }
 
