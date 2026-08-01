@@ -252,7 +252,7 @@ canvas{display:block;width:100%;height:100%}
     <button class="hw-close-btn" id="hwCloseBtn">✕ 关闭</button>
   </div>
   <div class="hw-pinyin-line" id="hwPinyinLine"></div>
-  <div class="hw-status">在虚线里面写拼音，写进去才算数哦</div>
+  <div class="hw-status">在虚线里写「<span id="hwTraceLetter" style="color:#ffd700">u</span>」，写对自动到下一个字母</div>
   <div class="hw-canvas-wrap">
     <canvas id="hwCanvas"></canvas>
   </div>
@@ -895,7 +895,9 @@ let hwCharIdx = -1;
 let hwDrawing = false;
 let hwLastPt = null;
 let hwTraceSeq = [];      // 当前拼音字母序列（含 ü，如 chūn → c,h,ü,n）
-let hwWordLayout = null;    // 本蒙层拼音布局 {paths, regionPts, outlinePts, s2, offY}
+let hwTraceIdx = 0;       // 当前写到第几个字母（0 起）
+let hwTraceKey = '';      // 当前字母轮廓 key（如 'ü'）
+let hwWordLayout = null;    // 当前字母布局 {paths, regionPts, outlinePts, s2, offY}
 let hwInkPts = [];        // 本次笔迹点（画布坐标，4px 去重）
 let hwRecTimer = null;    // 停笔判定定时器（全局，开新蒙层时取消旧判定）
 let hwTraceSettled = false;  // 本蒙层拼音已全部完成（防完成动画期间重复结算）
@@ -918,7 +920,6 @@ const TRACE_INK_RADIUS = 14;     // 轮廓点判定容差（px）
 const TRACE_EDGE_WIDTH = 26;     // isPointInStroke 贴线带宽度（px，≈ 笔宽 20 + 容差）
 const TRACE_REGION_STEP = 8;     // 字母内部采样网格间距（px）
 const TRACE_OUTLINE_STEP = 3;    // 轮廓采样点间距（px）
-const TRACE_LETTER_GAP = 16;     // 拼音字母间距（px）
 
 // SVG path data → 按步长采样点集（M/L/Q/C/Z，opentype 输出格式）
 function pathDataToPts(d, step) {
@@ -988,41 +989,30 @@ function buildTraceHash(pts, cell) {
   };
 }
 
-// 布局整个拼音：字母并排、统一缩放，生成带画布坐标的 Path2D + 内部采样点 + 轮廓采样点
+// 布局当前字母：单字母放大居中，生成带画布坐标的 Path2D + 内部采样点 + 轮廓采样点
 function buildWordLayout() {
   const hc = document.getElementById('hwCanvas');
   const ctx2d = hc.getContext('2d');
   ctx2d.setTransform(1, 0, 0, 1, 0, 0);   // 采样用单位变换（路径坐标已烘焙）
   const rect = hc.getBoundingClientRect();
-  const keys = hwTraceSeq.map(k => PINYIN_OUTLINES[k] || PINYIN_OUTLINES[k.toLowerCase()] || PINYIN_OUTLINES.a);
-  const widths = keys.map(o => o.bbox[2] - o.bbox[0]);
-  const totalW = widths.reduce((a, b) => a + b, 0) + TRACE_LETTER_GAP * (keys.length - 1);
-  const s2 = Math.min(1, (rect.width - 28) / totalW);
-  let yTop = Infinity, yBot = -Infinity;
-  for (const o of keys) {
-    yTop = Math.min(yTop, o.bbox[1]);
-    yBot = Math.max(yBot, o.bbox[3]);
-  }
-  const offY = (rect.height - (yBot - yTop) * s2) / 2 - yTop * s2;
-  let ox = (rect.width - totalW * s2) / 2;
-  const paths = [];
-  const base = keys.map(o => new Path2D(o.d));
+  const o = PINYIN_OUTLINES[hwTraceKey] || PINYIN_OUTLINES[hwTraceKey.toLowerCase()] || PINYIN_OUTLINES.a;
+  const bw = o.bbox[2] - o.bbox[0];
+  const bh = o.bbox[3] - o.bbox[1];
+  // 单字母放大占满画布（宽留 40px、高留 80px），上限 2.4 倍
+  const s2 = Math.min((rect.width - 40) / bw, (rect.height - 80) / bh, 2.4);
+  const ox = (rect.width - bw * s2) / 2;
+  const offY = (rect.height - bh * s2) / 2 - o.bbox[1] * s2;
+  const p = new Path2D();
+  p.addPath(new Path2D(o.d), new DOMMatrix([s2, 0, 0, s2, ox, offY]));
   const regionPts = [], outlinePts = [];
-  for (let i = 0; i < keys.length; i++) {
-    const p = new Path2D();
-    p.addPath(base[i], new DOMMatrix([s2, 0, 0, s2, ox, offY]));
-    paths.push(p);
-    const bb = keys[i].bbox;
-    const x0 = bb[0] * s2 + ox, x1 = bb[2] * s2 + ox, y0 = bb[1] * s2 + offY, y1 = bb[3] * s2 + offY;
-    for (let y = y0; y <= y1; y += TRACE_REGION_STEP) {
-      for (let x = x0; x <= x1; x += TRACE_REGION_STEP) {
-        if (ctx2d.isPointInPath(p, x, y, 'nonzero')) regionPts.push([x, y]);
-      }
+  const x0 = o.bbox[0] * s2 + ox, x1 = o.bbox[2] * s2 + ox, y0 = o.bbox[1] * s2 + offY, y1 = o.bbox[3] * s2 + offY;
+  for (let y = y0; y <= y1; y += TRACE_REGION_STEP) {
+    for (let x = x0; x <= x1; x += TRACE_REGION_STEP) {
+      if (ctx2d.isPointInPath(p, x, y, 'nonzero')) regionPts.push([x, y]);
     }
-    for (const [x, y] of pathDataToPts(keys[i].d, TRACE_OUTLINE_STEP)) outlinePts.push([x * s2 + ox, y * s2 + offY]);
-    ox += (widths[i] + TRACE_LETTER_GAP) * s2;
   }
-  hwWordLayout = { paths, regionPts, outlinePts, s2, offY };
+  for (const [x, y] of pathDataToPts(o.d, TRACE_OUTLINE_STEP)) outlinePts.push([x * s2 + ox, y * s2 + offY]);
+  hwWordLayout = { paths: [p], regionPts, outlinePts, s2, offY };
 }
 
 // 渲染四线三格 + 挖空虚线字母（清掉上一轮墨迹）
@@ -1107,22 +1097,30 @@ function judgeTrace() {
   }
 }
 
-// 整个拼音一次判定通过 → 全部点亮 + 结算
+// 当前字母通过 → 点亮上方拼音对应字母 → 下一个字母；全部通过 → 结算
 function traceNext(passed) {
   const msgEl = document.getElementById('hwMsg');
   hwInkPts = [];
-  if (!passed || hwTraceSettled) return;
-  hwTraceSettled = true;   // 已完成结算态：防完成动画期间再描导致重复结算
+  if (!passed) return;
   msgEl.classList.remove('error');
-  for (let i = 0; i < hwTraceSeq.length; i++) lightPinyinLetter(i);
-  msgEl.textContent = '🎉 你真棒！拼音写完了！';
-  playCoin();
-  setTimeout(() => {
-    document.getElementById('hw-overlay').style.display = 'none';
-    l2.pinyinDone.push({ idx: hwCharIdx, char: hwCharData, pinyin: hwCharData.pinyin });
-    renderL2Chars();
-    updateL2Coins();
-  }, 1000);
+  lightPinyinLetter(hwTraceIdx);
+  hwTraceIdx++;
+  if (hwTraceIdx >= hwTraceSeq.length) {
+    hwTraceSettled = true;   // 已完成结算态：防完成动画期间再描导致重复结算
+    msgEl.textContent = '🎉 你真棒！拼音写完了！';
+    playCoin();
+    setTimeout(() => {
+      document.getElementById('hw-overlay').style.display = 'none';
+      l2.pinyinDone.push({ idx: hwCharIdx, char: hwCharData, pinyin: hwCharData.pinyin });
+      renderL2Chars();
+      updateL2Coins();
+    }, 1000);
+    return;
+  }
+  hwTraceKey = hwTraceSeq[hwTraceIdx];
+  document.getElementById('hwTraceLetter').textContent = hwTraceKey === 'ü' ? 'ü' : hwTraceKey;
+  renderTraceWord();
+  msgEl.textContent = '👍 很好！继续写「' + (hwTraceKey === 'ü' ? 'ü' : hwTraceKey) + '」';
 }
 
 // ---- 蒙层打开 / 绘制 ----
@@ -1149,6 +1147,9 @@ function openHWOverlay(charData, idx) {
     line.appendChild(span);
     hwTraceSeq.push(TONE_TO_KEY[ch] !== undefined ? TONE_TO_KEY[ch] : ch);
   }
+  hwTraceIdx = 0;
+  hwTraceKey = hwTraceSeq[0] || 'a';
+  document.getElementById('hwTraceLetter').textContent = hwTraceKey === 'ü' ? 'ü' : hwTraceKey;
   hwTraceSettled = false;
   hwWordLayout = null;
 

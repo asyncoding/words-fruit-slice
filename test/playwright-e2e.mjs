@@ -1,6 +1,6 @@
-// Playwright 验收脚本（拼音描红 v3：挖空 + 虚线边缘 + 整字一次判定）：
-// 1) 真实游戏流程端到端：开始游戏 → L1 切瓜 → L2 → 手写蒙层 → 写字进虚线 → 整字点亮 → 🎉 → 自动关闭
-// 2) 标准书写通过率：蛇形填充每个字母内部（27 字母 × 5 遍）→ 必须 ≥99%
+// Playwright 验收脚本（拼音描红 v3：挖空 + 虚线边缘 + 逐字母判定）：
+// 1) 真实游戏流程端到端：开始游戏 → L1 切瓜 → L2 → 手写蒙层 → 逐字母写字进虚线 → 上方拼音对应字母点亮 → 🎉 → 自动关闭
+// 2) 标准书写通过率：蛇形填充字母内部（27 字母 × 5 遍）→ 必须 ≥99%
 // 3) 歪写拒绝率：字母上方乱线 / 中部横穿线 → 必须 100% 被要求重写
 // 用法: node test/playwright-e2e.mjs [port=8080]
 import { chromium } from '/Users/thamelsu/Documents/Code/grade1-practice/game/node_modules/playwright/index.mjs';
@@ -124,6 +124,8 @@ async function openLetterOverlay(L) {
 async function readTraceState() {
   return page.evaluate(() => ({
     seqLen: hwTraceSeq.length,
+    idx: hwTraceIdx,
+    key: hwTraceKey,
     settled: hwTraceSettled,
     lit: document.querySelectorAll('#hwPinyinLine .py-letter.lit').length,
     msg: document.getElementById('hwMsg').textContent,
@@ -181,7 +183,7 @@ console.log(`正确拒绝: ${reject}/${rejTotal} (${(reject / rejTotal * 100).to
 if (rejectDetail.length) console.log('误通过明细:', rejectDetail.join(' | '));
 results.push(['歪写拒绝率', `${(reject / rejTotal * 100).toFixed(1)}% (${reject}/${rejTotal})`, wrongAccept === 0 ? 'PASS' : 'FAIL']);
 
-// ---------- 5. 端到端拼音流程（整字写进虚线 → 全部点亮 → 🎉 → 自动关闭） ----------
+// ---------- 5. 端到端拼音流程（逐字母写 → 对应字母点亮 → 全部完成 → 🎉 → 自动关闭） ----------
 await wait(800);  // 等上一轮判定落定
 await page.evaluate((idx) => {
   openHWOverlay({ character: '吹', pinyin: 'chuī' }, idx);
@@ -189,13 +191,22 @@ await page.evaluate((idx) => {
 }, -1 - batchSeq++);
 await wait(400);
 const e2eTarget = await page.evaluate(() => document.getElementById('hw-target-char').textContent);
-console.log(`\n===== 端到端拼音流程（目标字: ${e2eTarget}）=====`);
 const e2eSeq = await page.evaluate(() => hwTraceSeq.join(''));
-await drawWordFill();
-await wait(2400);  // 700ms 判定 + 1000ms 完成动画 + 关闭
-const finalSt = await readTraceState();
+console.log(`\n===== 端到端拼音流程（目标字: ${e2eTarget}）=====`);
+let e2eOk = true;
+let finalSt = null;
+for (let i = 0; i < 4; i++) {
+  const st0 = await page.evaluate(() => ({ key: hwTraceKey, idx: hwTraceIdx }));
+  await drawWordFill();
+  await wait(1100);   // 700ms 判定
+  finalSt = await readTraceState();
+  console.log(`  第${i + 1}个字母 (${st0.key}): idx=${finalSt.idx} lit=${finalSt.lit} settled=${finalSt.settled} msg="${finalSt.msg}"`);
+  if (finalSt.settled && i < 3) { e2eOk = false; break; }
+  if (!finalSt.settled && finalSt.lit !== i + 1) { e2eOk = false; break; }
+}
+await wait(1500);  // 完成动画 1000ms 后关闭
 const overlayClosed = await page.evaluate(() => document.getElementById('hw-overlay').style.display);
-const e2ePass = e2eSeq === 'chui' && finalSt.settled && finalSt.lit === 4 && overlayClosed === 'none';
+const e2ePass = e2eOk && finalSt && finalSt.settled && finalSt.lit === 4 && overlayClosed === 'none';
 console.log(`端到端 '${e2eTarget}'（chuī）拼音完成: ${e2ePass ? 'PASS' : 'FAIL'}（seq=${e2eSeq}, 点亮=${finalSt.lit}, 蒙层=${overlayClosed}）`);
 results.push(['端到端拼音流程', e2ePass ? 'PASS (4/4 点亮 + 完成)' : 'FAIL']);
 

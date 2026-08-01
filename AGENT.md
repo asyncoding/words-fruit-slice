@@ -42,20 +42,20 @@
 | `start.sh` | 本地预览：`./start.sh [port]`（默认 3000） |
 | ~~tools/train/、vendor/ort/、emnist_cnn.onnx、test/hw-overlay-test.html、test/emnist-strokes.json~~ | CNN 识别遗留物，**玩法已不使用**，勿删勿引 |
 
-### 描红判定流程（v3：挖空 + 虚线边缘 + 整字一次判定，全部本地，无识别、无模型）
+### 描红判定流程（v3：挖空 + 虚线边缘 + 逐字母判定，全部本地，无识别、无模型）
 
 ```
 用户看"挖空"字母（浅色填充 + 金色虚线轮廓）在虚线内写字（#hwCanvas，pointer 事件，墨迹存 hwInkPts）
 → 停笔 700ms（全局 hwRecTimer）→ judgeTrace()
-  ├─ 1. 布局（buildWordLayout）：整个拼音所有字母并排（TRACE_LETTER_GAP=16px），统一缩放 s2（超宽 6 字母压到 ~0.88）
-  │    每个字母：Path2D（pinyin-outlines.js 的 d，坐标已归一化）+ addPath 烘焙到画布坐标（DOMMatrix）
+  ├─ 1. 布局（buildWordLayout）：当前字母单字母放大居中（s2 = min((w-40)/bw, (h-80)/bh, 2.4)）
+  │    当前字母 Path2D（pinyin-outlines.js 的 d，坐标已归一化）+ addPath 烘焙到画布坐标（DOMMatrix）
   │    → 内部网格采样点 regionPts（TRACE_REGION_STEP=8px，isPointInPath 判定）→ 轮廓采样点 outlinePts（pathDataToPts，步长 3px）
-  ├─ 2. 整字一次判定（三条件，任一不达标 → 提示「✍️ 没写准（虚线里只写了 X%），再写一次」+ 清墨迹重画）：
-  │    ├─ 内部占比 rgnCover：墨迹落在任一字母虚线内部（isPointInPath nonzero）≥ TRACE_REGION(0.60)——用户口径
+  ├─ 2. 单字母判定（三条件，任一不达标 → 提示「✍️ 没写准（虚线里只写了 X%），再写一次」+ 清墨迹重画）：
+  │    ├─ 内部占比 rgnCover：墨迹落在字母虚线内部（isPointInPath nonzero）≥ TRACE_REGION(0.60)——用户口径
   │    ├─ 贴带占比 edgeAdh：墨迹贴近虚线边缘（isPointInStroke，线宽 TRACE_EDGE_WIDTH=26px）≥ TRACE_EDGE(0.25)——防乱涂
   │    └─ 轮廓覆盖 outCover：虚线轮廓点被墨迹覆盖（距墨迹 ≤ TRACE_INK_RADIUS=14px）≥ TRACE_OUTLINE_COVER(0.40)——防只写局部
-  ├─ 3. 通过 → 全部字母点亮（.lit）→ 「🎉 你真棒！拼音写完了！」+ playCoin
-  └─ 4. 完成 → 1s 后自动关闭蒙层 → l2.pinyinDone.push({idx,char,pinyin}) → renderL2Chars + updateL2Coins
+  ├─ 3. 通过 → 上方拼音行对应字母点亮（.lit）→ 提示「👍 很好！继续写「x」」→ 下一字母
+  └─ 4. 全部通过 → 「🎉 你真棒！拼音写完了！」+ playCoin → 1s 后自动关闭蒙层 → l2.pinyinDone.push({idx,char,pinyin}) → renderL2Chars + updateL2Coins
 ```
 
 **字母轮廓数据（pinyin-outlines.js → `window.PINYIN_OUTLINES`）**：26 字母 + 'ü' 共 27 个 **Arial 真实字形轮廓**，`tools/extract-outlines.mjs` 离线提取（opentype.js 读系统 Arial.ttf，一次性工具，勿手改数据）。坐标已归一化到四线三格：基线 y=130、x-height 顶 y=65、升部 ~40、降部 ~156；`d` 为可直接 `new Path2D(d)` 的 SVG path data。渲染 = 字母内部浅色填充（rgba(255,255,255,.08)，挖空感）+ 金色虚线轮廓（dash [9,8]）+ 四线三格参考线。
@@ -70,10 +70,10 @@
 | `TONE_TO_KEY` | ~800 | 声调字符 → 轮廓 key 映射（含 ü 系） |
 | `pathDataToPts()` | ~810 | SVG path data → 步长采样点集（M/L/Q/C/Z 三次贝塞尔摊平） |
 | `buildTraceHash()` | ~850 | 点集 32px 空间哈希（3×3 邻居桶查询） |
-| `buildWordLayout()` | ~890 | 整拼音布局：并排缩放 + Path2D 烘焙 + regionPts/outlinePts 采样（**采样前必须 setTransform 单位变换**） |
+| `buildWordLayout()` | ~890 | 当前字母布局：单字母放大居中 + Path2D 烘焙 + regionPts/outlinePts 采样（**采样前必须 setTransform 单位变换**） |
 | `renderTraceWord()` | ~920 | 四线三格 + 挖空填充 + 金色虚线轮廓绘制（清上一轮墨迹） |
-| `judgeTrace()` | ~950 | 整字一次判定：内部占比≥0.60 && 贴带≥0.25 && 轮廓覆盖≥0.40（isPointInPath/isPointInStroke） |
-| `traceNext()` | ~990 | 整字通过 → 全部点亮 + 结算（playCoin + 1s 关闭 + pinyinDone.push） |
+| `judgeTrace()` | ~950 | 单字母判定：内部占比≥0.60 && 贴带≥0.25 && 轮廓覆盖≥0.40（isPointInPath/isPointInStroke） |
+| `traceNext()` | ~990 | 字母通过 → 点亮上方拼音对应字母 → 下一字母；全部通过 → 结算（playCoin + 1s 关闭 + pinyinDone.push） |
 | `openHWOverlay()` | ~1010 | 打开蒙层：解析拼音行（#hwPinyinLine 逐字符 span）、清定时器/墨迹/结算态 |
 | `initSectionPicker()` | ~1280 | 首页课文按钮渲染（含完成金色边框） |
 | `loadGameData()` / `applyGameData()` | ~230 | 数据双通道加载（fetch → script 兜底） |
@@ -132,12 +132,13 @@
 2. **埋点验收**：playwright-i8.mjs 用 `page.addInitScript(() => window._czc = [])` 注入缓冲数组（必须在 goto 前注入，否则 session_start 等加载期事件进旧数组被覆盖丢失）；track() 在 `window._czc` 缺失时自行创建数组
 3. **认识字弹窗时机**：showComplete 中合并 knownChars 后弹窗（z-index 120 > 完成页 80 < 蒙层 200）；againBtn/exitBtn 需同时关掉弹窗层
 
-**迭代9（拼音描红 v3：挖空 + 虚线边缘 + 整字一次判定）要点**：
+**迭代9（拼音描红 v3：挖空 + 虚线边缘 + 逐字母判定）要点**：
 1. **玩法变更**（用户确认）：旧"沿虚线描骨架"被否（视觉不对），改为**挖空 + 虚线边缘**：字母内部浅色填充（挖空感）+ 金色虚线轮廓；用户写拼音，手写内容**在虚线内 ≥60%** 即通过（用户口径）
-2. **轮廓数据源**：Arial 真实字形（tools/extract-outlines.mjs + opentype.js 离线提取，一次性工具），27 字母 d + bbox 归一化到四线三格（基线 130/x-height 65），输出 pinyin-outlines.js（13KB）经 script 标签注入 window.PINYIN_OUTLINES；业界对照：贝乐虎拼音等儿童 App 均为"描红字帖式（浅影/挖空 + 宽松判定）"，与方案一致
-3. **整字一次判定三条件**：内部占比（isPointInPath nonzero）≥0.60 + 贴带占比（isPointInStroke 26px 带）≥0.25 + 轮廓覆盖（轮廓点距墨迹 ≤14px）≥0.40；不再逐字母推进，一次写完整个拼音全点亮
-4. **判定坑**：Path2D 烘焙（addPath+DOMMatrix）后判定必须单位变换（isPointInPath 会应用 CTM）；isPointInStroke 前必须 setLineDash([])（dash 影响命中）；opentype 输出 d 必须归一化坐标（曾漏掉导致采样全错位）
-5. **验收**：标准书写 135 次（蛇形填充 regionPts）100%、歪写 54 次（上方乱线/中部横穿）100% 拒绝、端到端 chuī 4/4 点亮、i8 回归 13 项全过；Playwright 蛇形走笔 = 区域内部采样点按列 zigzag
+2. **判定粒度**（用户确认）：**逐字母判定**——先展示第一个字母的虚线描红，写对 → 上方拼音对应字母点亮 → 显示第二个字母，以此类推；全部字母正确 = 拼音写对（整字一次判定已废弃）
+3. **轮廓数据源**：Arial 真实字形（tools/extract-outlines.mjs + opentype.js 离线提取，一次性工具），27 字母 d + bbox 归一化到四线三格（基线 130/x-height 65），输出 pinyin-outlines.js（13KB）经 script 标签注入 window.PINYIN_OUTLINES；业界对照：贝乐虎拼音等儿童 App 均为"描红字帖式（浅影/挖空 + 宽松判定）"，与方案一致
+4. **单字母判定三条件**：内部占比（isPointInPath nonzero）≥0.60 + 贴带占比（isPointInStroke 26px 带）≥0.25 + 轮廓覆盖（轮廓点距墨迹 ≤14px）≥0.40；单字母放大居中（s2 上限 2.4）
+5. **判定坑**：Path2D 烘焙（addPath+DOMMatrix）后判定必须单位变换（isPointInPath 会应用 CTM）；isPointInStroke 前必须 setLineDash([])（dash 影响命中）；opentype 输出 d 必须归一化坐标（曾漏掉导致采样全错位）
+6. **验收**：标准书写 135 次（蛇形填充 regionPts）100%、歪写 54 次（上方乱线/中部横穿）100% 拒绝、端到端 chuī 逐字母 4/4 点亮、i8 回归 13 项全过；Playwright 蛇形走笔 = 区域内部采样点按列 zigzag
 
 ---
 
@@ -207,12 +208,12 @@
 node test/playwright-e2e.mjs 8080   # 完整验收（≈10 分钟：L1 + 135 标准 + 54 歪写 + 端到端）
 ```
 
-五段验收（v3 整字一次判定版）：
+五段验收（v3 逐字母判定版）：
 1. **L1 切瓜**：真实 DOM 事件切 12 个水果 → dialog 弹出 → 进入 L2 → 点第一个字卡 → 蒙层打开（拼音行渲染正确）
 2. **挖空视觉**：画布像素数 > 3000（虚线 + 浅色填充已绘制）
-3. **标准书写 135 次**：读取页面 `hwWordLayout.regionPts`（字母内部采样点）蛇形排序（按列 zigzag）→ 真实 `page.mouse` 走笔 → 700ms 判定 → `hwTraceSettled===true && lit===1`
+3. **标准书写 135 次**：读取页面 `hwWordLayout.regionPts`（当前字母内部采样点）蛇形排序（按列 zigzag）→ 真实 `page.mouse` 走笔 → 700ms 判定 → 单字母通过 `settled===true && lit===1`
 4. **歪写 54 次**：字母上方乱线（y=20）/ 字母竖直中心横穿线 → 必须 `settled===false && msg 含"没写准"`
-5. **端到端 chuī**：蛇形写一遍 → 点亮 4/4 → 🎉 → **等判定 700ms + 完成动画 1000ms + 关闭** → 蒙层 display=none
+5. **端到端 chuī**：逐字母蛇形写 → 每字母 idx 递增 + 对应字母点亮 → 4/4 后 🎉 → **等判定 700ms + 完成动画 1000ms + 关闭** → 蒙层 display=none
 
 **关键经验（踩坑记录，勿重犯）**：
 - **顶层 `let` 变量不能通过 `window.x = ...` 覆盖**：index.html 的 `hwWordLayout/hwInkPts/l2` 是顶层 let（全局词法环境，非 window 属性）。`page.evaluate` 内必须用裸标识符（`hwInkPts = []`）才能操作真实变量
