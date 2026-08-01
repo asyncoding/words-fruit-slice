@@ -252,7 +252,7 @@ canvas{display:block;width:100%;height:100%}
     <button class="hw-close-btn" id="hwCloseBtn">✕ 关闭</button>
   </div>
   <div class="hw-pinyin-line" id="hwPinyinLine"></div>
-  <div class="hw-status">沿着虚线描一描「<span id="hwTraceLetter" style="color:#ffd700">u</span>」，描完自动进入下一个字母</div>
+  <div class="hw-status">在虚线里面写拼音，写进去才算数哦</div>
   <div class="hw-canvas-wrap">
     <canvas id="hwCanvas"></canvas>
   </div>
@@ -269,6 +269,7 @@ canvas{display:block;width:100%;height:100%}
   </div>
 </div>
 
+<script src="pinyin-outlines.js"></script>
 <script>
 // ==================== GAME DATA ====================
 let GAME_DATA = { sections: [] };
@@ -893,59 +894,15 @@ let hwCharData = null;
 let hwCharIdx = -1;
 let hwDrawing = false;
 let hwLastPt = null;
-let hwTraceSeq = [];      // 当前拼音字母序列（含 ü，如 chūn → c,h,ū,n）
-let hwTraceIdx = 0;       // 当前描到第几个字母
-let hwTraceKey = '';      // 当前字母模板 key（如 'ü'）
-let hwTmplPts = null;     // 当前模板在画布上的插值点集（画布坐标）
-let hwTmplHash = null;    // 模板点空间哈希
+let hwTraceSeq = [];      // 当前拼音字母序列（含 ü，如 chūn → c,h,ü,n）
+let hwWordLayout = null;    // 本蒙层拼音布局 {paths, regionPts, outlinePts, s2, offY}
 let hwInkPts = [];        // 本次笔迹点（画布坐标，4px 去重）
 let hwRecTimer = null;    // 停笔判定定时器（全局，开新蒙层时取消旧判定）
 let hwTraceSettled = false;  // 本蒙层拼音已全部完成（防完成动画期间重复结算）
 
-// ---- 规范手写体模板（归一化坐标：x 0~100，y 0~100 字母主体，descender 可 >100） ----
-const _arcPts = (cx, cy, r, a0, a1, n = 14) => {
-  const pts = [];
-  for (let i = 0; i <= n; i++) {
-    const a = (a0 + (a1 - a0) * i / n) * Math.PI / 180;
-    pts.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]);
-  }
-  return pts;
-};
-// 坐标系（描红本四线三格）：cap 顶 y=0，x-height 顶 y=65，基线 y=130，descender 底 y=195；x 0~100
-const TRACE_TEMPLATES = (() => {
-  const L = (x1, y1, x2, y2) => [[x1, y1], [x2, y2]];
-  const A = _arcPts;
-  return {
-    a: [A(52, 97, 30, 0, 360), L(82, 97, 82, 130)],
-    b: [L(26, 0, 26, 130), A(68, 97, 28, 0, 360)],
-    c: [A(52, 97, 30, 40, 320)],
-    d: [A(48, 97, 28, 0, 360), L(76, 0, 76, 130)],
-    e: [A(52, 97, 30, 40, 320), L(46, 97, 68, 97)],
-    f: [L(55, 0, 55, 130), L(38, 15, 72, 15), L(44, 82, 66, 82)],
-    g: [A(48, 97, 28, 0, 360), L(76, 97, 76, 155), L(76, 155, 58, 155)],
-    h: [L(26, 0, 26, 130), A(50, 65, 24, 180, 360).concat([[74, 130]])],
-    i: [L(55, 65, 55, 130), L(52, 42, 58, 50)],
-    j: [L(55, 45, 55, 155), L(55, 155, 42, 155), L(53, 42, 58, 34)],
-    k: [L(30, 0, 30, 130), L(30, 82, 72, 40), L(30, 82, 72, 130)],
-    l: [L(55, 0, 55, 130)],
-    m: [L(20, 65, 20, 130), A(42.5, 65, 22.5, 180, 360).concat([[65, 130]]), A(87.5, 65, 22.5, 180, 360).concat([[110, 130]])],
-    n: [L(24, 65, 24, 130), A(49, 65, 25, 180, 360).concat([[74, 130]])],
-    o: [A(52, 97, 30, 0, 360)],
-    p: [L(25, 0, 25, 130), A(68, 155, 28, 0, 360)],
-    q: [A(48, 97, 28, 0, 360), L(76, 110, 76, 158), L(76, 158, 60, 158)],
-    r: [L(25, 65, 25, 130), A(42.5, 65, 17.5, 180, 360).concat([[60, 85]])],
-    s: [L(58, 66, 40, 66), L(40, 66, 60, 98), L(60, 98, 40, 130), L(40, 130, 58, 130)],
-    t: [L(55, 0, 55, 130), L(35, 82, 75, 82)],
-    u: [L(26, 65, 26, 115), A(50, 115, 24, 180, 360), L(74, 115, 74, 65)],
-    v: [L(18, 65, 50, 130), L(50, 130, 82, 65)],
-    w: [L(10, 65, 30, 130), L(30, 130, 50, 65), L(50, 65, 70, 130), L(70, 130, 90, 65)],
-    x: [L(22, 65, 78, 130), L(78, 65, 22, 130)],
-    y: [L(20, 65, 50, 130), L(50, 130, 80, 65), L(50, 130, 50, 165)],
-    z: [L(25, 65, 75, 65), L(75, 65, 25, 130), L(25, 130, 75, 130)],
-    'ü': [L(26, 65, 26, 115), A(50, 115, 24, 180, 360), L(74, 115, 74, 65), L(38, 42, 42, 34), L(62, 42, 66, 34)],
-  };
-})();
-// 声调字母 → 模板 key
+// ---- 字母轮廓数据（pinyin-outlines.js，Arial 真实字形，四线三格归一化） ----
+// 坐标系：基线 y=130，x-height 顶 y=65，升部 ~40，降部 ~156；d 为 SVG path data（Path2D 可用）
+// 声调字母 → 轮廓 key
 const TONE_TO_KEY = {
   'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e',
   'ī':'i','í':'i','ǐ':'i','ì':'i','ō':'o','ó':'o','ǒ':'o','ò':'o',
@@ -953,20 +910,55 @@ const TONE_TO_KEY = {
 };
 
 // ---- 比对参数 ----
-const TRACE_STEP = 4;            // 模板/笔迹插值点间距（px）
-const TRACE_RADIUS = 24;         // 判定容差（px，视觉 x-height ~100px 的 24%）
-const TRACE_TMPL_COVER = 0.6;    // 模板线被描覆盖率 ≥ 60% 才通过
-const TRACE_INK_COVER = 0.5;     // 笔迹贴线比例 ≥ 50%（防乱涂不贴线）
+const TRACE_STEP = 4;            // 笔迹插值点间距（px）
+const TRACE_REGION = 0.6;        // 手写内容落在字母虚线内部的比例 ≥ 60%（用户口径）
+const TRACE_EDGE = 0.25;         // 手写内容贴近虚线边缘的比例 ≥ 25%（防乱涂）
+const TRACE_OUTLINE_COVER = 0.4; // 字母虚线轮廓被手写覆盖的比例 ≥ 40%（防只写局部）
+const TRACE_INK_RADIUS = 14;     // 轮廓点判定容差（px）
+const TRACE_EDGE_WIDTH = 26;     // isPointInStroke 贴线带宽度（px，≈ 笔宽 20 + 容差）
+const TRACE_REGION_STEP = 8;     // 字母内部采样网格间距（px）
+const TRACE_OUTLINE_STEP = 3;    // 轮廓采样点间距（px）
+const TRACE_LETTER_GAP = 16;     // 拼音字母间距（px）
 
-// 折线 → 按步长插值点集
-function polylineToPts(polyline, step) {
+// SVG path data → 按步长采样点集（M/L/Q/C/Z，opentype 输出格式）
+function pathDataToPts(d, step) {
   const pts = [];
-  for (const stroke of polyline) {
-    for (let i = 0; i + 1 < stroke.length; i++) {
-      const [x1, y1] = stroke[i], [x2, y2] = stroke[i + 1];
-      const d = Math.hypot(x2 - x1, y2 - y1);
-      const n = Math.max(1, Math.ceil(d / step));
-      for (let j = 0; j < n; j++) pts.push([x1 + (x2 - x1) * j / n, y1 + (y2 - y1) * j / n]);
+  const cmdRe = /([MLQCZ])([^MLQCZ]*)/g;
+  const numRe = /[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?/g;
+  const cubic = (p0, c1, c2, p1) => {
+    const n = Math.max(1, Math.ceil((Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) +
+      Math.hypot(c1[0] - p0[0], c1[1] - p0[1]) + Math.hypot(c2[0] - p1[0], c2[1] - p1[1])) / step));
+    for (let i = 0; i <= n; i++) {
+      const t = i / n, u = 1 - t;
+      pts.push([
+        u * u * u * p0[0] + 3 * u * u * t * c1[0] + 3 * u * t * t * c2[0] + t * t * t * p1[0],
+        u * u * u * p0[1] + 3 * u * u * t * c1[1] + 3 * u * t * t * c2[1] + t * t * t * p1[1],
+      ]);
+    }
+  };
+  let cur = null, start = null;
+  let m;
+  while ((m = cmdRe.exec(d))) {
+    const cmd = m[1];
+    const args = (m[2].match(numRe) || []).map(Number);
+    if (cmd === 'M' && args.length >= 2) { cur = [args[0], args[1]]; start = cur; }
+    else if (cmd === 'L' && args.length >= 2) {
+      const p1 = [args[0], args[1]];
+      cubic(cur, cur, p1, p1);
+      cur = p1;
+    } else if (cmd === 'Q' && args.length >= 4) {
+      const c = [args[0], args[1]], p1 = [args[2], args[3]];
+      const c1 = [cur[0] + 2 / 3 * (c[0] - cur[0]), cur[1] + 2 / 3 * (c[1] - cur[1])];
+      const c2 = [p1[0] + 2 / 3 * (c[0] - p1[0]), p1[1] + 2 / 3 * (c[1] - p1[1])];
+      cubic(cur, c1, c2, p1);
+      cur = p1;
+    } else if (cmd === 'C' && args.length >= 6) {
+      const p1 = [args[4], args[5]];
+      cubic(cur, [args[0], args[1]], [args[2], args[3]], p1);
+      cur = p1;
+    } else if (cmd === 'Z' && start) {
+      cubic(cur, cur, start, start);
+      cur = start;
     }
   }
   return pts;
@@ -996,50 +988,71 @@ function buildTraceHash(pts, cell) {
   };
 }
 
-// 渲染当前字母的虚线模板 → 收集模板插值点
-function renderTraceTemplate() {
+// 布局整个拼音：字母并排、统一缩放，生成带画布坐标的 Path2D + 内部采样点 + 轮廓采样点
+function buildWordLayout() {
+  const hc = document.getElementById('hwCanvas');
+  const ctx2d = hc.getContext('2d');
+  ctx2d.setTransform(1, 0, 0, 1, 0, 0);   // 采样用单位变换（路径坐标已烘焙）
+  const rect = hc.getBoundingClientRect();
+  const keys = hwTraceSeq.map(k => PINYIN_OUTLINES[k] || PINYIN_OUTLINES[k.toLowerCase()] || PINYIN_OUTLINES.a);
+  const widths = keys.map(o => o.bbox[2] - o.bbox[0]);
+  const totalW = widths.reduce((a, b) => a + b, 0) + TRACE_LETTER_GAP * (keys.length - 1);
+  const s2 = Math.min(1, (rect.width - 28) / totalW);
+  let yTop = Infinity, yBot = -Infinity;
+  for (const o of keys) {
+    yTop = Math.min(yTop, o.bbox[1]);
+    yBot = Math.max(yBot, o.bbox[3]);
+  }
+  const offY = (rect.height - (yBot - yTop) * s2) / 2 - yTop * s2;
+  let ox = (rect.width - totalW * s2) / 2;
+  const paths = [];
+  const base = keys.map(o => new Path2D(o.d));
+  const regionPts = [], outlinePts = [];
+  for (let i = 0; i < keys.length; i++) {
+    const p = new Path2D();
+    p.addPath(base[i], new DOMMatrix([s2, 0, 0, s2, ox, offY]));
+    paths.push(p);
+    const bb = keys[i].bbox;
+    const x0 = bb[0] * s2 + ox, x1 = bb[2] * s2 + ox, y0 = bb[1] * s2 + offY, y1 = bb[3] * s2 + offY;
+    for (let y = y0; y <= y1; y += TRACE_REGION_STEP) {
+      for (let x = x0; x <= x1; x += TRACE_REGION_STEP) {
+        if (ctx2d.isPointInPath(p, x, y, 'nonzero')) regionPts.push([x, y]);
+      }
+    }
+    for (const [x, y] of pathDataToPts(keys[i].d, TRACE_OUTLINE_STEP)) outlinePts.push([x * s2 + ox, y * s2 + offY]);
+    ox += (widths[i] + TRACE_LETTER_GAP) * s2;
+  }
+  hwWordLayout = { paths, regionPts, outlinePts, s2, offY };
+}
+
+// 渲染四线三格 + 挖空虚线字母（清掉上一轮墨迹）
+function renderTraceWord() {
   const hc = document.getElementById('hwCanvas');
   const ctx2d = hc.getContext('2d');
   const rect = hc.getBoundingClientRect();
   const dpr = window.devicePixelRatio || 1;
   ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx2d.clearRect(0, 0, rect.width, rect.height);
-
-  const templ = TRACE_TEMPLATES[hwTraceKey] || TRACE_TEMPLATES[hwTraceKey.toLowerCase()] || TRACE_TEMPLATES.a;
-  // 统一参考：cap 高 130 单位 → 画布 ~200px（x-height=100px 视觉），所有字母同一 scale
-  const H_REF = 130, H_PX = Math.min(rect.height * 0.5, 200);
-  const scale = H_PX / H_REF;
-  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-  for (const stroke of templ) for (const [x, y] of stroke) {
-    if (x < minX) minX = x; if (x > maxX) maxX = x;
-    if (y < minY) minY = y; if (y > maxY) maxY = y;
+  buildWordLayout();   // 内部会切到单位变换采样，之后恢复
+  ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const { paths, s2, offY } = hwWordLayout;
+  // 四线三格参考线（归一化 0/65/130/195）
+  ctx2d.strokeStyle = 'rgba(255,255,255,.10)';
+  ctx2d.lineWidth = 1;
+  for (const gy of [0, 65, 130, 195]) {
+    const yy = gy * s2 + offY;
+    if (yy < -2 || yy > rect.height + 2) continue;
+    ctx2d.beginPath(); ctx2d.moveTo(0, yy); ctx2d.lineTo(rect.width, yy); ctx2d.stroke();
   }
-  const bw = maxX - minX + 1;
-  const offX = (rect.width - bw * scale) / 2;
-  const offY = (rect.height - (maxY - minY) * scale) / 2;
-  const tx = (x) => offX + (x - minX) * scale;
-  const ty = (y) => offY + (y - minY) * scale;
-
-  // 收集画布坐标点
-  const all = [];
-  for (const stroke of templ) {
-    const canvasStroke = stroke.map(([x, y]) => [tx(x), ty(y)]);
-    all.push(canvasStroke);
-  }
-  hwTmplPts = polylineToPts(all, TRACE_STEP);
-  hwTmplHash = buildTraceHash(hwTmplPts, 32);
-
-  // 画虚线模板
-  ctx2d.strokeStyle = 'rgba(255,215,0,.45)';
-  ctx2d.lineWidth = 12;
-  ctx2d.setLineDash([10, 9]);
+  // 挖空：字母内部浅色填充 + 金色虚线轮廓
+  ctx2d.setLineDash([]);
+  ctx2d.fillStyle = 'rgba(255,255,255,.08)';
+  for (const p of paths) ctx2d.fill(p, 'nonzero');
+  ctx2d.strokeStyle = 'rgba(255,215,0,.55)';
+  ctx2d.lineWidth = 3.5;
+  ctx2d.setLineDash([9, 8]);
   ctx2d.lineCap = 'round'; ctx2d.lineJoin = 'round';
-  for (const stroke of all) {
-    ctx2d.beginPath();
-    ctx2d.moveTo(stroke[0][0], stroke[0][1]);
-    for (let i = 1; i < stroke.length; i++) ctx2d.lineTo(stroke[i][0], stroke[i][1]);
-    ctx2d.stroke();
-  }
+  for (const p of paths) ctx2d.stroke(p);
   ctx2d.setLineDash([]);
 }
 
@@ -1049,62 +1062,67 @@ function lightPinyinLetter(i) {
   if (spans[i]) spans[i].classList.add('lit');
 }
 
-// 停笔判定：模板覆盖率 + 笔迹贴线率
+// 停笔判定（整字一次判定）：① 手写落在字母虚线内部 ≥60%（用户口径）
+// ② 手写贴近虚线边缘 ≥25%（防乱涂）；③ 虚线轮廓被覆盖 ≥40%（防只写局部）
 function judgeTrace() {
   if (!hwInkPts.length) {
-    document.getElementById('hwMsg').textContent = '✏️ 还没写呢，沿着虚线描一描';
+    document.getElementById('hwMsg').textContent = '✏️ 还没写呢，在虚线里面写拼音';
     document.getElementById('hwMsg').classList.remove('error');
     return;
   }
-  let inkOn = 0;
-  for (const p of hwInkPts) if (hwTmplHash(p[0], p[1]) <= TRACE_RADIUS) inkOn++;
-  const inkCover = inkOn / hwInkPts.length;
-
   // 已完成结算态（hwTraceSettled）不再判定，防完成动画期间重复结算
   if (hwTraceSettled) return;
 
-  // 模板被覆盖比例：模板点最近笔迹 ≤ R（对模板点建 hash 太慢 → 对笔迹建 hash）
+  const ctx2d = document.getElementById('hwCanvas').getContext('2d');
+  ctx2d.setTransform(1, 0, 0, 1, 0, 0);   // 路径坐标已烘焙，判定用单位变换
+  ctx2d.setLineDash([]);
+  ctx2d.lineWidth = TRACE_EDGE_WIDTH;
+  ctx2d.lineCap = 'round'; ctx2d.lineJoin = 'round';
+  let inRgn = 0, onEdge = 0;
+  for (const p of hwInkPts) {
+    for (const lp of hwWordLayout.paths) {
+      if (ctx2d.isPointInPath(lp, p[0], p[1], 'nonzero')) { inRgn++; break; }
+    }
+  }
+  for (const p of hwInkPts) {
+    for (const lp of hwWordLayout.paths) {
+      if (ctx2d.isPointInStroke(lp, p[0], p[1])) { onEdge++; break; }
+    }
+  }
+  const rgnCover = inRgn / hwInkPts.length;
+  const edgeAdh = onEdge / hwInkPts.length;
   const inkHash = buildTraceHash(hwInkPts, 32);
-  let tmplOn = 0;
-  for (const p of hwTmplPts) if (inkHash(p[0], p[1]) <= TRACE_RADIUS) tmplOn++;
-  const tmplCover = tmplOn / hwTmplPts.length;
+  let outOn = 0;
+  for (const p of hwWordLayout.outlinePts) if (inkHash(p[0], p[1]) <= TRACE_INK_RADIUS) outOn++;
+  const outCover = outOn / hwWordLayout.outlinePts.length;
 
-  if (tmplCover >= TRACE_TMPL_COVER && inkCover >= TRACE_INK_COVER) {
+  if (rgnCover >= TRACE_REGION && edgeAdh >= TRACE_EDGE && outCover >= TRACE_OUTLINE_COVER) {
     traceNext(true);
   } else {
     const msgEl = document.getElementById('hwMsg');
-    msgEl.textContent = '✍️ 没描好（只描到 ' + Math.round(tmplCover * 100) + '% 的虚线），再描一次';
+    msgEl.textContent = '✍️ 没写准（虚线里只写了 ' + Math.round(rgnCover * 100) + '%），再写一次';
     msgEl.classList.add('error');
     hwInkPts = [];
-    renderTraceTemplate();
+    renderTraceWord();
   }
 }
 
-// 推进到下一个字母；全部完成 → 结算
+// 整个拼音一次判定通过 → 全部点亮 + 结算
 function traceNext(passed) {
   const msgEl = document.getElementById('hwMsg');
   hwInkPts = [];
-  if (passed) {
-    msgEl.classList.remove('error');
-    lightPinyinLetter(hwTraceIdx);
-    hwTraceIdx++;
-  }
-  if (hwTraceIdx >= hwTraceSeq.length) {
-    hwTraceSettled = true;   // 已完成结算态：防完成动画期间再描导致重复结算
-    msgEl.textContent = '🎉 你真棒！拼音写完了！';
-    playCoin();
-    setTimeout(() => {
-      document.getElementById('hw-overlay').style.display = 'none';
-      l2.pinyinDone.push({ idx: hwCharIdx, char: hwCharData, pinyin: hwCharData.pinyin });
-      renderL2Chars();
-      updateL2Coins();
-    }, 1000);
-    return;
-  }
-  hwTraceKey = hwTraceSeq[hwTraceIdx];
-  document.getElementById('hwTraceLetter').textContent = hwTraceKey === 'ü' ? 'ü' : hwTraceKey;
-  renderTraceTemplate();
-  msgEl.textContent = passed ? '👍 很好！继续描「' + hwTraceKey + '」' : '';
+  if (!passed || hwTraceSettled) return;
+  hwTraceSettled = true;   // 已完成结算态：防完成动画期间再描导致重复结算
+  msgEl.classList.remove('error');
+  for (let i = 0; i < hwTraceSeq.length; i++) lightPinyinLetter(i);
+  msgEl.textContent = '🎉 你真棒！拼音写完了！';
+  playCoin();
+  setTimeout(() => {
+    document.getElementById('hw-overlay').style.display = 'none';
+    l2.pinyinDone.push({ idx: hwCharIdx, char: hwCharData, pinyin: hwCharData.pinyin });
+    renderL2Chars();
+    updateL2Coins();
+  }, 1000);
 }
 
 // ---- 蒙层打开 / 绘制 ----
@@ -1131,10 +1149,8 @@ function openHWOverlay(charData, idx) {
     line.appendChild(span);
     hwTraceSeq.push(TONE_TO_KEY[ch] !== undefined ? TONE_TO_KEY[ch] : ch);
   }
-  hwTraceIdx = 0;
   hwTraceSettled = false;
-  hwTraceKey = hwTraceSeq[0] || 'a';
-  document.getElementById('hwTraceLetter').textContent = hwTraceKey === 'ü' ? 'ü' : hwTraceKey;
+  hwWordLayout = null;
 
   const overlay = document.getElementById('hw-overlay');
   overlay.style.display = 'flex';
@@ -1155,7 +1171,7 @@ function openHWOverlay(charData, idx) {
     ctx2d.lineCap = 'round'; ctx2d.lineJoin = 'round';
     ctx2d.lineWidth = Math.max(8, Math.min(rect.width, rect.height) * 0.05);
     ctx2d.strokeStyle = '#fff';
-    renderTraceTemplate();
+    renderTraceWord();
   };
   setupHWCanvas();
   hc.style.touchAction = 'none';

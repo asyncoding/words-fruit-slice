@@ -42,24 +42,46 @@ const sliceAllFruits = async (timeoutMs = 60000) => {
   return ok;
 };
 
-// ---------- 描一个字的完整拼音（真实鼠标沿虚线，循环到蒙层自动关闭） ----------
-async function traceFullPinyin() {
+// ---------- 描一个字的完整拼音（真实鼠标"写进虚线"：沿字母内部采样点蛇形走笔，整字一次判定） ----------
+async function drawWordFill() {
   const canvasBox = await page.locator('#hwCanvas').boundingBox();
+  const pts = await page.evaluate(() => hwWordLayout.regionPts.map(p => [p[0], p[1]]));
+  if (!pts || !pts.length) return false;
+  const cols = new Map();
+  for (const p of pts) {
+    const k = Math.round(p[0]);
+    if (!cols.has(k)) cols.set(k, []);
+    cols.get(k).push(p);
+  }
+  const sorted = [];
+  const ks = [...cols.keys()].sort((a, b) => a - b);
+  ks.forEach((k, i) => {
+    const col = cols.get(k).sort((a, b) => a[1] - b[1]);
+    if (i % 2) col.reverse();
+    sorted.push(...col);
+  });
+  const picked = sorted.filter((_, i) => i % 3 === 0);
+  if (!picked.length) return false;
+  await page.mouse.move(canvasBox.x + picked[0][0], canvasBox.y + picked[0][1]);
+  await page.mouse.down();
+  for (const [x, y] of picked.slice(1)) {
+    await page.mouse.move(canvasBox.x + x, canvasBox.y + y, { steps: 1 });
+  }
+  await page.mouse.up();
+  return true;
+}
+
+// 循环书写直到蒙层自动关闭（整字一次判定：写对一遍即可）
+async function traceFullPinyin() {
   let guard = 0;
-  while (guard < 12) {
+  while (guard < 6) {
     const open = await page.evaluate(() => document.getElementById('hw-overlay').style.display);
     if (open !== 'flex') break;
-    const pts = await page.evaluate(() => hwTmplPts.map(p => [p[0], p[1]]));
-    await page.mouse.move(canvasBox.x + pts[0][0], canvasBox.y + pts[0][1]);
-    await page.mouse.down();
-    for (let i = 3; i < pts.length; i += 3) {
-      await page.mouse.move(canvasBox.x + pts[i][0], canvasBox.y + pts[i][1], { steps: 2 });
-    }
-    await page.mouse.up();
-    await wait(1150);  // 700ms 判定 + 推进
+    await drawWordFill();
+    await wait(1350);  // 700ms 判定 + 完成动画
     guard++;
   }
-  await wait(1150);  // 完成动画 1000ms 后关闭
+  await wait(1200);  // 完成动画 1000ms 后关闭
 }
 
 const wait = ms => page.waitForTimeout(ms);

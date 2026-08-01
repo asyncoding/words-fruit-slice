@@ -1,10 +1,9 @@
-// Playwright 验收脚本（描红玩法，v2）：
-// 1) 真实游戏流程端到端：开始游戏 → L1 切瓜 → L2 → 手写蒙层 → 逐字母沿虚线描摹 → 拼音逐字母点亮 → 🎉
-// 2) 标准描摹通过率：用页面模板点生成"完美描摹"（沿虚线 + 微小抖动）→ 26 字母 × 5 → 必须 ≥99%
-// 3) 歪描拒绝率：整体偏移/只描局部 → 必须 100% 被要求重描
+// Playwright 验收脚本（拼音描红 v3：挖空 + 虚线边缘 + 整字一次判定）：
+// 1) 真实游戏流程端到端：开始游戏 → L1 切瓜 → L2 → 手写蒙层 → 写字进虚线 → 整字点亮 → 🎉 → 自动关闭
+// 2) 标准书写通过率：蛇形填充每个字母内部（27 字母 × 5 遍）→ 必须 ≥99%
+// 3) 歪写拒绝率：字母上方乱线 / 中部横穿线 → 必须 100% 被要求重写
 // 用法: node test/playwright-e2e.mjs [port=8080]
 import { chromium } from '/Users/thamelsu/Documents/Code/grade1-practice/game/node_modules/playwright/index.mjs';
-import { readFileSync } from 'node:fs';
 
 const PORT = process.argv[2] || '8080';
 const BASE = `http://localhost:${PORT}`;
@@ -14,17 +13,13 @@ const errors = [];
 page.on('pageerror', e => errors.push(e.message));
 const results = [];
 
-// 确定性抖动（固定种子伪随机，验收可复现）
-function seededRandom(seed) {
-  let s = seed;
-  return () => { s = (s * 1103515245 + 12345) % 2147483648; return s / 2147483648; };
-}
+const wait = ms => page.waitForTimeout(ms);
 
 // ---------- 1. 打开游戏，进入 L2 手写蒙层 ----------
 await page.goto(BASE + '/');
-await page.waitForTimeout(500);
+await wait(500);
 await page.locator('#startBtn').click();
-await page.waitForTimeout(800);
+await wait(800);
 
 const sliceResult = await page.evaluate(async () => {
   const canvas = document.querySelector('#gameCanvas') || document.querySelector('canvas');
@@ -52,54 +47,63 @@ const sliceResult = await page.evaluate(async () => {
 results.push(['L1 切瓜完成', sliceResult.ok ? `PASS (${sliceResult.sliced} 个, ${sliceResult.ms}ms)` : `FAIL (${sliceResult.sliced} 个)`]);
 
 await page.locator('#dialogBtn').click();
-await page.waitForTimeout(800);
+await wait(800);
 await page.locator('.char-card').first().click();
-await page.waitForTimeout(1200);
+await wait(1200);
 
 const overlayVisible = await page.locator('#hw-overlay').isVisible().catch(() => false);
 const pinyinLine = await page.evaluate(() => Array.from(document.querySelectorAll('#hwPinyinLine .py-letter')).map(s => s.textContent).join(''));
+const statusTxt = await page.locator('.hw-status').textContent();
 results.push(['进入 L2 手写蒙层', overlayVisible ? `PASS (拼音行: ${pinyinLine})` : 'FAIL']);
+results.push(['蒙层状态文案', statusTxt.includes('虚线') ? `PASS (${statusTxt})` : `FAIL (${statusTxt})`]);
 
-// ---------- 2. 描摹辅助 ----------
+// 挖空视觉：画布上应有字母轮廓像素（虚线 + 浅色填充）
+const drawnPixels = await page.evaluate(() => {
+  const hc = document.getElementById('hwCanvas');
+  const ctx = hc.getContext('2d');
+  const data = ctx.getImageData(0, 0, hc.width, hc.height).data;
+  let n = 0;
+  for (let i = 3; i < data.length; i += 4) if (data[i] > 0) n++;
+  return n;
+});
+results.push(['挖空字母渲染', drawnPixels > 3000 ? `PASS (${drawnPixels} px)` : `FAIL (${drawnPixels} px)`]);
+
+// ---------- 2. 书写辅助 ----------
 const canvasBox = await page.locator('#hwCanvas').boundingBox();
 if (!canvasBox) { console.error('no hwCanvas'); process.exit(1); }
 
-// 用页面模板点生成描摹笔迹（jitterPx: 抖动幅度；offset: 整体偏移；frac: 只描前 frac 比例；above: 在模板上方画乱线）
-async function drawTrace(opts = {}) {
-  const { jitterPx = 2, offsetX = 0, offsetY = 0, frac = 1, seed = 1, above = false } = opts;
-  const rnd = seededRandom(seed);
-  if (above) {
-    // 模板 bbox 上方 30px 画一条长水平乱线（距模板最近 30px > 判定半径，必然 0% 覆盖）
-    const box = await page.evaluate(() => {
-      const xs = hwTmplPts.map(p => p[0]), ys = hwTmplPts.map(p => p[1]);
-      return [Math.min(...xs), Math.min(...ys), Math.max(...xs), Math.max(...ys)];
-    });
-    const [x0, y0] = box;
-    const y = y0 - 30;
-    await page.mouse.move(canvasBox.x + x0 - 30, canvasBox.y + y);
-    await page.mouse.down();
-    for (let i = 1; i <= 18; i++) {
-      await page.mouse.move(canvasBox.x + x0 - 30 + i * 10, canvasBox.y + y + (i % 3) * 2, { steps: 2 });
-    }
-    await page.mouse.up();
-    return;
+// 沿字母内部采样点蛇形走笔（覆盖全部内部 → 标准书写模拟）
+async function drawWordFill() {
+  const pts = await page.evaluate(() => hwWordLayout.regionPts.map(p => [p[0], p[1]]));
+  if (!pts || !pts.length) throw new Error('no region pts');
+  const cols = new Map();
+  for (const p of pts) {
+    const k = Math.round(p[0]);
+    if (!cols.has(k)) cols.set(k, []);
+    cols.get(k).push(p);
   }
-  const pts = await page.evaluate(() => hwTmplPts.map(p => [p[0], p[1]]));
-  if (!pts || !pts.length) throw new Error('no template pts');
-  const count = Math.max(1, Math.round(pts.length * frac));
-  const picked = [];
-  for (let i = 0; i < count; i += 3) {
-    const p = pts[i];
-    picked.push([
-      p[0] + offsetX + (jitterPx ? (rnd() * 2 - 1) * jitterPx : 0),
-      p[1] + offsetY + (jitterPx ? (rnd() * 2 - 1) * jitterPx : 0),
-    ]);
+  const sorted = [];
+  const ks = [...cols.keys()].sort((a, b) => a - b);
+  ks.forEach((k, i) => {
+    const col = cols.get(k).sort((a, b) => a[1] - b[1]);
+    if (i % 2) col.reverse();
+    sorted.push(...col);
+  });
+  const picked = sorted.filter((_, i) => i % 3 === 0);
+  await page.mouse.move(canvasBox.x + picked[0][0], canvasBox.y + picked[0][1]);
+  await page.mouse.down();
+  for (const [x, y] of picked.slice(1)) {
+    await page.mouse.move(canvasBox.x + x, canvasBox.y + y, { steps: 1 });
   }
-  // 用真实 mouse 事件沿点描
-  for (let i = 0; i < picked.length; i++) {
-    const [x, y] = picked[i];
-    if (i === 0) { await page.mouse.move(canvasBox.x + x, canvasBox.y + y); await page.mouse.down(); }
-    else await page.mouse.move(canvasBox.x + x, canvasBox.y + y, { steps: 2 });
+  await page.mouse.up();
+}
+
+// 歪写：画一条水平线（y: 画布绝对 y）
+async function drawHLine(y) {
+  await page.mouse.move(canvasBox.x + 20, canvasBox.y + y);
+  await page.mouse.down();
+  for (let x = 30; x < canvasBox.width - 20; x += 8) {
+    await page.mouse.move(canvasBox.x + x, canvasBox.y + y + (x % 16 ? 2 : -2), { steps: 1 });
   }
   await page.mouse.up();
 }
@@ -107,97 +111,92 @@ async function drawTrace(opts = {}) {
 // 打开单字母蒙层（递增负 idx 避开 pinyinDone 命中）
 let batchSeq = 0;
 async function openLetterOverlay(L) {
-  await page.waitForTimeout(800);  // 等上一样本的停笔判定完全落定，防定时器乱序
+  await wait(800);  // 等上一样本的停笔判定完全落定，防定时器乱序
   await page.evaluate(({ L, idx }) => {
     openHWOverlay({ character: '测', pinyin: L }, idx);
-    const c = document.querySelector('#hwCanvas');
-    const dpr = window.devicePixelRatio || 1;
-    c.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
-    c.getContext('2d').clearRect(0, 0, c.width, c.height);
     hwInkPts = [];
     const el = document.querySelector('#hwMsg');
     el.textContent = ''; el.classList.remove('error');
   }, { L, idx: -1 - batchSeq++ });
-  await page.waitForTimeout(300);
+  await wait(300);
 }
 
 async function readTraceState() {
   return page.evaluate(() => ({
-    idx: hwTraceIdx,
     seqLen: hwTraceSeq.length,
-    key: hwTraceKey,
-    msg: document.getElementById('hwMsg').textContent,
+    settled: hwTraceSettled,
     lit: document.querySelectorAll('#hwPinyinLine .py-letter.lit').length,
+    msg: document.getElementById('hwMsg').textContent,
     done: l2.pinyinDone.length,
   }));
 }
 
-// ---------- 3. 标准描摹通过率（26 字母 × 5 遍，目标 ≥99%） ----------
+// ---------- 3. 标准书写通过率（26 字母 + ü × 5 遍，目标 ≥99%） ----------
 const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+letters.push('ü');
 let pass = 0, fail = 0;
 const failDetail = [];
 for (const L of letters) {
   for (let round = 0; round < 5; round++) {
     await openLetterOverlay(L);
-    await drawTrace({ seed: 1000 + pass + fail });
-    await page.waitForTimeout(1100);
+    await drawWordFill();
+    await wait(1100);
     const st = await readTraceState();
-    if (st.idx === 1) pass++;
-    else { fail++; failDetail.push(`${L}#${round}: idx=${st.idx} msg="${st.msg}"`); }
+    if (st.settled && st.lit === 1) pass++;
+    else { fail++; failDetail.push(`${L}#${round}: settled=${st.settled} lit=${st.lit} msg="${st.msg}"`); }
   }
 }
 const stdTotal = pass + fail;
 const stdRate = stdTotal ? (pass / stdTotal * 100) : 0;
-console.log(`\n===== 标准描摹通过率（26 字母 × 5 遍 = ${stdTotal} 次）=====`);
+console.log(`\n===== 标准书写通过率（27 字母 × 5 遍 = ${stdTotal} 次）=====`);
 console.log(`通过: ${pass}/${stdTotal} (${stdRate.toFixed(1)}%)  失败: ${fail}`);
 if (failDetail.length) console.log('失败明细:', failDetail.join(' | '));
-results.push(['标准描摹通过率', `${stdRate.toFixed(1)}% (${pass}/${stdTotal})`, stdRate >= 99 ? 'PASS' : 'FAIL']);
+results.push(['标准书写通过率', `${stdRate.toFixed(1)}% (${pass}/${stdTotal})`, stdRate >= 99 ? 'PASS' : 'FAIL']);
 
-// ---------- 4. 歪描拒绝率（只描 25% / 上方乱画线，目标 100% 重描） ----------
-// 注：整条模板平移对圈类/密斜线字母（o/w/x/v/z 等）天然有重叠，改用"不完整描摹"和"位置完全错误的乱线"
+// ---------- 4. 歪写拒绝率（字母上方乱线 / 中部横穿线，目标 100% 重写） ----------
+// 上方乱线：画布顶部 y=20（字母垂直居中，远在字母上方）
+// 中部横穿：字母竖直中心画一条贯穿画布的线（只有 ~20% 长度落在字母内 → 内部占比 <60%）
 let reject = 0, wrongAccept = 0;
 const rejectDetail = [];
 for (const L of letters) {
   await openLetterOverlay(L);
-  await drawTrace({ frac: 0.25, seed: 7 });
-  await page.waitForTimeout(1100);
+  await drawHLine(20);
+  await wait(1100);
   let st = await readTraceState();
-  if (st.idx === 0) reject++; else { wrongAccept++; rejectDetail.push(`${L}#frac: idx=${st.idx}`); }
+  if (!st.settled && st.msg.includes('没写准')) reject++; else { wrongAccept++; rejectDetail.push(`${L}#top: settled=${st.settled} msg="${st.msg}"`); }
 
   await openLetterOverlay(L);
-  await drawTrace({ above: true, seed: 8 });
-  await page.waitForTimeout(1100);
+  const midY = await page.evaluate(() => {
+    const ys = hwWordLayout.regionPts.map(p => p[1]);
+    return (Math.min(...ys) + Math.max(...ys)) / 2;
+  });
+  await drawHLine(midY);
+  await wait(1100);
   st = await readTraceState();
-  if (st.idx === 0) reject++; else { wrongAccept++; rejectDetail.push(`${L}#above: idx=${st.idx}`); }
+  if (!st.settled && st.msg.includes('没写准')) reject++; else { wrongAccept++; rejectDetail.push(`${L}#mid: settled=${st.settled} msg="${st.msg}"`); }
 }
 const rejTotal = reject + wrongAccept;
-console.log(`\n===== 歪描拒绝率（只描 25% / 模板上方乱线 = ${rejTotal} 次）=====`);
+console.log(`\n===== 歪写拒绝率（上方乱线 / 中部横穿 = ${rejTotal} 次）=====`);
 console.log(`正确拒绝: ${reject}/${rejTotal} (${(reject / rejTotal * 100).toFixed(1)}%)  误通过: ${wrongAccept}`);
 if (rejectDetail.length) console.log('误通过明细:', rejectDetail.join(' | '));
-results.push(['歪描拒绝率', `${(reject / rejTotal * 100).toFixed(1)}% (${reject}/${rejTotal})`, wrongAccept === 0 ? 'PASS' : 'FAIL']);
+results.push(['歪写拒绝率', `${(reject / rejTotal * 100).toFixed(1)}% (${reject}/${rejTotal})`, wrongAccept === 0 ? 'PASS' : 'FAIL']);
 
-// ---------- 5. 端到端拼音流程（逐字母沿虚线描 → 点亮 → 🎉 → 自动关闭） ----------
-await page.waitForTimeout(800);  // 等上一轮判定落定
+// ---------- 5. 端到端拼音流程（整字写进虚线 → 全部点亮 → 🎉 → 自动关闭） ----------
+await wait(800);  // 等上一轮判定落定
 await page.evaluate((idx) => {
   openHWOverlay({ character: '吹', pinyin: 'chuī' }, idx);
   hwInkPts = [];
 }, -1 - batchSeq++);
-await page.waitForTimeout(400);
+await wait(400);
 const e2eTarget = await page.evaluate(() => document.getElementById('hw-target-char').textContent);
 console.log(`\n===== 端到端拼音流程（目标字: ${e2eTarget}）=====`);
-let e2ePass = false;
-for (let i = 0; i < 4; i++) {
-  await drawTrace({ seed: 900 + i });
-  await page.waitForTimeout(1100);
-  const st = await readTraceState();
-  console.log(`  第${i + 1}个字母 (${st.key}): idx=${st.idx} 点亮=${st.lit} done=${st.done} msg="${st.msg}"`);
-  if (i < 3 && st.idx !== i + 1) break;
-}
+const e2eSeq = await page.evaluate(() => hwTraceSeq.join(''));
+await drawWordFill();
+await wait(2400);  // 700ms 判定 + 1000ms 完成动画 + 关闭
 const finalSt = await readTraceState();
-await page.waitForTimeout(1200);  // 完成动画 1000ms 后自动关闭蒙层
 const overlayClosed = await page.evaluate(() => document.getElementById('hw-overlay').style.display);
-e2ePass = finalSt.lit === 4 && overlayClosed === 'none';
-console.log(`端到端 '${e2eTarget}'（chuī）拼音完成: ${e2ePass ? 'PASS' : 'FAIL'}（点亮=${finalSt.lit}, 蒙层=${overlayClosed}）`);
+const e2ePass = e2eSeq === 'chui' && finalSt.settled && finalSt.lit === 4 && overlayClosed === 'none';
+console.log(`端到端 '${e2eTarget}'（chuī）拼音完成: ${e2ePass ? 'PASS' : 'FAIL'}（seq=${e2eSeq}, 点亮=${finalSt.lit}, 蒙层=${overlayClosed}）`);
 results.push(['端到端拼音流程', e2ePass ? 'PASS (4/4 点亮 + 完成)' : 'FAIL']);
 
 // ---------- 汇总 ----------

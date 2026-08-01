@@ -42,34 +42,39 @@
 | `start.sh` | 本地预览：`./start.sh [port]`（默认 3000） |
 | ~~tools/train/、vendor/ort/、emnist_cnn.onnx、test/hw-overlay-test.html、test/emnist-strokes.json~~ | CNN 识别遗留物，**玩法已不使用**，勿删勿引 |
 
-### 描红判定流程（全部本地，无识别、无模型）
+### 描红判定流程（v3：挖空 + 虚线边缘 + 整字一次判定，全部本地，无识别、无模型）
 
 ```
-用户沿虚线描摹（#hwCanvas，pointer 事件，墨迹存 hwInkPts）→ 停笔 700ms（全局 hwRecTimer）→ judgeTrace()
-  ├─ 1. 墨迹收集：mousedown/pointerdown 起笔 → move 收点（每 ~6px 一个 [x,y] 数组）→ up 结束
-  ├─ 2. 空间哈希（buildTraceHash，cell=32px）：墨迹点 → 32×32 网格，3×3 邻居桶查询
-  ├─ 3. 双向覆盖率判定（任一不达标 → 提示「✍️ 没描准，再试一次」，保持 hwTraceIdx 不变）：
-  │    ├─ 模板覆盖率 tmplCover：模板点（沿虚线步长 TRACE_STEP=4 插值）距最近墨迹 ≤ TRACE_RADIUS(24px) 的比例 ≥ TRACE_TMPL_COVER(0.60)
-  │    └─ 墨迹覆盖率 inkCover：墨迹点距最近模板点 ≤ 半径的比例 ≥ TRACE_INK_COVER(0.50)（防乱涂多圈"涂满"骗过 tmplCover）
-  ├─ 4. 通过 → hwTraceIdx+1 → 拼音行对应字母点亮（.lit）→ 未完成提示「👍 很好！继续描「x」」/ 完成提示「🎉 你真棒！拼音写完了！」+ playCoin
-  └─ 5. 完成 → 1s 后自动关闭蒙层 → l2.pinyinDone.push({idx,char,pinyin}) → renderL2Chars + updateL2Coins
+用户看"挖空"字母（浅色填充 + 金色虚线轮廓）在虚线内写字（#hwCanvas，pointer 事件，墨迹存 hwInkPts）
+→ 停笔 700ms（全局 hwRecTimer）→ judgeTrace()
+  ├─ 1. 布局（buildWordLayout）：整个拼音所有字母并排（TRACE_LETTER_GAP=16px），统一缩放 s2（超宽 6 字母压到 ~0.88）
+  │    每个字母：Path2D（pinyin-outlines.js 的 d，坐标已归一化）+ addPath 烘焙到画布坐标（DOMMatrix）
+  │    → 内部网格采样点 regionPts（TRACE_REGION_STEP=8px，isPointInPath 判定）→ 轮廓采样点 outlinePts（pathDataToPts，步长 3px）
+  ├─ 2. 整字一次判定（三条件，任一不达标 → 提示「✍️ 没写准（虚线里只写了 X%），再写一次」+ 清墨迹重画）：
+  │    ├─ 内部占比 rgnCover：墨迹落在任一字母虚线内部（isPointInPath nonzero）≥ TRACE_REGION(0.60)——用户口径
+  │    ├─ 贴带占比 edgeAdh：墨迹贴近虚线边缘（isPointInStroke，线宽 TRACE_EDGE_WIDTH=26px）≥ TRACE_EDGE(0.25)——防乱涂
+  │    └─ 轮廓覆盖 outCover：虚线轮廓点被墨迹覆盖（距墨迹 ≤ TRACE_INK_RADIUS=14px）≥ TRACE_OUTLINE_COVER(0.40)——防只写局部
+  ├─ 3. 通过 → 全部字母点亮（.lit）→ 「🎉 你真棒！拼音写完了！」+ playCoin
+  └─ 4. 完成 → 1s 后自动关闭蒙层 → l2.pinyinDone.push({idx,char,pinyin}) → renderL2Chars + updateL2Coins
 ```
 
-**描红模板（TRACE_TEMPLATES）**：26 字母 + 'ü'（含音调符号 ü）共 27 个**程序化规范手写骨架**，坐标统一四线三格体系（cap 顶 y=0、x-height 顶 y=65、基线 y=130、descender y=155~195，x 0~100）。渲染统一 scale：`H_REF=130 → H_PX=min(rect.height*0.5, 200)`，所有字母同一比例（x-height 视觉 100px），画布内上下按比例定位（首字母 cap 顶 +28px）。
+**字母轮廓数据（pinyin-outlines.js → `window.PINYIN_OUTLINES`）**：26 字母 + 'ü' 共 27 个 **Arial 真实字形轮廓**，`tools/extract-outlines.mjs` 离线提取（opentype.js 读系统 Arial.ttf，一次性工具，勿手改数据）。坐标已归一化到四线三格：基线 y=130、x-height 顶 y=65、升部 ~40、降部 ~156；`d` 为可直接 `new Path2D(d)` 的 SVG path data。渲染 = 字母内部浅色填充（rgba(255,255,255,.08)，挖空感）+ 金色虚线轮廓（dash [9,8]）+ 四线三格参考线。
 
-**带声调拼音 → 字母序列**（openHWOverlay）：解析拼音行每个字符，`TONE_TO_KEY` 把声调韵母字符（āáǎà/ēéěè/īíǐì/ōóǒò/ūúǔù）映射到无调字母，ü/ü 系（ǖǘǚǜ/ü）→ 'ü' 模板；序列逐字母出题（chūn → c,h,ū,n；chuī → c,h,u,i）。
+**带声调拼音 → 字母序列**（openHWOverlay）：解析拼音行每个字符，`TONE_TO_KEY` 把声调韵母字符（āáǎà/ēéěè/īíǐì/ōóǒò/ūúǔù）映射到无调字母，ü/ü 系（ǖǘǚǜ/ü）→ 'ü' 轮廓；序列全部并排显示（jiàng → j,i,à,n,g）。
 
 ### 关键函数（index.html）
 
 | 函数 | 位置 | 作用 |
 |------|------|------|
-| `TRACE_TEMPLATES` | ~789 | 27 个规范手写骨架模板（四线三格坐标） |
-| `TONE_TO_KEY` | ~800 | 声调字符 → 模板 key 映射（含 ü 系） |
-| `buildTraceHash()` | ~810 | 墨迹点 32px 空间哈希（3×3 邻居桶查询） |
-| `judgeTrace()` | ~820 | 双覆盖率判定（tmplCover ≥0.60 && inkCover ≥0.50） |
-| `renderTraceTemplate()` | ~850 | 虚线模板绘制（rgba(255,215,0,.45)、lineWidth 12、dash [10,9]）+ 墨迹红色覆盖显示 |
-| `traceNext()` | ~890 | 通过后推进字母索引、点亮拼音、完成结算（playCoin + 1s 关闭 + pinyinDone.push） |
-| `openHWOverlay()` | ~910 | 打开蒙层：解析拼音行（#hwPinyinLine 逐字符 span）、首字母出题、清定时器/墨迹 |
+| `PINYIN_OUTLINES` | pinyin-outlines.js | 27 字母轮廓（d + 归一化 bbox），Arial 提取 |
+| `TONE_TO_KEY` | ~800 | 声调字符 → 轮廓 key 映射（含 ü 系） |
+| `pathDataToPts()` | ~810 | SVG path data → 步长采样点集（M/L/Q/C/Z 三次贝塞尔摊平） |
+| `buildTraceHash()` | ~850 | 点集 32px 空间哈希（3×3 邻居桶查询） |
+| `buildWordLayout()` | ~890 | 整拼音布局：并排缩放 + Path2D 烘焙 + regionPts/outlinePts 采样（**采样前必须 setTransform 单位变换**） |
+| `renderTraceWord()` | ~920 | 四线三格 + 挖空填充 + 金色虚线轮廓绘制（清上一轮墨迹） |
+| `judgeTrace()` | ~950 | 整字一次判定：内部占比≥0.60 && 贴带≥0.25 && 轮廓覆盖≥0.40（isPointInPath/isPointInStroke） |
+| `traceNext()` | ~990 | 整字通过 → 全部点亮 + 结算（playCoin + 1s 关闭 + pinyinDone.push） |
+| `openHWOverlay()` | ~1010 | 打开蒙层：解析拼音行（#hwPinyinLine 逐字符 span）、清定时器/墨迹/结算态 |
 | `initSectionPicker()` | ~1280 | 首页课文按钮渲染（含完成金色边框） |
 | `loadGameData()` / `applyGameData()` | ~230 | 数据双通道加载（fetch → script 兜底） |
 | `loadSave()` / `writeSave()` | ~300 | localStorage 存档（字段级默认值补全） |
@@ -126,6 +131,13 @@
 1. **完成态防护**：traceNext 完成分支置 `hwTraceSettled=true`，judgeTrace 入口检查——完成动画 1000ms 期间再描会重复结算（pinyinDone 重复 push + 金币重复）；曾复现 done=2
 2. **埋点验收**：playwright-i8.mjs 用 `page.addInitScript(() => window._czc = [])` 注入缓冲数组（必须在 goto 前注入，否则 session_start 等加载期事件进旧数组被覆盖丢失）；track() 在 `window._czc` 缺失时自行创建数组
 3. **认识字弹窗时机**：showComplete 中合并 knownChars 后弹窗（z-index 120 > 完成页 80 < 蒙层 200）；againBtn/exitBtn 需同时关掉弹窗层
+
+**迭代9（拼音描红 v3：挖空 + 虚线边缘 + 整字一次判定）要点**：
+1. **玩法变更**（用户确认）：旧"沿虚线描骨架"被否（视觉不对），改为**挖空 + 虚线边缘**：字母内部浅色填充（挖空感）+ 金色虚线轮廓；用户写拼音，手写内容**在虚线内 ≥60%** 即通过（用户口径）
+2. **轮廓数据源**：Arial 真实字形（tools/extract-outlines.mjs + opentype.js 离线提取，一次性工具），27 字母 d + bbox 归一化到四线三格（基线 130/x-height 65），输出 pinyin-outlines.js（13KB）经 script 标签注入 window.PINYIN_OUTLINES；业界对照：贝乐虎拼音等儿童 App 均为"描红字帖式（浅影/挖空 + 宽松判定）"，与方案一致
+3. **整字一次判定三条件**：内部占比（isPointInPath nonzero）≥0.60 + 贴带占比（isPointInStroke 26px 带）≥0.25 + 轮廓覆盖（轮廓点距墨迹 ≤14px）≥0.40；不再逐字母推进，一次写完整个拼音全点亮
+4. **判定坑**：Path2D 烘焙（addPath+DOMMatrix）后判定必须单位变换（isPointInPath 会应用 CTM）；isPointInStroke 前必须 setLineDash([])（dash 影响命中）；opentype 输出 d 必须归一化坐标（曾漏掉导致采样全错位）
+5. **验收**：标准书写 135 次（蛇形填充 regionPts）100%、歪写 54 次（上方乱线/中部横穿）100% 拒绝、端到端 chuī 4/4 点亮、i8 回归 13 项全过；Playwright 蛇形走笔 = 区域内部采样点按列 zigzag
 
 ---
 
@@ -192,24 +204,27 @@
 ### 4.4 验收脚本要点（Playwright，test/playwright-e2e.mjs）
 
 ```bash
-node test/playwright-e2e.mjs 8080   # 完整验收（≈10 分钟：L1 + 130 标准 + 52 歪描 + 端到端）
+node test/playwright-e2e.mjs 8080   # 完整验收（≈10 分钟：L1 + 135 标准 + 54 歪写 + 端到端）
 ```
 
-五段验收：
+五段验收（v3 整字一次判定版）：
 1. **L1 切瓜**：真实 DOM 事件切 12 个水果 → dialog 弹出 → 进入 L2 → 点第一个字卡 → 蒙层打开（拼音行渲染正确）
-2. **标准描摹 130 次**：读取页面 `hwTmplPts` 每 3 点取 1 + 2px 种子抖动 → 真实 `page.mouse` 沿点描 → 700ms 判定 → 推进（idx===1）
-3. **歪描 52 次**：只描 25% / bbox 上方 30px 乱线 → 必须保持 idx===0（要求重描）
-4. **端到端 chuī**：逐字母描 → 点亮 4/4 → 🎉 → **等完成动画 1000ms（判定 700ms + 关闭 1000ms = 1700ms，读取需 1.2s+ 缓冲）** → 蒙层 display=none
-5. **页面错误**：pageerror 计数 === 0
+2. **挖空视觉**：画布像素数 > 3000（虚线 + 浅色填充已绘制）
+3. **标准书写 135 次**：读取页面 `hwWordLayout.regionPts`（字母内部采样点）蛇形排序（按列 zigzag）→ 真实 `page.mouse` 走笔 → 700ms 判定 → `hwTraceSettled===true && lit===1`
+4. **歪写 54 次**：字母上方乱线（y=20）/ 字母竖直中心横穿线 → 必须 `settled===false && msg 含"没写准"`
+5. **端到端 chuī**：蛇形写一遍 → 点亮 4/4 → 🎉 → **等判定 700ms + 完成动画 1000ms + 关闭** → 蒙层 display=none
 
 **关键经验（踩坑记录，勿重犯）**：
-- **顶层 `let` 变量不能通过 `window.x = ...` 覆盖**：index.html 的 `hwTraceIdx/hwInkPts/l2` 是顶层 let（全局词法环境，非 window 属性）。`page.evaluate` 内必须用裸标识符（`hwInkPts = []`）才能操作真实变量
-- **openHWOverlay 对已完成 idx 直接 return**（`l2.pinyinDone.some(p => p.idx === idx)`）：批量循环每个样本必须用**递增负 idx**（`-1, -2, ...`），否则成功一次后后续样本全部打不开蒙层；单字母批量时 pinyinDone 会累积（130 条），端到端断言**不能依赖 done 总数**，用 lit 数 + 蒙层状态
+- **顶层 `let` 变量不能通过 `window.x = ...` 覆盖**：index.html 的 `hwWordLayout/hwInkPts/l2` 是顶层 let（全局词法环境，非 window 属性）。`page.evaluate` 内必须用裸标识符（`hwInkPts = []`）才能操作真实变量
+- **openHWOverlay 对已完成 idx 直接 return**（`l2.pinyinDone.some(p => p.idx === idx)`）：批量循环每个样本必须用**递增负 idx**（`-1, -2, ...`），否则成功一次后后续样本全部打不开蒙层；单字母批量时 pinyinDone 会累积（135 条），端到端断言**不能依赖 done 总数**，用 lit 数 + 蒙层状态
 - **成功路径 1s 后自动关闭蒙层**（🎉 → `setTimeout(close, 1000)`）：读结果后若成功需等 ~1.2s 再画下一样本，否则下一样本笔画画到一半蒙层被关
 - **两个样本间必须间隔 ≥800ms**（openLetterOverlay 内部已等）：700ms 停笔判定 + 清理，防乱序
-- **歪描不能用模板平移**（见 §二 教训）：w/m 斜线周期 30.8px < 48px 判定带宽，任何水平偏移必撞线；竖线字母垂直平移自重叠；x 交叉斜线与斜向平移平行。只能用「不完整描摹」+「远离模板的乱线」
-- **drawTrace 的 offsetY 等选项需真实现**：传了没实现的选项会被静默忽略 → 歪描画成标准描摹 → 误通过（曾致拒绝率崩到 69.2%）
-- **蒙层关闭时机**：判定 700ms + 完成动画 1000ms = 1700ms 才关闭，最终断言等待要覆盖（当前 +1.2s）
+- **歪写测试设计**：不能用"字母轮廓平移/部分描摹"（轮廓带 26px 宽 + 区域 8px 采样网格，部分覆盖会误过轮廓阈值 0.40）；用「字母上方乱线（区域内 0%）」+「中部横穿线（区域内 ~20%）」——内部占比必然 <60%
+- **轮廓数据必须归一化坐标**：tools/extract-outlines.mjs 生成 pinyin-outlines.js 时 d 坐标需 tx/ty 变换到四线三格（曾漏掉：d 保持字体原始单位，渲染/采样全错位，isPointInPath 全 false 排查半天）
+- **buildWordLayout 采样前必须 setTransform(1,0,0,1,0,0)**：renderTraceWord 已设 dpr 变换，isPointInPath/isPointInStroke 会双重变换导致全 false
+- **Path2D 烘焙**：`p.addPath(base, new DOMMatrix([s2,0,0,s2,ox,offY]))` 后路径坐标为画布坐标，判定用单位变换查询，渲染用 dpr 变换——两者互不干扰
+- **isPointInStroke 前 setLineDash([])**：虚线 dash 会影响命中测试，判定前必须清
+- **蒙层关闭时机**：判定 700ms + 完成动画 1000ms = 1700ms 才关闭，最终断言等待要覆盖（当前 +2.4s）
 - Playwright 版本：import grade1-practice 的 `node_modules/playwright/index.mjs`（本仓库无依赖）
 
 ### 4.5 带声调拼音处理机制
