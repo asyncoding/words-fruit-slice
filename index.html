@@ -70,15 +70,15 @@ canvas{display:block;width:100%;height:100%}
 #l2-chars .char-card:active{transform:scale(1.1)}
 #l2-chars .char-card.done{border-color:#06d6a0;background:rgba(6,214,160,.1)}
 
-/* ===== Pinyin Handwriting Overlay ===== */
+/* ===== Pinyin Handwriting Overlay（描红玩法） ===== */
 #hw-overlay{position:fixed;top:0;left:0;width:100%;height:100%;z-index:200;display:none;flex-direction:column;background:rgba(0,0,0,.92)}
 #hw-overlay .hw-top{display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#222}
 #hw-overlay .hw-char{font-size:48px;color:#ffd700;font-weight:bold}
 #hw-overlay .hw-close-btn{padding:6px 16px;border-radius:16px;border:1px solid #888;background:transparent;color:#aaa;font-size:14px;cursor:pointer;pointer-events:auto}
+#hw-overlay .hw-pinyin-line{display:flex;align-items:center;justify-content:center;gap:4px;padding:8px 16px 2px;font-size:34px;letter-spacing:2px}
+#hw-overlay .hw-pinyin-line .py-letter{color:rgba(255,255,255,.28);transition:all .3s}
+#hw-overlay .hw-pinyin-line .py-letter.lit{color:#06d6a0;text-shadow:0 0 12px rgba(6,214,160,.6)}
 #hw-overlay .hw-status{font-size:13px;color:rgba(255,255,255,.5);text-align:center;padding:6px}
-#hw-overlay .hw-result-area{display:flex;align-items:center;justify-content:center;gap:6px;min-height:36px;padding:4px 16px}
-#hw-overlay .hw-result-area .hw-letter{display:inline-flex;align-items:center;gap:2px;padding:4px 10px;border-radius:6px;background:rgba(255,215,0,.15);color:#ffd700;font-size:22px;font-weight:bold}
-#hw-overlay .hw-result-area .hw-letter .hw-del{cursor:pointer;pointer-events:auto;font-size:14px;color:rgba(255,255,255,.3);margin-left:4px}
 #hw-overlay .hw-canvas-wrap{flex:1;display:flex;position:relative;touch-action:none}
 #hw-overlay .hw-canvas-wrap canvas{flex:1;touch-action:none;display:block;background:#0a0a1a}
 #hw-overlay .hw-msg{text-align:center;padding:10px;font-size:16px;color:#06d6a0;font-weight:bold}
@@ -206,11 +206,11 @@ canvas{display:block;width:100%;height:100%}
 <!-- Handwriting Overlay -->
 <div id="hw-overlay">
   <div class="hw-top">
-    <span>✏️ 手写拼音 — <span id="hw-target-char" class="hw-char">春</span></span>
+    <span>✏️ 描拼音 — <span id="hw-target-char" class="hw-char">春</span></span>
     <button class="hw-close-btn" id="hwCloseBtn">✕ 关闭</button>
   </div>
-  <div class="hw-status">手写每个字母后稍等片刻会自动识别，识别错误的字母可点击删除。</div>
-  <div class="hw-result-area" id="hwResultArea"></div>
+  <div class="hw-pinyin-line" id="hwPinyinLine"></div>
+  <div class="hw-status">沿着虚线描一描「<span id="hwTraceLetter" style="color:#ffd700">u</span>」，描完自动进入下一个字母</div>
   <div class="hw-canvas-wrap">
     <canvas id="hwCanvas"></canvas>
   </div>
@@ -228,9 +228,6 @@ canvas{display:block;width:100%;height:100%}
 </div>
 
 <script>
-// 手写拼音识别：最低置信度阈值（低于则不采纳，可调）
-// 迭代5：置信度阈值 0.30→0.20（离线 624 样本网格：通过率 87.0%→90.2%，错识仅 +3 且真实关卡候选集更小更安全）
-const HW_MIN_CONF = 0.20;
 // ==================== GAME DATA ====================
 let GAME_DATA = { sections: [] };
 let gameDataLoaded = false;
@@ -753,7 +750,6 @@ function startLevel2() {
   renderL2Chars();
   showTab('pinyin');
   initJieba();
-  loadCNNModel();
 }
 
 function renderL2Chars() {
@@ -789,135 +785,252 @@ document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => showTab(tab.dataset.tab));
 });
 
-// ==================== Pinyin Handwriting with CNN ====================
-let hwCNNLoaded = false;
+// ==================== 拼音描红（Trace）玩法 ====================
+// 玩法：汉字下方显示完整拼音；下方画布显示当前字母的虚线规范手写模板，
+// 孩子沿虚线描摹；停笔后比对笔迹与模板线条的空间覆盖率，模板线 ≥60% 被描到即通过；
+// 每通过一个字母点亮拼音中对应字母，全部描完 → 完成结算。
+// 取代原「自由书写 → CNN 识别」（识别率无法达标，孩子挫败感强）
+
 let hwCharData = null;
 let hwCharIdx = -1;
-let hwRecognized = [];
 let hwDrawing = false;
 let hwLastPt = null;
+let hwTraceSeq = [];      // 当前拼音字母序列（含 ü，如 chūn → c,h,ū,n）
+let hwTraceIdx = 0;       // 当前描到第几个字母
+let hwTraceKey = '';      // 当前字母模板 key（如 'ü'）
+let hwTmplPts = null;     // 当前模板在画布上的插值点集（画布坐标）
+let hwTmplHash = null;    // 模板点空间哈希
+let hwInkPts = [];        // 本次笔迹点（画布坐标，4px 去重）
+let hwRecTimer = null;    // 停笔判定定时器（全局，开新蒙层时取消旧判定）
 
-let hwORTLoading = null;
-async function loadCNNModel() {
-  if (hwCNNLoaded) return;
-  if (typeof ort === 'undefined') {
-    if (!hwORTLoading) {
-      hwORTLoading = new Promise((resolve, reject) => {
-        const s = document.createElement('script');
-        s.src = 'vendor/ort/ort.min.js';
-        s.onload = resolve;
-        s.onerror = () => reject(new Error('onnxruntime-web failed to load'));
-        document.head.appendChild(s);
-      });
+// ---- 规范手写体模板（归一化坐标：x 0~100，y 0~100 字母主体，descender 可 >100） ----
+const _arcPts = (cx, cy, r, a0, a1, n = 14) => {
+  const pts = [];
+  for (let i = 0; i <= n; i++) {
+    const a = (a0 + (a1 - a0) * i / n) * Math.PI / 180;
+    pts.push([cx + r * Math.cos(a), cy + r * Math.sin(a)]);
+  }
+  return pts;
+};
+// 坐标系（描红本四线三格）：cap 顶 y=0，x-height 顶 y=65，基线 y=130，descender 底 y=195；x 0~100
+const TRACE_TEMPLATES = (() => {
+  const L = (x1, y1, x2, y2) => [[x1, y1], [x2, y2]];
+  const A = _arcPts;
+  return {
+    a: [A(52, 97, 30, 0, 360), L(82, 97, 82, 130)],
+    b: [L(26, 0, 26, 130), A(68, 97, 28, 0, 360)],
+    c: [A(52, 97, 30, 40, 320)],
+    d: [A(48, 97, 28, 0, 360), L(76, 0, 76, 130)],
+    e: [A(52, 97, 30, 40, 320), L(46, 97, 68, 97)],
+    f: [L(55, 0, 55, 130), L(38, 15, 72, 15), L(44, 82, 66, 82)],
+    g: [A(48, 97, 28, 0, 360), L(76, 97, 76, 155), L(76, 155, 58, 155)],
+    h: [L(26, 0, 26, 130), A(50, 65, 24, 180, 360).concat([[74, 130]])],
+    i: [L(55, 65, 55, 130), L(52, 42, 58, 50)],
+    j: [L(55, 45, 55, 155), L(55, 155, 42, 155), L(53, 42, 58, 34)],
+    k: [L(30, 0, 30, 130), L(30, 82, 72, 40), L(30, 82, 72, 130)],
+    l: [L(55, 0, 55, 130)],
+    m: [L(20, 65, 20, 130), A(42.5, 65, 22.5, 180, 360).concat([[65, 130]]), A(87.5, 65, 22.5, 180, 360).concat([[110, 130]])],
+    n: [L(24, 65, 24, 130), A(49, 65, 25, 180, 360).concat([[74, 130]])],
+    o: [A(52, 97, 30, 0, 360)],
+    p: [L(25, 0, 25, 130), A(68, 155, 28, 0, 360)],
+    q: [A(48, 97, 28, 0, 360), L(76, 110, 76, 158), L(76, 158, 60, 158)],
+    r: [L(25, 65, 25, 130), A(42.5, 65, 17.5, 180, 360).concat([[60, 85]])],
+    s: [L(58, 66, 40, 66), L(40, 66, 60, 98), L(60, 98, 40, 130), L(40, 130, 58, 130)],
+    t: [L(55, 0, 55, 130), L(35, 82, 75, 82)],
+    u: [L(26, 65, 26, 115), A(50, 115, 24, 180, 360), L(74, 115, 74, 65)],
+    v: [L(18, 65, 50, 130), L(50, 130, 82, 65)],
+    w: [L(10, 65, 30, 130), L(30, 130, 50, 65), L(50, 65, 70, 130), L(70, 130, 90, 65)],
+    x: [L(22, 65, 78, 130), L(78, 65, 22, 130)],
+    y: [L(20, 65, 50, 130), L(50, 130, 80, 65), L(50, 130, 50, 165)],
+    z: [L(25, 65, 75, 65), L(75, 65, 25, 130), L(25, 130, 75, 130)],
+    'ü': [L(26, 65, 26, 115), A(50, 115, 24, 180, 360), L(74, 115, 74, 65), L(38, 42, 42, 34), L(62, 42, 66, 34)],
+  };
+})();
+// 声调字母 → 模板 key
+const TONE_TO_KEY = {
+  'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e',
+  'ī':'i','í':'i','ǐ':'i','ì':'i','ō':'o','ó':'o','ǒ':'o','ò':'o',
+  'ū':'u','ú':'u','ǔ':'u','ù':'u','ǖ':'ü','ǘ':'ü','ǚ':'ü','ǜ':'ü','ü':'ü',
+};
+
+// ---- 比对参数 ----
+const TRACE_STEP = 4;            // 模板/笔迹插值点间距（px）
+const TRACE_RADIUS = 24;         // 判定容差（px，视觉 x-height ~100px 的 24%）
+const TRACE_TMPL_COVER = 0.6;    // 模板线被描覆盖率 ≥ 60% 才通过
+const TRACE_INK_COVER = 0.5;     // 笔迹贴线比例 ≥ 50%（防乱涂不贴线）
+
+// 折线 → 按步长插值点集
+function polylineToPts(polyline, step) {
+  const pts = [];
+  for (const stroke of polyline) {
+    for (let i = 0; i + 1 < stroke.length; i++) {
+      const [x1, y1] = stroke[i], [x2, y2] = stroke[i + 1];
+      const d = Math.hypot(x2 - x1, y2 - y1);
+      const n = Math.max(1, Math.ceil(d / step));
+      for (let j = 0; j < n; j++) pts.push([x1 + (x2 - x1) * j / n, y1 + (y2 - y1) * j / n]);
     }
-    try { await hwORTLoading; } catch(e) { console.warn('onnxruntime-web load failed:', e); return; }
   }
-  try {
-    ort.env.wasm.wasmPaths = new URL('vendor/ort/', document.baseURI).href;
-    window.__emnistSession = await ort.InferenceSession.create('emnist_cnn.onnx', {
-      executionProviders: ['wasm'],
-      graphOptimizationLevel: 'all',
-    });
-    hwCNNLoaded = true;
-    console.log('CNN model loaded');
-  } catch(e) {
-    console.warn('CNN model load failed:', e);
-    const msgEl = document.getElementById('hwMsg');
-    if (msgEl) { msgEl.textContent = '⚠️ 识别引擎加载失败，请刷新重试'; msgEl.classList.add('error'); }
-  }
+  return pts;
 }
 
-async function recognizeLetterCNN(canvasEl, allowedLetters) {
-  if (!window.__emnistSession) return null;
-  const ctx2d = canvasEl.getContext('2d');
-  const w = canvasEl.width, h = canvasEl.height;
-  const imageData = ctx2d.getImageData(0, 0, w, h);
-  const pixels = imageData.data;
-
-  let minX = w, minY = h, maxX = 0, maxY = 0;
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      if (pixels[(y * w + x) * 4 + 3] > 20) {
-        if (x < minX) minX = x; if (y < minY) minY = y;
-        if (x > maxX) maxX = x; if (y > maxY) maxY = y;
+// 空间哈希（cell 32px），返回 nearestDist 查询函数
+function buildTraceHash(pts, cell) {
+  const hash = new Map();
+  for (const p of pts) {
+    const kx = Math.floor(p[0] / cell), ky = Math.floor(p[1] / cell);
+    const k = kx + ',' + ky;
+    if (!hash.has(k)) hash.set(k, []);
+    hash.get(k).push(p);
+  }
+  return (x, y) => {
+    const kx = Math.floor(x / cell), ky = Math.floor(y / cell);
+    let best = Infinity;
+    for (let dx = -1; dx <= 1; dx++) for (let dy = -1; dy <= 1; dy++) {
+      const bucket = hash.get((kx + dx) + ',' + (ky + dy));
+      if (!bucket) continue;
+      for (const p of bucket) {
+        const d = (p[0] - x) ** 2 + (p[1] - y) ** 2;
+        if (d < best) best = d;
       }
     }
+    return Math.sqrt(best);
+  };
+}
+
+// 渲染当前字母的虚线模板 → 收集模板插值点
+function renderTraceTemplate() {
+  const hc = document.getElementById('hwCanvas');
+  const ctx2d = hc.getContext('2d');
+  const rect = hc.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx2d.clearRect(0, 0, rect.width, rect.height);
+
+  const templ = TRACE_TEMPLATES[hwTraceKey] || TRACE_TEMPLATES[hwTraceKey.toLowerCase()] || TRACE_TEMPLATES.a;
+  // 统一参考：cap 高 130 单位 → 画布 ~200px（x-height=100px 视觉），所有字母同一 scale
+  const H_REF = 130, H_PX = Math.min(rect.height * 0.5, 200);
+  const scale = H_PX / H_REF;
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  for (const stroke of templ) for (const [x, y] of stroke) {
+    if (x < minX) minX = x; if (x > maxX) maxX = x;
+    if (y < minY) minY = y; if (y > maxY) maxY = y;
   }
-  if (minX > maxX || minY > maxY) return null;
+  const bw = maxX - minX + 1;
+  const offX = (rect.width - bw * scale) / 2;
+  const offY = (rect.height - (maxY - minY) * scale) / 2;
+  const tx = (x) => offX + (x - minX) * scale;
+  const ty = (y) => offY + (y - minY) * scale;
 
-  // EMNIST 风格预处理：bbox → 等比缩放至 20×20 → 28×28 居中 → 笔画质心对齐 (14,14)
-  const bw = maxX - minX + 1, bh = maxY - minY + 1;
-  const scale20 = 20 / Math.max(bw, bh);
-  const dw = Math.max(1, Math.round(bw * scale20)), dh = Math.max(1, Math.round(bh * scale20));
-
-  const tmp = document.createElement('canvas');
-  tmp.width = 28; tmp.height = 28;
-  const tmpCtx = tmp.getContext('2d');
-  tmpCtx.drawImage(canvasEl, minX, minY, bw, bh, Math.floor((28 - dw) / 2), Math.floor((28 - dh) / 2), dw, dh);
-
-  const tmpData = tmpCtx.getImageData(0, 0, 28, 28);
-  let cx = 0, cy = 0, cnt = 0, tMinX = 28, tMinY = 28, tMaxX = 0, tMaxY = 0;
-  for (let y = 0; y < 28; y++) {
-    for (let x = 0; x < 28; x++) {
-      if (tmpData.data[(y * 28 + x) * 4 + 3] > 20) {
-        cx += x; cy += y; cnt++;
-        if (x < tMinX) tMinX = x; if (x > tMaxX) tMaxX = x;
-        if (y < tMinY) tMinY = y; if (y > tMaxY) tMaxY = y;
-      }
-    }
+  // 收集画布坐标点
+  const all = [];
+  for (const stroke of templ) {
+    const canvasStroke = stroke.map(([x, y]) => [tx(x), ty(y)]);
+    all.push(canvasStroke);
   }
-  if (!cnt) return null;
-  let dx = Math.round(14 - cx / cnt), dy = Math.round(14 - cy / cnt);
-  dx = Math.max(-tMinX, Math.min(dx, 27 - tMaxX));
-  dy = Math.max(-tMinY, Math.min(dy, 27 - tMaxY));
+  hwTmplPts = polylineToPts(all, TRACE_STEP);
+  hwTmplHash = buildTraceHash(hwTmplPts, 32);
 
-  const floatArray = new Float32Array(28 * 28);
-  for (let y = 0; y < 28; y++) {
-    const sy = y - dy;
-    if (sy < 0 || sy >= 28) continue;
-    for (let x = 0; x < 28; x++) {
-      const sx = x - dx;
-      if (sx < 0 || sx >= 28) continue;
-      const i = (sy * 28 + sx) * 4;
-      const a = tmpData.data[i + 3] / 255.0;
-      floatArray[y * 28 + x] = (0.299 * tmpData.data[i] + 0.587 * tmpData.data[i + 1] + 0.114 * tmpData.data[i + 2]) * a / 255.0;
-    }
+  // 画虚线模板
+  ctx2d.strokeStyle = 'rgba(255,215,0,.45)';
+  ctx2d.lineWidth = 12;
+  ctx2d.setLineDash([10, 9]);
+  ctx2d.lineCap = 'round'; ctx2d.lineJoin = 'round';
+  for (const stroke of all) {
+    ctx2d.beginPath();
+    ctx2d.moveTo(stroke[0][0], stroke[0][1]);
+    for (let i = 1; i < stroke.length; i++) ctx2d.lineTo(stroke[i][0], stroke[i][1]);
+    ctx2d.stroke();
   }
+  ctx2d.setLineDash([]);
+}
 
-  const tensor = new ort.Tensor('float32', floatArray, [1, 1, 28, 28]);
-  const results = await window.__emnistSession.run({ input: tensor });
-  const probs = results.output.data;
-  let bestIdx = 0, lowConf = false;
-  if (allowedLetters && allowedLetters.length) {
-    // 候选集约束：只在期望拼音去重后的字母集合内取最大概率
-    const allowedSet = new Set(allowedLetters.map(l => l.charCodeAt(0) - 97));
-    let bestAllowed = -1;
-    for (const idx of allowedSet) {
-      if (idx >= 0 && idx < 26 && (bestAllowed < 0 || probs[idx] > probs[bestAllowed])) bestAllowed = idx;
-    }
-    if (bestAllowed >= 0 && probs[bestAllowed] >= HW_MIN_CONF) {
-      bestIdx = bestAllowed;
-    } else if (bestAllowed >= 0) {
-      // 允许集合内概率过低 → 退回全 26 类全局最大概率（保底），标记低置信
-      for (let i = 1; i < 26; i++) if (probs[i] > probs[bestIdx]) bestIdx = i;
-      lowConf = true;
-    }
+// 点亮拼音行第 i 个字母
+function lightPinyinLetter(i) {
+  const spans = document.querySelectorAll('#hwPinyinLine .py-letter');
+  if (spans[i]) spans[i].classList.add('lit');
+}
+
+// 停笔判定：模板覆盖率 + 笔迹贴线率
+function judgeTrace() {
+  if (!hwInkPts.length) {
+    document.getElementById('hwMsg').textContent = '✏️ 还没写呢，沿着虚线描一描';
+    document.getElementById('hwMsg').classList.remove('error');
+    return;
+  }
+  let inkOn = 0;
+  for (const p of hwInkPts) if (hwTmplHash(p[0], p[1]) <= TRACE_RADIUS) inkOn++;
+  const inkCover = inkOn / hwInkPts.length;
+
+  // 模板被覆盖比例：模板点最近笔迹 ≤ R（对模板点建 hash 太慢 → 对笔迹建 hash）
+  const inkHash = buildTraceHash(hwInkPts, 32);
+  let tmplOn = 0;
+  for (const p of hwTmplPts) if (inkHash(p[0], p[1]) <= TRACE_RADIUS) tmplOn++;
+  const tmplCover = tmplOn / hwTmplPts.length;
+
+  if (tmplCover >= TRACE_TMPL_COVER && inkCover >= TRACE_INK_COVER) {
+    traceNext(true);
   } else {
-    for (let i = 1; i < 26; i++) if (probs[i] > probs[bestIdx]) bestIdx = i;
+    const msgEl = document.getElementById('hwMsg');
+    msgEl.textContent = '✍️ 没描好（只描到 ' + Math.round(tmplCover * 100) + '% 的虚线），再描一次';
+    msgEl.classList.add('error');
+    hwInkPts = [];
+    renderTraceTemplate();
   }
-  return { letter: String.fromCharCode(97 + bestIdx), confidence: Math.round(probs[bestIdx] * 100) / 100, lowConf };
 }
 
+// 推进到下一个字母；全部完成 → 结算
+function traceNext(passed) {
+  const msgEl = document.getElementById('hwMsg');
+  hwInkPts = [];
+  if (passed) {
+    msgEl.classList.remove('error');
+    lightPinyinLetter(hwTraceIdx);
+    hwTraceIdx++;
+  }
+  if (hwTraceIdx >= hwTraceSeq.length) {
+    msgEl.textContent = '🎉 你真棒！拼音写完了！';
+    playCoin();
+    setTimeout(() => {
+      document.getElementById('hw-overlay').style.display = 'none';
+      l2.pinyinDone.push({ idx: hwCharIdx, char: hwCharData, pinyin: hwCharData.pinyin });
+      renderL2Chars();
+      updateL2Coins();
+    }, 1000);
+    return;
+  }
+  hwTraceKey = hwTraceSeq[hwTraceIdx];
+  document.getElementById('hwTraceLetter').textContent = hwTraceKey === 'ü' ? 'ü' : hwTraceKey;
+  renderTraceTemplate();
+  msgEl.textContent = passed ? '👍 很好！继续描「' + hwTraceKey + '」' : '';
+}
+
+// ---- 蒙层打开 / 绘制 ----
 function openHWOverlay(charData, idx) {
   if (l2.pinyinDone.some(p => p.idx === idx)) return;
+  clearTimeout(hwRecTimer);   // 取消上一蒙层的停笔判定，防乱序
+  hwDrawing = false;
   hwCharData = charData;
   hwCharIdx = idx;
-  hwRecognized = [];
 
   document.getElementById('hw-target-char').textContent = charData.character;
-  document.getElementById('hwResultArea').innerHTML = '';
   document.getElementById('hwMsg').textContent = '';
   document.getElementById('hwMsg').classList.remove('error');
+
+  // 拼音行：原拼音逐字符 span（含声调字符）
+  const line = document.getElementById('hwPinyinLine');
+  line.innerHTML = '';
+  const raw = charData.pinyin || '';
+  hwTraceSeq = [];
+  for (const ch of raw) {
+    const span = document.createElement('span');
+    span.className = 'py-letter';
+    span.textContent = ch;
+    line.appendChild(span);
+    hwTraceSeq.push(TONE_TO_KEY[ch] !== undefined ? TONE_TO_KEY[ch] : ch);
+  }
+  hwTraceIdx = 0;
+  hwTraceKey = hwTraceSeq[0] || 'a';
+  document.getElementById('hwTraceLetter').textContent = hwTraceKey === 'ü' ? 'ü' : hwTraceKey;
 
   const overlay = document.getElementById('hw-overlay');
   overlay.style.display = 'flex';
@@ -935,6 +1048,7 @@ function openHWOverlay(charData, idx) {
     ctx2d.lineCap = 'round'; ctx2d.lineJoin = 'round';
     ctx2d.lineWidth = Math.max(8, Math.min(rect.width, rect.height) * 0.05);
     ctx2d.strokeStyle = '#fff';
+    renderTraceTemplate();
   };
   setupHWCanvas();
   hc.style.touchAction = 'none';
@@ -944,111 +1058,36 @@ function openHWOverlay(charData, idx) {
     return { x: (e.clientX || 0) - rect.left, y: (e.clientY || 0) - rect.top };
   };
 
-  let hwRecTimer = null;
   const startDraw = (e) => {
-    hwDrawing = true; hwLastPt = getPos(e);
+    hwDrawing = true;
+    hwLastPt = getPos(e);
+    hwInkPts.push([hwLastPt.x, hwLastPt.y]);
     clearTimeout(hwRecTimer);
   };
   const moveDraw = (e) => {
-    if (!hwDrawing) return; e.preventDefault();
+    if (!hwDrawing) return;
+    e.preventDefault();
     const pt = getPos(e);
     const ctx2d = hc.getContext('2d');
     ctx2d.beginPath(); ctx2d.moveTo(hwLastPt.x, hwLastPt.y);
     ctx2d.lineTo(pt.x, pt.y); ctx2d.stroke();
     hwLastPt = pt;
+    const last = hwInkPts[hwInkPts.length - 1];
+    if (!last || Math.hypot(pt.x - last[0], pt.y - last[1]) >= TRACE_STEP) hwInkPts.push([pt.x, pt.y]);
   };
   const endDraw = () => {
     hwDrawing = false;
-    // 单一滑动定时器：静置 900ms 识别；新笔画开始即取消重计时，
-    // 避免多笔画字母（t/i/f/k/u/g 等 2-3 笔）被拆成单笔误识别
+    // 单一滑动定时器：静置 700ms 判定；新笔画开始即取消重计时
     clearTimeout(hwRecTimer);
-    hwRecTimer = setTimeout(() => { if (!hwDrawing) doHWRecognize(hc); }, 900);
+    hwRecTimer = setTimeout(() => { if (!hwDrawing) judgeTrace(); }, 700);
   };
 
   hc.onpointerdown = startDraw;
   hc.onpointermove = moveDraw;
   hc.onpointerup = endDraw;
   hc.onpointercancel = () => { hwDrawing = false; };
-
-  loadCNNModel();
 }
 
-async function doHWRecognize(hc) {
-  // 期望拼音去声调后去重，作为候选集约束（借鉴 grade1-practice TONE_MAP 机制）
-  const TONE_MAP = {
-    'ā':'a','á':'a','ǎ':'a','à':'a','ē':'e','é':'e','ě':'e','è':'e',
-    'ī':'i','í':'i','ǐ':'i','ì':'i','ō':'o','ó':'o','ǒ':'o','ò':'o',
-    'ū':'u','ú':'u','ǔ':'u','ù':'u','ǖ':'v','ǘ':'v','ǚ':'v','ǜ':'v','ü':'v',
-  };
-  const stripTones = (s) => s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-  const raw = hwCharData.pinyin;
-  const expected = stripTones(raw);
-  // ü 系字母（nǚ/lǜ/jù 等）：孩子可能写成 v 或 u → 候选集同时含 u 和 v
-  const hasUmlaut = /[üǖǘǚǜ]/.test(raw);
-  const expectedLetters = [...new Set([...expected.split(''), ...(hasUmlaut ? ['v'] : [])])];
-  const msgEl = document.getElementById('hwMsg');
-  const result = await recognizeLetterCNN(hc, expectedLetters);
-  if (!result) {
-    if (!window.__emnistSession) {
-      msgEl.textContent = '⌛ 识别引擎加载中，请稍等片刻再试…';
-      msgEl.classList.add('error');
-    }
-    return;
-  }
-
-  // 清空画布（两种结果路径都要清）
-  const ctx2d = hc.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
-  ctx2d.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctx2d.clearRect(0, 0, hc.width, hc.height);
-
-  // 置信度拒识：候选集内无够信心答案(lowConf) 或 置信度过低 → 不采纳，提示重写（已识别字母保留）
-  if (result.lowConf || result.confidence < HW_MIN_CONF) {
-    msgEl.textContent = '✍️ 没看清，再写一次';
-    msgEl.classList.add('error');
-    return;
-  }
-
-  hwRecognized.push(result.letter);
-  renderHWResult();
-
-  // Check if recognized pinyin matches
-  const guessed = hwRecognized.join('');
-  if (guessed === expected) {
-    msgEl.textContent = '🎉 你真棒！拼音正确！';
-    msgEl.classList.remove('error');
-    playCoin();
-    setTimeout(() => {
-      document.getElementById('hw-overlay').style.display = 'none';
-      l2.pinyinDone.push({ idx: hwCharIdx, char: hwCharData, pinyin: guessed });
-      renderL2Chars();
-      updateL2Coins();
-    }, 1000);
-  } else if (guessed.length >= expected.length || !expected.startsWith(guessed)) {
-    // 前缀实时反馈：当前串不是期望前缀（或已写满仍不相等）→ 提示删除重写
-    msgEl.textContent = `❌ 第${guessed.length}个字母不对，点字母上的✕重写`;
-    msgEl.classList.add('error');
-  } else {
-    // 前缀正确：清掉之前错误提示
-    msgEl.textContent = '';
-    msgEl.classList.remove('error');
-  }
-}
-
-function renderHWResult() {
-  const area = document.getElementById('hwResultArea');
-  area.innerHTML = '';
-  hwRecognized.forEach((letter, i) => {
-    const span = document.createElement('span');
-    span.className = 'hw-letter';
-    span.innerHTML = `${letter} <span class="hw-del" data-idx="${i}">✕</span>`;
-    span.querySelector('.hw-del').addEventListener('click', () => {
-      hwRecognized.splice(i, 1);
-      renderHWResult();
-    });
-    area.appendChild(span);
-  });
-}
 
 document.getElementById('hwCloseBtn').addEventListener('click', () => {
   document.getElementById('hw-overlay').style.display = 'none';
