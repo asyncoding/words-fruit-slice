@@ -3,6 +3,7 @@
 //   d     = SVG path data（可直接 new Path2D(d) 使用；运行时采样边缘点）
 //   bbox  = 归一化包围盒 [minX, minY, maxX, maxY]
 // 归一化坐标系（四线三格）：基线 y=130，x-height 顶 y=65（与 TRACE_TEMPLATES 体系一致）
+// 字母 'a' 采用 U+0251（拉丁字母 ɑ，手写单层形，见 TONE_TO_KEY 声调归并），其余保持 Arial
 // 用法: npm i opentype.js && node tools/extract-outlines.mjs > tools/pinyin-outlines.json
 import { readFileSync, writeFileSync, statSync } from 'node:fs';
 import opentype from 'opentype.js';
@@ -10,6 +11,9 @@ const { parse } = opentype;
 
 const FONT = process.argv[2] || '/System/Library/Fonts/Supplemental/Arial.ttf';
 const OUT = new URL('./pinyin-outlines.json', import.meta.url);
+
+// 字母 → 实际取形码位：'a' 用手写单层 ɑ（U+0251）
+const CHAR_SRC = { 'a': '\u0251' };
 
 const font = parse(readFileSync(FONT));
 const upe = font.unitsPerEm;
@@ -26,8 +30,9 @@ const out = {};
 const missing = [];
 const R = v => Math.round(v * 100) / 100;
 for (const ch of LETTERS) {
-  const glyph = font.charToGlyph(ch);
-  if (!glyph || glyph.index === 0) { missing.push(ch); continue; }
+  const src = CHAR_SRC[ch] || ch;
+  const glyph = font.charToGlyph(src);
+  if (!glyph || glyph.index === 0) { missing.push(ch + '←' + src); continue; }
   const path = glyph.getPath(0, 0, upe);
   // 路径数据坐标一并归一化（直接交给 Path2D / isPointInPath）
   let d = '';

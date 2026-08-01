@@ -81,7 +81,7 @@ canvas{display:block;width:100%;height:100%}
 #hw-overlay .hw-status{font-size:13px;color:rgba(255,255,255,.5);text-align:center;padding:6px}
 #hw-overlay .hw-canvas-wrap{flex:1;display:flex;position:relative;touch-action:none}
 #hw-overlay .hw-canvas-wrap canvas{flex:1;touch-action:none;display:block;background:#0a0a1a}
-#hw-overlay .hw-msg{text-align:center;padding:10px;font-size:16px;color:#06d6a0;font-weight:bold}
+#hw-overlay .hw-msg{position:absolute;bottom:14px;left:0;right:0;text-align:center;padding:8px 12px;font-size:18px;color:#06d6a0;font-weight:bold;text-shadow:0 0 10px rgba(0,0,0,.8);pointer-events:none}
 #hw-overlay .hw-msg.error{color:#ff6b6b}
 
 /* ===== Word Matching ===== */
@@ -160,7 +160,7 @@ canvas{display:block;width:100%;height:100%}
   <div class="section-picker" id="sectionPicker"></div>
   <button class="start-btn" id="startBtn">开始游戏</button>
   <div class="sub-text">选择要练习的课文</div>
-  <button class="known-entry-btn" id="knownEntryBtn">📖 生字本</button>
+  <button class="known-entry-btn" id="knownEntryBtn">📖 我的生字本</button>
   <button class="shop-btn" id="menuShopBtn">🏪 商店</button>
 </div>
 
@@ -255,8 +255,8 @@ canvas{display:block;width:100%;height:100%}
   <div class="hw-status">在虚线里写「<span id="hwTraceLetter" style="color:#ffd700">u</span>」，写对自动到下一个字母</div>
   <div class="hw-canvas-wrap">
     <canvas id="hwCanvas"></canvas>
+    <div class="hw-msg" id="hwMsg"></div>
   </div>
-  <div class="hw-msg" id="hwMsg"></div>
 </div>
 
 <!-- Shop Overlay -->
@@ -786,10 +786,6 @@ function startLevel1() {
   fruits.length = 0; slicedFruits.length = 0; particles.length = 0;
   state.collectedChars = []; state.usedCharIds = new Set();
   fruitsPresented = 0; spawnTimer = 0; gameTimer = 0; gameEndTimer = 0;
-  if (state.section) {
-    save.completedSections = save.completedSections.filter(s => s !== state.section.title);
-    writeSave();
-  }
   gameRunning = true;
   state.phase = 'playing';
   trackBtnExpose(['startBtn', 'menuShopBtn', 'knownEntryBtn']);
@@ -902,7 +898,7 @@ let hwInkPts = [];        // 本次笔迹点（画布坐标，4px 去重）
 let hwRecTimer = null;    // 停笔判定定时器（全局，开新蒙层时取消旧判定）
 let hwTraceSettled = false;  // 本蒙层拼音已全部完成（防完成动画期间重复结算）
 
-// ---- 字母轮廓数据（pinyin-outlines.js，Arial 真实字形，四线三格归一化） ----
+// ---- 字母轮廓数据（pinyin-outlines.js，Patrick Hand 手写体，四线三格归一化） ----
 // 坐标系：基线 y=130，x-height 顶 y=65，升部 ~40，降部 ~156；d 为 SVG path data（Path2D 可用）
 // 声调字母 → 轮廓 key
 const TONE_TO_KEY = {
@@ -1329,7 +1325,6 @@ function wordExists(word) {
 
 // Click-based word matching
 function addToWordDrop(idx) {
-  if (l2.pinyinDone.some(p => p.idx === idx)) return;
   const char = state.collectedChars[idx];
   if (!char) return;
   l2.wordDropped.push({ idx, char: char.character });
@@ -1581,12 +1576,13 @@ function showComplete() {
   // 埋点：本轮完成（切水果 → 完成页面），value 带当日累计轮数
   trackRoundComplete(state.section ? state.section.title : '');
 
-  // Mark section completed if all chars collected + all pinyin + all sentence done
+  // 课本完成判定：唯一字全部"认识"（收集 + 拼音描红通过，跨轮累计）且本轮卡片全部考察
   if (state.section) {
-    const totalChars = state.section.characters.length;
-    const allCollected = state.collectedChars.length >= totalChars;
-    const allPinyinDone = l2.pinyinDone.length >= totalChars;
-    const allSentenceDone = l2.sentenceDone.length >= totalChars;
+    const secSet = new Set(state.section.characters.map(c => c.character || c));
+    const knownSet = new Set(save.knownChars.map(k => k.c));
+    const allCollected = [...secSet].every(ch => knownSet.has(ch));
+    const allPinyinDone = l2.pinyinDone.length >= state.collectedChars.length;
+    const allSentenceDone = l2.sentenceDone.length >= state.collectedChars.length;
     if (allCollected && allPinyinDone && allSentenceDone) {
       if (!save.completedSections.includes(state.section.title)) {
         save.completedSections.push(state.section.title);
@@ -1642,7 +1638,7 @@ function initSectionPicker() {
   // 首页曝光埋点 + 生字本入口显示累计认识数
   const knownCount = save.knownChars.length;
   const entry = document.getElementById('knownEntryBtn');
-  entry.textContent = knownCount > 0 ? `📖 生字本（${knownCount}）` : '📖 生字本';
+  entry.textContent = knownCount > 0 ? `📖 我的生字本（${knownCount}）` : '📖 我的生字本';
   trackBtnExpose(['startBtn', 'menuShopBtn', 'knownEntryBtn', 'secBtn']);
   trackFuncExpose('home');
 }
