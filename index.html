@@ -125,6 +125,25 @@ canvas{display:block;width:100%;height:100%}
 
 /* ===== Pinyin done chars ===== */
 .l2-pinyin-hint{font-size:12px;color:rgba(255,255,255,.3);text-align:center;padding:6px}
+
+/* ===== 已认识生字 ===== */
+.known-entry-btn{position:absolute;top:16px;left:16px;padding:8px 16px;border-radius:20px;border:1px solid #06d6a0;background:transparent;color:#06d6a0;font-size:14px;cursor:pointer;pointer-events:auto}
+#new-chars-overlay{position:fixed;top:0;left:0;width:100%;height:100%;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.7);z-index:120}
+#new-chars-box{background:linear-gradient(135deg,#1a1a2e,#16213e);border-radius:20px;padding:28px 24px;max-width:340px;width:90%;text-align:center;border:1px solid rgba(255,255,255,.1)}
+#new-chars-box .nc-msg{font-size:17px;line-height:1.7;margin:10px 0 18px;color:#fff}
+#new-chars-box .nc-msg b{color:#ffd700}
+#new-chars-box .nc-btn{padding:10px 30px;border-radius:24px;border:none;background:linear-gradient(135deg,#06d6a0,#0f3460);color:#fff;font-size:15px;font-weight:bold;cursor:pointer;pointer-events:auto;transition:transform .2s}
+#new-chars-box .nc-btn.secondary{margin-left:10px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.7)}
+#known-overlay{position:fixed;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column;background:linear-gradient(180deg,#1a1a2e,#16213e);z-index:110}
+#known-overlay .ko-header{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:rgba(0,0,0,.3)}
+#known-overlay .ko-title{font-size:16px;font-weight:bold}
+#known-overlay .ko-count{font-size:13px;color:rgba(255,255,255,.5);margin-top:2px}
+#known-overlay .ko-close{padding:6px 16px;border-radius:16px;border:1px solid #888;background:transparent;color:#aaa;font-size:14px;cursor:pointer;pointer-events:auto}
+#known-overlay .ko-grid{flex:1;overflow-y:auto;display:flex;flex-wrap:wrap;gap:10px;align-content:flex-start;padding:16px}
+#known-overlay .ko-grid .ko-card{width:64px;height:84px;border-radius:12px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+#known-overlay .ko-grid .ko-card .kc-char{font-size:26px;font-weight:bold;color:#ffd700}
+#known-overlay .ko-grid .ko-card .kc-py{font-size:11px;color:rgba(255,255,255,.5)}
+#known-overlay .ko-empty{padding:40px;text-align:center;color:rgba(255,255,255,.4);font-size:15px}
 </style>
 </head>
 <body>
@@ -141,6 +160,7 @@ canvas{display:block;width:100%;height:100%}
   <div class="section-picker" id="sectionPicker"></div>
   <button class="start-btn" id="startBtn">开始游戏</button>
   <div class="sub-text">选择要练习的课文</div>
+  <button class="known-entry-btn" id="knownEntryBtn">📖 生字本</button>
   <button class="shop-btn" id="menuShopBtn">🏪 商店</button>
 </div>
 
@@ -203,6 +223,28 @@ canvas{display:block;width:100%;height:100%}
   </div>
 </div>
 
+<!-- 每轮结束：新增认识字弹窗 -->
+<div id="new-chars-overlay">
+  <div id="new-chars-box">
+    <h2>🎉 太棒了！</h2>
+    <p class="nc-msg" id="newCharsMsg"></p>
+    <button class="nc-btn" id="newCharsViewBtn">📖 查看已认识的生字</button>
+    <button class="nc-btn secondary" id="newCharsOkBtn">好的</button>
+  </div>
+</div>
+
+<!-- 已认识生字列表 -->
+<div id="known-overlay">
+  <div class="ko-header">
+    <div>
+      <div class="ko-title">📖 我认识的生字</div>
+      <div class="ko-count" id="knownCount">共 0 个</div>
+    </div>
+    <button class="ko-close" id="knownCloseBtn">✕ 关闭</button>
+  </div>
+  <div class="ko-grid" id="knownGrid"></div>
+</div>
+
 <!-- Handwriting Overlay -->
 <div id="hw-overlay">
   <div class="hw-top">
@@ -234,6 +276,50 @@ let gameDataLoaded = false;
 
 function log(...args) { console.log('[game]', ...args); }
 function warn(...args) { console.warn('[game]', ...args); }
+
+// ==================== UMENG (U-Web / CNZZ) ANALYTICS ====================
+// 在 https://webplus.umeng.com 注册站点后把站点 ID 填入 UMENG_SITE_ID 即可生效；
+// 未配置或 SDK 加载失败时 track() 静默降级，不影响游戏。
+const UMENG_SITE_ID = 'YOUR_CNZZ_SITE_ID';
+(function () {
+  if (UMENG_SITE_ID === 'YOUR_CNZZ_SITE_ID') return;
+  var _czc = window._czc || (window._czc = []);
+  _czc.push(['_setAccount', UMENG_SITE_ID]);
+  var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
+  g.src = 'https://v1.cnzz.com/z.js?id=' + UMENG_SITE_ID;
+  g.async = true;
+  s.parentNode.insertBefore(g, s);
+})();
+// 自定义事件（类别/动作/标签/数值）。SDK 未就绪时 push 进 _czc 缓冲数组由 SDK 接管。
+function track(cat, action, label, value) {
+  try {
+    if (!window._czc) window._czc = [];
+    var czc = window._czc;
+    if (typeof czc.push === 'function') {
+      czc.push(['_trackEvent', cat, action, label || '', typeof value === 'number' ? value : 0]);
+    } else if (typeof czc === 'function') {
+      czc('_trackEvent', cat, action, label || '', typeof value === 'number' ? value : 0);
+    }
+  } catch (e) {}
+}
+function trackBtnClick(id) { track('btn_click', id, id, 1); }
+function trackBtnExpose(ids) { (ids || []).forEach(function (id) { track('btn_expose', id, id, 1); }); }
+function trackFuncExpose(name) { track('func_expose', name, name, 1); }
+function trackFuncUse(name) { track('func_use', name, name, 1); }
+// 每日完成轮数（本地计数，跨页面刷新保留），事件 value 带当日累计
+function roundCountToday() {
+  var d = new Date();
+  var key = 'wfs-rounds-' + d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+  var n = parseInt(localStorage.getItem(key) || '0', 10);
+  return { key: key, n: n };
+}
+function trackRoundComplete(sectionTitle) {
+  var rc = roundCountToday();
+  var n = rc.n + 1;
+  try { localStorage.setItem(rc.key, String(n)); } catch (e) {}
+  track('game', 'round_complete', sectionTitle || '', n);
+}
+track('game', 'session_start', 'page', 1);
 
 function applyGameData(d, source) {
   GAME_DATA = d;
@@ -309,6 +395,7 @@ function loadSave() {
   if (!Array.isArray(s.ownedKnives)) s.ownedKnives = ['default'];
   if (!s.equippedKnife) s.equippedKnife = 'default';
   if (!Array.isArray(s.completedSections)) s.completedSections = [];
+  if (!Array.isArray(s.knownChars)) s.knownChars = [];
   return s;
 }
 function writeSave() {
@@ -704,6 +791,8 @@ function startLevel1() {
   }
   gameRunning = true;
   state.phase = 'playing';
+  trackBtnExpose(['startBtn', 'menuShopBtn', 'knownEntryBtn']);
+  trackFuncExpose('level1');
   document.getElementById('start-screen').style.display = 'none';
   document.getElementById('level2-screen').style.display = 'none';
   document.getElementById('complete-overlay').style.display = 'none';
@@ -727,9 +816,11 @@ function endLevel1() {
     : `你收集了 ${state.collectedChars.length} 个生字！完成第二关把它们兑换成金币吧！`;
   document.getElementById('dialogBtn').textContent = isEmpty ? '再玩一次' : '进入第二关 →';
   document.getElementById('dialog-overlay').style.display = 'flex';
+  trackBtnExpose(['dialogBtn']);
 }
 
 document.getElementById('dialogBtn').addEventListener('click', () => {
+  trackBtnClick('dialogBtn');
   document.getElementById('dialog-overlay').style.display = 'none';
   if (state.collectedChars.length > 0) startLevel2();
   else startLevel1();
@@ -740,6 +831,7 @@ let l2 = { pinyinDone: [], wordDropped: [], wordSuccess: [], sentenceDone: [], s
 
 function startLevel2() {
   state.phase = 'level2';
+  trackBtnExpose(['l2FinishBtn', 'charCard']);
   document.getElementById('coin-display').style.display = 'block';
   document.getElementById('level-title').style.display = 'none';
   canvas.style.display = 'none';
@@ -764,6 +856,7 @@ function renderL2Chars() {
     div.addEventListener('click', () => {
       const tabEl = document.querySelector('.tab.active');
       const tab = tabEl ? tabEl.dataset.tab : '';
+      trackBtnClick('charCard_' + (tab || 'pinyin'));
       if (tab === 'pinyin') openHWOverlay(c, idx);
       else if (tab === 'word') addToWordDrop(idx);
       else if (tab === 'sentence') fillSentenceBlank(c);
@@ -779,10 +872,15 @@ function showTab(name) {
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
   document.querySelector('.l2-pinyin-hint').style.display = name === 'pinyin' ? 'block' : 'none';
   if (name === 'sentence') initSentenceGame();
+  trackFuncExpose('level2_' + name);
+  trackFuncUse('level2_' + name);
 }
 
 document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => showTab(tab.dataset.tab));
+  tab.addEventListener('click', () => {
+    trackBtnClick('tab_' + tab.dataset.tab);
+    showTab(tab.dataset.tab);
+  });
 });
 
 // ==================== 拼音描红（Trace）玩法 ====================
@@ -802,6 +900,7 @@ let hwTmplPts = null;     // 当前模板在画布上的插值点集（画布坐
 let hwTmplHash = null;    // 模板点空间哈希
 let hwInkPts = [];        // 本次笔迹点（画布坐标，4px 去重）
 let hwRecTimer = null;    // 停笔判定定时器（全局，开新蒙层时取消旧判定）
+let hwTraceSettled = false;  // 本蒙层拼音已全部完成（防完成动画期间重复结算）
 
 // ---- 规范手写体模板（归一化坐标：x 0~100，y 0~100 字母主体，descender 可 >100） ----
 const _arcPts = (cx, cy, r, a0, a1, n = 14) => {
@@ -961,6 +1060,9 @@ function judgeTrace() {
   for (const p of hwInkPts) if (hwTmplHash(p[0], p[1]) <= TRACE_RADIUS) inkOn++;
   const inkCover = inkOn / hwInkPts.length;
 
+  // 已完成结算态（hwTraceSettled）不再判定，防完成动画期间重复结算
+  if (hwTraceSettled) return;
+
   // 模板被覆盖比例：模板点最近笔迹 ≤ R（对模板点建 hash 太慢 → 对笔迹建 hash）
   const inkHash = buildTraceHash(hwInkPts, 32);
   let tmplOn = 0;
@@ -988,6 +1090,7 @@ function traceNext(passed) {
     hwTraceIdx++;
   }
   if (hwTraceIdx >= hwTraceSeq.length) {
+    hwTraceSettled = true;   // 已完成结算态：防完成动画期间再描导致重复结算
     msgEl.textContent = '🎉 你真棒！拼音写完了！';
     playCoin();
     setTimeout(() => {
@@ -1029,11 +1132,15 @@ function openHWOverlay(charData, idx) {
     hwTraceSeq.push(TONE_TO_KEY[ch] !== undefined ? TONE_TO_KEY[ch] : ch);
   }
   hwTraceIdx = 0;
+  hwTraceSettled = false;
   hwTraceKey = hwTraceSeq[0] || 'a';
   document.getElementById('hwTraceLetter').textContent = hwTraceKey === 'ü' ? 'ü' : hwTraceKey;
 
   const overlay = document.getElementById('hw-overlay');
   overlay.style.display = 'flex';
+  trackFuncExpose('hw_overlay');
+  trackFuncUse('hw_overlay');
+  trackBtnExpose(['hwCloseBtn']);
 
   // Setup canvas
   const hc = document.getElementById('hwCanvas');
@@ -1090,6 +1197,7 @@ function openHWOverlay(charData, idx) {
 
 
 document.getElementById('hwCloseBtn').addEventListener('click', () => {
+  trackBtnClick('hwCloseBtn');
   document.getElementById('hw-overlay').style.display = 'none';
 });
 
@@ -1341,21 +1449,100 @@ function renderShop() {
 }
 
 document.getElementById('menuShopBtn').addEventListener('click', () => {
+  trackBtnClick('menuShopBtn');
   renderShop();
   document.getElementById('shop-overlay').style.display = 'flex';
+  trackFuncExpose('shop');
+  trackBtnExpose(['shopCloseBtn']);
 });
 
 document.getElementById('shopCloseBtn').addEventListener('click', () => {
+  trackBtnClick('shopCloseBtn');
   document.getElementById('shop-overlay').style.display = 'none';
 });
 
-document.getElementById('l2FinishBtn').addEventListener('click', showComplete);
+document.getElementById('l2FinishBtn').addEventListener('click', () => {
+  trackBtnClick('l2FinishBtn');
+  showComplete();
+});
 
 // ==================== COMPLETE SCREEN ====================
+// 本轮"认识"的字：拼音描红完成的生字 → 并入存档 knownChars（跨轮累计，去重）
+function mergeKnownChars() {
+  const knownSet = new Set(save.knownChars.map(k => k.c));
+  let added = 0;
+  l2.pinyinDone.forEach(p => {
+    const ch = state.collectedChars[p.idx];
+    if (ch && !knownSet.has(ch.character)) {
+      knownSet.add(ch.character);
+      save.knownChars.push({ c: ch.character, p: ch.pinyin || '' });
+      added++;
+    }
+  });
+  if (added > 0) writeSave();
+  return added;
+}
+
+function showNewCharsPopup(added) {
+  const total = save.knownChars.length;
+  document.getElementById('newCharsMsg').innerHTML =
+    `耶！我又认识了 <b>${added}</b> 个字，总共已经认识了 <b>${total}</b> 个字啦！`;
+  document.getElementById('new-chars-overlay').style.display = 'flex';
+  trackBtnExpose(['newCharsViewBtn', 'newCharsOkBtn']);
+  trackFuncExpose('new_chars_popup');
+}
+
+// 已认识生字列表渲染
+function renderKnownList() {
+  const total = save.knownChars.length;
+  document.getElementById('knownCount').textContent = '共 ' + total + ' 个';
+  const grid = document.getElementById('knownGrid');
+  grid.innerHTML = '';
+  if (total === 0) {
+    grid.innerHTML = '<div class="ko-empty">还没有认识的字，快去玩游戏吧！🍉</div>';
+    return;
+  }
+  save.knownChars.forEach(k => {
+    const card = document.createElement('div');
+    card.className = 'ko-card';
+    card.innerHTML = `<div class="kc-char">${k.c}</div><div class="kc-py">${k.p}</div>`;
+    grid.appendChild(card);
+  });
+}
+
+document.getElementById('knownEntryBtn').addEventListener('click', () => {
+  trackBtnClick('knownEntryBtn');
+  renderKnownList();
+  document.getElementById('known-overlay').style.display = 'flex';
+  trackFuncExpose('known_list');
+  trackBtnExpose(['knownCloseBtn']);
+});
+
+document.getElementById('knownCloseBtn').addEventListener('click', () => {
+  trackBtnClick('knownCloseBtn');
+  document.getElementById('known-overlay').style.display = 'none';
+});
+
+document.getElementById('newCharsViewBtn').addEventListener('click', () => {
+  trackBtnClick('newCharsViewBtn');
+  document.getElementById('new-chars-overlay').style.display = 'none';
+  renderKnownList();
+  document.getElementById('known-overlay').style.display = 'flex';
+  trackFuncExpose('known_list');
+  trackBtnExpose(['knownCloseBtn']);
+});
+
+document.getElementById('newCharsOkBtn').addEventListener('click', () => {
+  trackBtnClick('newCharsOkBtn');
+  document.getElementById('new-chars-overlay').style.display = 'none';
+});
+
 function showComplete() {
   state.phase = 'complete';
   document.getElementById('level2-screen').style.display = 'none';
   document.getElementById('complete-overlay').style.display = 'flex';
+  trackBtnExpose(['againBtn', 'exitBtn']);
+  trackFuncExpose('complete');
   const uniqueWords = [...new Set(l2.wordSuccess.map(w => w.word))];
   const totalCoins = l2.pinyinDone.length * 2 + uniqueWords.length * 3 + l2.sentenceDone.length * 3;
   state.coins = totalCoins;
@@ -1369,6 +1556,13 @@ function showComplete() {
   document.getElementById('stat-sentences').textContent = l2.sentenceDone.length;
   if (totalCoins > 0) playComplete();
   updateCoinDisplay();
+
+  // 新增认识字 → 弹窗提示（点击可查看全部已认识生字）
+  const added = mergeKnownChars();
+  if (added > 0) showNewCharsPopup(added);
+
+  // 埋点：本轮完成（切水果 → 完成页面），value 带当日累计轮数
+  trackRoundComplete(state.section ? state.section.title : '');
 
   // Mark section completed if all chars collected + all pinyin + all sentence done
   if (state.section) {
@@ -1386,13 +1580,17 @@ function showComplete() {
 }
 
 document.getElementById('againBtn').addEventListener('click', () => {
+  trackBtnClick('againBtn');
   document.getElementById('complete-overlay').style.display = 'none';
+  document.getElementById('new-chars-overlay').style.display = 'none';
   state.usedCharIds = new Set();
   startLevel1();
 });
 
 document.getElementById('exitBtn').addEventListener('click', () => {
+  trackBtnClick('exitBtn');
   document.getElementById('complete-overlay').style.display = 'none';
+  document.getElementById('new-chars-overlay').style.display = 'none';
   state.phase = 'menu';
   document.getElementById('start-screen').style.display = 'flex';
   initSectionPicker();
@@ -1414,6 +1612,7 @@ function initSectionPicker() {
     btn.textContent = sec.title || `课文 ${sec.num || idx + 1}`;
     btn.dataset.idx = idx;
     btn.addEventListener('click', () => {
+      trackBtnClick('secBtn_' + (sec.title || idx));
       container.querySelectorAll('.sec-btn').forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
       state.section = sec;
@@ -1423,9 +1622,16 @@ function initSectionPicker() {
     container.appendChild(btn);
   });
   if (GAME_DATA.sections.length > 0) container.children[0].click();
+  // 首页曝光埋点 + 生字本入口显示累计认识数
+  const knownCount = save.knownChars.length;
+  const entry = document.getElementById('knownEntryBtn');
+  entry.textContent = knownCount > 0 ? `📖 生字本（${knownCount}）` : '📖 生字本';
+  trackBtnExpose(['startBtn', 'menuShopBtn', 'knownEntryBtn', 'secBtn']);
+  trackFuncExpose('home');
 }
 
 document.getElementById('startBtn').addEventListener('click', () => {
+  trackBtnClick('startBtn');
   if (!state.section) { alert('请先选择一篇课文'); return; }
   startLevel1();
 });

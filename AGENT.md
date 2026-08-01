@@ -36,6 +36,7 @@
 | `game-data.json` | 29 课 617 生字数据（fetch 加载） |
 | `game-data.js` | 数据兜底通道（`window.__GAME_DATA`，fetch 失败时 script 标签加载，兼容 file:// 直开） |
 | `test/playwright-e2e.mjs` | **Playwright 描红验收**（被 .gitignore 忽略，提交需 `git add -f`）：真实游戏流程 + 标准描摹 130 次 + 歪描 52 次 + 端到端 chuī；`node test/playwright-e2e.mjs [port]`（约 10 分钟） |
+| `test/playwright-i8.mjs` | **Playwright 迭代8 验收**：认识字进度弹窗 + 生字本 + 友盟埋点事件断言（`_czc` 缓冲收集）；`node test/playwright-i8.mjs [port]`（约 2 分钟） |
 | `minigame/` | 微信小程序版（独立实现，尚无手写功能） |
 | `WordsFruitSlice/` | Cocos Creator 工程（独立嵌套 git 仓库，不入本库） |
 | `start.sh` | 本地预览：`./start.sh [port]`（默认 3000） |
@@ -76,8 +77,18 @@
 
 ### 存档格式
 
-`localStorage['wfs-save']`：`{ coins, ownedKnives, equippedKnife, completedSections }`
-→ 读取时必须字段级补默认值（老存档缺字段会崩）。
+`localStorage['wfs-save']`：`{ coins, ownedKnives, equippedKnife, completedSections, knownChars }`
+→ 读取时必须字段级补默认值（老存档缺字段会崩）。`knownChars = [{c: 字符, p: 拼音}]`（已认识生字，跨轮累计去重，每轮完成时合并）。
+
+### 认识字进度（迭代8）
+
+- **"认识"的定义**：本轮 L2 拼音**描红完成**的生字（`l2.pinyinDone` 对应字符）→ 合并进 `save.knownChars`（去重）
+- **每轮结束弹窗**（showComplete → mergeKnownChars 增量 >0 时）：`耶！我又认识了 X 个字，总共已经认识了 Y 个字啦！`（#new-chars-overlay，z-index 120，盖在完成页上）+「📖 查看已认识的生字」/「好的」
+- **首页入口**：`#knownEntryBtn`（📖 生字本，显示累计数）→ `#known-overlay` 网格列表（字符 + 拼音）
+- **友盟 U-Web 埋点**（track 封装，全部 try/catch 静默降级）：
+  - SDK：`https://v1.cnzz.com/z.js?id=站点ID`（U-Web/CNZZ 系，注册于 webplus.umeng.com 后填 `UMENG_SITE_ID`；占位符 `YOUR_CNZZ_SITE_ID` 时不加载 SDK 但 track 仍本地收集进 `window._czc` 数组）
+  - 事件：`game/session_start`（DAU 辅助）、`btn_expose`/`btn_click`（按钮曝光/点击，label=按钮 id）、`func_expose`/`func_use`（功能曝光/使用，label=level1/level2_pinyin/level2_word/level2_sentence/hw_overlay/shop/complete/known_list/home/new_chars_popup）、`game/round_complete`（label=课文，value=当日累计轮数，localStorage `wfs-rounds-YYYY-M-D` 计数）
+  - DAU/UV 由 SDK 自动统计（cookie 唯一访客）
 
 ---
 
@@ -110,6 +121,11 @@
 1. 标准描摹用"模板点 + 抖动"模拟真孩子沿虚线描摹，真实手指/笔的模糊度更高——判定参数（R=24、覆盖率 0.60/0.50）需真机实测微调
 2. 描错时无"擦除重来"按钮（只能重描，墨迹叠加）
 3. 竖线/斜线类字母（l/i/t/v/w/x/y）对"画一条位置接近的线"宽容度高（R=24px 带宽）——若真机出现"乱画恰好通过"，可加最小点数/线段数约束
+
+**迭代8（认识字进度 + 友盟埋点）要点**：
+1. **完成态防护**：traceNext 完成分支置 `hwTraceSettled=true`，judgeTrace 入口检查——完成动画 1000ms 期间再描会重复结算（pinyinDone 重复 push + 金币重复）；曾复现 done=2
+2. **埋点验收**：playwright-i8.mjs 用 `page.addInitScript(() => window._czc = [])` 注入缓冲数组（必须在 goto 前注入，否则 session_start 等加载期事件进旧数组被覆盖丢失）；track() 在 `window._czc` 缺失时自行创建数组
+3. **认识字弹窗时机**：showComplete 中合并 knownChars 后弹窗（z-index 120 > 完成页 80 < 蒙层 200）；againBtn/exitBtn 需同时关掉弹窗层
 
 ---
 
@@ -161,6 +177,7 @@
 | 页面运行时错误 | 0 | **0** |
 | 判定延迟（停笔 → 反馈） | ≤ 800ms | 700ms 停笔判定 |
 | 首次打开蒙层到可描 | 即开即用 | 无模型加载（0 额外延迟） |
+| 认识字进度（迭代8，playwright-i8.mjs） | 全 PASS | 新字弹窗文案/生字本列表/knownChars 持久化/入口计数/第二轮不弹窗/埋点事件齐备 |
 
 ### 4.3 测试用例
 

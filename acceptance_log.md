@@ -1,3 +1,62 @@
+# 验收日志 — 认识字进度 + 友盟埋点（迭代8）
+
+## 测试信息
+
+| 项 | 值 |
+|---|---|
+| 测试时间 | 2026-08-01（验收 Agent 自动化执行） |
+| 被测版本 | 迭代8（未提交；此前 commit f5fba15） |
+| 验收依据 | AGENT.md §4（4.2 指标 / 4.4 脚本要点） |
+| 环境 | macOS Chrome headless（Playwright 真实鼠标事件）/ 本地 http-server :8080 |
+| 新增 | 认识字进度（knownChars 存档 + 每轮结束弹窗 + 首页生字本入口）+ 友盟 U-Web 埋点（_czc 事件） |
+
+## 用例覆盖
+
+| 验收点 | 方案 |
+|---|---|
+| 1. 首页埋点 | addInitScript 注入 `window._czc=[]` → 断言 session_start / func_expose home / btn_expose startBtn+knownEntryBtn |
+| 2. 生字本入口初始文案 | 无已知字 → 「📖 生字本」（不带计数） |
+| 3. 商店曝光/点击 | menuShopBtn → shop 曝光 → shopCloseBtn 点击事件 |
+| 4. L1 切瓜 → dialog 曝光 | 真实 DOM 事件切 12 果 → dialogBtn 曝光 |
+| 5. L2 曝光 + 描红完整拼音 | level2_pinyin 曝光/使用 → char-card → 描完整拼音（jiang，5 字母）→ 蒙层关闭 done=1 |
+| 6. 完成页 + 轮次埋点 | l2FinishBtn → round_complete value=1 + new_chars_popup 曝光 + againBtn 曝光 |
+| 7. 新字弹窗 | 「耶！我又认识了 1 个字，总共已经认识了 1 个字啦！」 |
+| 8. 弹窗→生字本列表 | newCharsViewBtn → known-overlay 1 张卡（字符+拼音） |
+| 9. knownChars 持久化 | localStorage 断言 + 首页入口显示「📖 生字本（1）」 |
+| 10. 首页生字本入口 | knownEntryBtn → 列表 1 张卡 |
+| 11. 第二轮无新字 | again → L1 → L2 直接完成（无描红）→ 不弹窗，round_complete value=2 |
+| 12. 页面错误 | pageerror 全程计数 |
+
+## 通过 / 失败统计
+
+| 验收点 | 结果 | 判定 |
+|---|---|---|
+| 1. 首页埋点 | session_start/home/startBtn/knownEntryBtn 全收集 | ✅ |
+| 2. 入口初始文案 | 无计数 | ✅ |
+| 3. 商店曝光/点击 | 曝光 + 2 点击事件 | ✅ |
+| 4. L1 → dialog | 12 果切开 + dialogBtn 曝光 | ✅ |
+| 5. L2 + 描红 | jiang 全描完，done=1，蒙层关闭 | ✅ |
+| 6. 完成页埋点 | round_complete=1 + 弹窗曝光 + again 曝光 | ✅ |
+| 7. 新字弹窗 | 文案正确（1 个 / 1 个） | ✅ |
+| 8. 弹窗→列表 | 1 张卡 | ✅ |
+| 9. 持久化 | knownChars 1 条 + 入口计数 | ✅ |
+| 10. 首页入口 | 1 张卡 | ✅ |
+| 11. 第二轮 | 不弹窗 + round_complete=2（当日累计递增） | ✅ |
+| 12. 页面错误 | 0 | ✅ |
+| 描红回归（e2e） | 标准 100% (130/130) / 歪描 100% (52/52) / 端到端 chuī PASS / 0 错误 | ✅ |
+
+## 关键修复记录（迭代8 过程）
+
+1. **完成态重复结算 bug（生产代码）**：拼音全部描完后，完成动画 1000ms 期间再画一笔 → judgeTrace 再次通过 → traceNext 完成分支重复执行（pinyinDone 重复 push + 金币重复，验收复现 done=2）。修复：`hwTraceSettled` 标志 + judgeTrace 入口检查；openHWOverlay 重置
+2. **_czc 注入时机**：`window._czc=[]` 若在 goto 后注入会覆盖已收集的加载期事件（session_start/home 曝光丢失）；必须 `page.addInitScript` 在页面脚本前注入
+3. **埋点静默降级**：track() 在 window._czc 缺失时自行创建数组（占位 SITE_ID 不加载 SDK 也可本地收集，SDK 就绪后接管缓冲）
+
+## 结论
+
+迭代8 全项 PASS（13/13 新功能验收 + 描红回归全 PASS）。友盟 U-Web 埋点已按四类需求落地：DAU（SDK 自动 UV + session_start）、功能曝光/使用（func_expose/func_use）、按钮曝光/点击（btn_expose/btn_click）、每轮完成（round_complete + 当日累计 value）。**上线前待办**：注册 webplus.umeng.com 站点，把 SITE_ID 填入 `UMENG_SITE_ID`。
+
+---
+
 # 验收日志 — 拼音描红玩法（迭代7，CNN 手写识别完全替换）
 
 ## 测试信息
