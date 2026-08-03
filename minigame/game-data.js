@@ -11,12 +11,10 @@ module.exports = {
           "pinyin": "chūn",
           "words": [
             {
-              "word": "春天",
-              "pinyin": "chūn tiān"
+              "word": "春天"
             },
             {
-              "word": "春风",
-              "pinyin": "chūn fēng"
+              "word": "春风"
             }
           ],
           "sentence": "春天来了，小鸟在树上唱歌。"
@@ -26,12 +24,10 @@ module.exports = {
           "pinyin": "dōng",
           "words": [
             {
-              "word": "冬天",
-              "pinyin": "dōng tiān"
+              "word": "冬天"
             },
             {
-              "word": "冬季",
-              "pinyin": "dōng jì"
+              "word": "冬季"
             }
           ],
           "sentence": "冬天会下雪，我们可以堆雪人。"
@@ -41,12 +37,16 @@ module.exports = {
           "pinyin": "chuī",
           "words": [
             {
-              "word": "吹牛",
-              "pinyin": "chuī niú"
+              "word": "吹牛"
             },
             {
-              "word": "吹灭",
-              "pinyin": "chuī miè"
+              "word": "吹灭"
+            },
+            {
+              "word": "吹风"
+            },
+            {
+              "word": "吹气"
             }
           ],
           "sentence": "她闭上眼睛许愿，然后轻轻吹灭了生日蜡烛。"
@@ -56,12 +56,10 @@ module.exports = {
           "pinyin": "huā",
           "words": [
             {
-              "word": "花朵",
-              "pinyin": "huā duǒ"
+              "word": "花朵"
             },
             {
-              "word": "鲜花",
-              "pinyin": "xiān huā"
+              "word": "鲜花"
             }
           ],
           "sentence": "花园里的鲜花开得五颜六色。"
@@ -71,12 +69,10 @@ module.exports = {
           "pinyin": "fēi",
           "words": [
             {
-              "word": "飞翔",
-              "pinyin": "fēi xiáng"
+              "word": "飞翔"
             },
             {
-              "word": "飞机",
-              "pinyin": "fēi jī"
+              "word": "飞机"
             }
           ],
           "sentence": "小鸟在蓝天上自由飞翔。"
@@ -86,12 +82,16 @@ module.exports = {
           "pinyin": "rù",
           "words": [
             {
-              "word": "入门",
-              "pinyin": "rù mén"
+              "word": "入门"
             },
             {
-              "word": "加入",
-              "pinyin": "jiā rù"
+              "word": "加入"
+            },
+            {
+              "word": "入口"
+            },
+            {
+              "word": "进入"
             }
           ],
           "sentence": "她积极报名，加入了志愿者服务队。"
@@ -101,42 +101,23 @@ module.exports = {
           "pinyin": "shuāng",
           "words": [
             {
-              "word": "寒霜",
-              "pinyin": "hán shuāng"
+              "word": "寒霜"
             },
             {
-              "word": "霜花",
-              "pinyin": "shuāng huā"
+              "word": "霜花"
             }
           ],
           "sentence": "清晨草地上结了一层薄薄的霜花，像撒了白糖。"
-        },
-        {
-          "character": "吹",
-          "pinyin": "chuī",
-          "words": [
-            {
-              "word": "吹风",
-              "pinyin": "chuī fēng"
-            },
-            {
-              "word": "吹气",
-              "pinyin": "chuī qì"
-            }
-          ],
-          "sentence": "哥哥对着我的手心吹气，痒得我哈哈大笑。"
         },
         {
           "character": "落",
           "pinyin": "luò",
           "words": [
             {
-              "word": "掉落",
-              "pinyin": "diào luò"
+              "word": "掉落"
             },
             {
-              "word": "落叶",
-              "pinyin": "luò yè"
+              "word": "落叶"
             }
           ],
           "sentence": "秋天到了，金黄的落叶从树上轻轻落下来。"
@@ -146,12 +127,10 @@ module.exports = {
           "pinyin": "jiàng",
           "words": [
             {
-              "word": "降落",
-              "pinyin": "jiàng luò"
+              "word": "降落"
             },
             {
-              "word": "下降",
-              "pinyin": "xià jiàng"
+              "word": "下降"
             }
           ],
           "sentence": "飞机慢慢降落在机场，乘客们开心地走出机舱。"
@@ -161,12 +140,10 @@ module.exports = {
           "pinyin": "piāo",
           "words": [
             {
-              "word": "飘雪",
-              "pinyin": "piāo xuě"
+              "word": "飘雪"
             },
             {
-              "word": "飘荡",
-              "pinyin": "piāo dàng"
+              "word": "飘荡"
             }
           ],
           "sentence": "冬天来了，雪花在空中轻轻飘荡，真美呀！"
@@ -176,12 +153,10 @@ module.exports = {
           "pinyin": "yóu",
           "words": [
             {
-              "word": "游泳",
-              "pinyin": "yóu yǒng"
+              "word": "游泳"
             },
             {
-              "word": "游玩",
-              "pinyin": "yóu wán"
+              "word": "游玩"
             }
           ],
           "sentence": "夏天，我和小伙伴去泳池里游泳，特别凉快。"
@@ -191,30 +166,13 @@ module.exports = {
           "pinyin": "chí",
           "words": [
             {
-              "word": "池塘",
-              "pinyin": "chí táng"
+              "word": "池塘"
             },
             {
-              "word": "水池",
-              "pinyin": "shuǐ chí"
+              "word": "水池"
             }
           ],
           "sentence": "池塘里的小鱼快活地游来游去，还吐着泡泡。"
-        },
-        {
-          "character": "入",
-          "pinyin": "rù",
-          "words": [
-            {
-              "word": "入口",
-              "pinyin": "rù kǒu"
-            },
-            {
-              "word": "进入",
-              "pinyin": "jìn rù"
-            }
-          ],
-          "sentence": "我们排着队，有序地进入图书馆看书。"
         }
       ]
     },
@@ -227,12 +185,10 @@ module.exports = {
           "pinyin": "shén",
           "words": [
             {
-              "word": "什么",
-              "pinyin": "shén me"
+              "word": "什么"
             },
             {
-              "word": "什锦",
-              "pinyin": "shén jǐn"
+              "word": "什锦"
             }
           ],
           "sentence": "你手里拿的是什么东西呀？"
@@ -242,27 +198,26 @@ module.exports = {
           "pinyin": "me",
           "words": [
             {
-              "word": "怎么",
-              "pinyin": "zěn me"
+              "word": "怎么"
             },
             {
-              "word": "多么",
-              "pinyin": "duō me"
+              "word": "多么"
             }
           ],
           "sentence": "这朵小花多么漂亮呀！"
         },
         {
-          "character": "舌",
+          "character": "古",
           "pinyin": "gǔ",
           "words": [
             {
-              "word": "舌代",
-              "pinyin": "gǔ dài"
+              "word": "古代"
             },
             {
-              "word": "古老",
-              "pinyin": "gǔ lǎo"
+              "word": "古老"
+            },
+            {
+              "word": "古老"
             }
           ],
           "sentence": "爷爷给我讲古代英雄的故事。"
@@ -272,12 +227,10 @@ module.exports = {
           "pinyin": "hú",
           "words": [
             {
-              "word": "胡子",
-              "pinyin": "hú zǐ"
+              "word": "胡子"
             },
             {
-              "word": "胡萝卜",
-              "pinyin": "hú luó bo"
+              "word": "胡萝卜"
             }
           ],
           "sentence": "小兔子最喜欢吃胡萝卜。"
@@ -287,12 +240,10 @@ module.exports = {
           "pinyin": "shuāng",
           "words": [
             {
-              "word": "双手",
-              "pinyin": "shuāng shǒu"
+              "word": "双手"
             },
             {
-              "word": "一双",
-              "pinyin": "yī shuāng"
+              "word": "一双"
             }
           ],
           "sentence": "我有一双能干的小手。"
@@ -302,12 +253,16 @@ module.exports = {
           "pinyin": "yán",
           "words": [
             {
-              "word": "语言",
-              "pinyin": "yǔ yán"
+              "word": "语言"
             },
             {
-              "word": "发言",
-              "pinyin": "fā yán"
+              "word": "发言"
+            },
+            {
+              "word": "言语"
+            },
+            {
+              "word": "说话"
             }
           ],
           "sentence": "上课要积极发言,大胆表达想法。"
@@ -317,42 +272,23 @@ module.exports = {
           "pinyin": "shì",
           "words": [
             {
-              "word": "姓氏",
-              "pinyin": "xìng shì"
+              "word": "姓氏"
             },
             {
-              "word": "氏族",
-              "pinyin": "shì zú"
+              "word": "氏族"
             }
           ],
           "sentence": "我的姓氏是李，班里还有很多不同姓氏的同学。"
-        },
-        {
-          "character": "什",
-          "pinyin": "shén",
-          "words": [
-            {
-              "word": "什么",
-              "pinyin": "shén me"
-            },
-            {
-              "word": "什锦",
-              "pinyin": "shén jǐn"
-            }
-          ],
-          "sentence": "妈妈问我想吃什么水果，我选了苹果和香蕉。"
         },
         {
           "character": "李",
           "pinyin": "lǐ",
           "words": [
             {
-              "word": "李子",
-              "pinyin": "lǐ zǐ"
+              "word": "李子"
             },
             {
-              "word": "李树",
-              "pinyin": "lǐ shù"
+              "word": "李树"
             }
           ],
           "sentence": "院子里的李树结了很多甜甜的李子。"
@@ -362,12 +298,10 @@ module.exports = {
           "pinyin": "zhāng",
           "words": [
             {
-              "word": "张开",
-              "pinyin": "zhāng kāi"
+              "word": "张开"
             },
             {
-              "word": "张望",
-              "pinyin": "zhāng wàng"
+              "word": "张望"
             }
           ],
           "sentence": "小鸟张开翅膀，飞向蓝蓝的天空。"
@@ -377,87 +311,36 @@ module.exports = {
           "pinyin": "gōng",
           "words": [
             {
-              "word": "弓箭",
-              "pinyin": "gōng jiàn"
+              "word": "弓箭"
             },
             {
-              "word": "拉弓",
-              "pinyin": "lā gōng"
+              "word": "拉弓"
             }
           ],
           "sentence": "爸爸教我玩玩具弓箭，我瞄准靶子射了出去。"
-        },
-        {
-          "character": "舌",
-          "pinyin": "gǔ",
-          "words": [
-            {
-              "word": "舌代",
-              "pinyin": "gǔ dài"
-            },
-            {
-              "word": "舌老",
-              "pinyin": "gǔ lǎo"
-            }
-          ],
-          "sentence": "妈妈给我讲了一个有趣的童话故事，我很喜欢。"
-        },
-        {
-          "character": "胡",
-          "pinyin": "hú",
-          "words": [
-            {
-              "word": "胡子",
-              "pinyin": "hú zǐ"
-            },
-            {
-              "word": "胡萝卜",
-              "pinyin": "hú luó bo"
-            }
-          ],
-          "sentence": "小兔子最喜欢吃红红的胡萝卜,吃得可香了。"
         },
         {
           "character": "吴",
           "pinyin": "wú",
           "words": [
             {
-              "word": "吴国",
-              "pinyin": "wú guó"
+              "word": "吴国"
             },
             {
-              "word": "东吴",
-              "pinyin": "dōng wú"
+              "word": "东吴"
             }
           ],
           "sentence": "历史课上，老师给我们讲了吴国的兴衰故事。"
-        },
-        {
-          "character": "言",
-          "pinyin": "yán",
-          "words": [
-            {
-              "word": "言语",
-              "pinyin": "yán yǔ"
-            },
-            {
-              "word": "说话",
-              "pinyin": "shuō huà"
-            }
-          ],
-          "sentence": "上课的时候不要随便说话，要认真听讲。"
         },
         {
           "character": "孙",
           "pinyin": "sūn",
           "words": [
             {
-              "word": "孙子",
-              "pinyin": "sūn zǐ"
+              "word": "孙子"
             },
             {
-              "word": "孙女",
-              "pinyin": "sūn nǚ"
+              "word": "孙女"
             }
           ],
           "sentence": "爷爷带着孙子去公园散步，还买了棉花糖。"
@@ -473,12 +356,10 @@ module.exports = {
           "pinyin": "qīng",
           "words": [
             {
-              "word": "青蛙",
-              "pinyin": "qīng wā"
+              "word": "青蛙"
             },
             {
-              "word": "青草",
-              "pinyin": "qīng cǎo"
+              "word": "青草"
             }
           ],
           "sentence": "青蛙在池塘里跳来跳去。"
@@ -488,12 +369,10 @@ module.exports = {
           "pinyin": "qīng",
           "words": [
             {
-              "word": "清水",
-              "pinyin": "qīng shuǐ"
+              "word": "清水"
             },
             {
-              "word": "清洁",
-              "pinyin": "qīng jié"
+              "word": "清洁"
             }
           ],
           "sentence": "我用小碗接了一碗清水浇花。"
@@ -503,12 +382,10 @@ module.exports = {
           "pinyin": "qíng",
           "words": [
             {
-              "word": "晴天",
-              "pinyin": "qíng tiān"
+              "word": "晴天"
             },
             {
-              "word": "晴朗",
-              "pinyin": "qíng lǎng"
+              "word": "晴朗"
             }
           ],
           "sentence": "晴朗的天空万里无云。"
@@ -518,12 +395,13 @@ module.exports = {
           "pinyin": "miáo",
           "words": [
             {
-              "word": "禾苗",
-              "pinyin": "hé miáo"
+              "word": "禾苗"
             },
             {
-              "word": "秧苗",
-              "pinyin": "yāng miáo"
+              "word": "秧苗"
+            },
+            {
+              "word": "麦苗"
             }
           ],
           "sentence": "田里的禾苗长得绿油油的。"
@@ -533,12 +411,13 @@ module.exports = {
           "pinyin": "qǐng",
           "words": [
             {
-              "word": "请客",
-              "pinyin": "qǐng kè"
+              "word": "请客"
             },
             {
-              "word": "请问",
-              "pinyin": "qǐng wèn"
+              "word": "请问"
+            },
+            {
+              "word": "请假"
             }
           ],
           "sentence": "请问，图书馆在哪里呀？"
@@ -548,12 +427,10 @@ module.exports = {
           "pinyin": "shēng",
           "words": [
             {
-              "word": "学生",
-              "pinyin": "xué shēng"
+              "word": "学生"
             },
             {
-              "word": "生日",
-              "pinyin": "shēng rì"
+              "word": "生日"
             }
           ],
           "sentence": "今天是我的生日，我很开心。"
@@ -563,42 +440,23 @@ module.exports = {
           "pinyin": "hé",
           "words": [
             {
-              "word": "小河",
-              "pinyin": "xiǎo hé"
+              "word": "小河"
             },
             {
-              "word": "河水",
-              "pinyin": "hé shuǐ"
+              "word": "河水"
             }
           ],
           "sentence": "小河里的水清清的，能看到水底的小石头。"
-        },
-        {
-          "character": "晴",
-          "pinyin": "qíng",
-          "words": [
-            {
-              "word": "晴天",
-              "pinyin": "qíng tiān"
-            },
-            {
-              "word": "晴朗",
-              "pinyin": "qíng lǎng"
-            }
-          ],
-          "sentence": "今天天气真晴朗，我们可以去郊外野餐。"
         },
         {
           "character": "眼",
           "pinyin": "yǎn",
           "words": [
             {
-              "word": "眼睛",
-              "pinyin": "yǎn jīng"
+              "word": "眼睛"
             },
             {
-              "word": "眼神",
-              "pinyin": "yǎn shén"
+              "word": "眼神"
             }
           ],
           "sentence": "我的同桌有一双大大的眼睛，笑起来特别可爱。"
@@ -608,12 +466,10 @@ module.exports = {
           "pinyin": "jīng",
           "words": [
             {
-              "word": "点睛",
-              "pinyin": "diǎn jīng"
+              "word": "点睛"
             },
             {
-              "word": "定睛",
-              "pinyin": "dìng jīng"
+              "word": "定睛"
             }
           ],
           "sentence": "我定睛一看，原来草丛里藏着一只小蜗牛。"
@@ -623,12 +479,10 @@ module.exports = {
           "pinyin": "bǎo",
           "words": [
             {
-              "word": "保护",
-              "pinyin": "bǎo hù"
+              "word": "保护"
             },
             {
-              "word": "保卫",
-              "pinyin": "bǎo wèi"
+              "word": "保卫"
             }
           ],
           "sentence": "我们要保护身边的小动物，不能伤害它们。"
@@ -638,42 +492,23 @@ module.exports = {
           "pinyin": "hù",
           "words": [
             {
-              "word": "爱护",
-              "pinyin": "ài hù"
+              "word": "爱护"
             },
             {
-              "word": "守护",
-              "pinyin": "shǒu hù"
+              "word": "守护"
             }
           ],
           "sentence": "小朋友要爱护花草树木，让校园更美丽。"
-        },
-        {
-          "character": "苗",
-          "pinyin": "miáo",
-          "words": [
-            {
-              "word": "禾苗",
-              "pinyin": "hé miáo"
-            },
-            {
-              "word": "麦苗",
-              "pinyin": "mài miáo"
-            }
-          ],
-          "sentence": "田里的禾苗喝饱了水，长得绿油油的。"
         },
         {
           "character": "吃",
           "pinyin": "chī",
           "words": [
             {
-              "word": "吃饭",
-              "pinyin": "chī fàn"
+              "word": "吃饭"
             },
             {
-              "word": "吃亏",
-              "pinyin": "chī kuī"
+              "word": "吃亏"
             }
           ],
           "sentence": "我每天都乖乖吃饭，不挑食，身体长得棒棒的。"
@@ -683,12 +518,10 @@ module.exports = {
           "pinyin": "shì",
           "words": [
             {
-              "word": "事情",
-              "pinyin": "shì qíng"
+              "word": "事情"
             },
             {
-              "word": "故事",
-              "pinyin": "gù shì"
+              "word": "故事"
             }
           ],
           "sentence": "爷爷给我讲古代英雄的故事,我听得入了迷。"
@@ -698,42 +531,23 @@ module.exports = {
           "pinyin": "qíng",
           "words": [
             {
-              "word": "心情",
-              "pinyin": "xīn qíng"
+              "word": "心情"
             },
             {
-              "word": "感情",
-              "pinyin": "gǎn qíng"
+              "word": "感情"
             }
           ],
           "sentence": "今天我得到了老师的表扬，心情特别好。"
-        },
-        {
-          "character": "请",
-          "pinyin": "qǐng",
-          "words": [
-            {
-              "word": "请假",
-              "pinyin": "qǐng jiǎ"
-            },
-            {
-              "word": "请客",
-              "pinyin": "qǐng kè"
-            }
-          ],
-          "sentence": "生病的时候要向老师请假，好好休息。"
         },
         {
           "character": "让",
           "pinyin": "ràng",
           "words": [
             {
-              "word": "让开",
-              "pinyin": "ràng kāi"
+              "word": "让开"
             },
             {
-              "word": "让座",
-              "pinyin": "ràng zuò"
+              "word": "让座"
             }
           ],
           "sentence": "在公交车上，我主动给老奶奶让座。"
@@ -749,12 +563,10 @@ module.exports = {
           "pinyin": "zì",
           "words": [
             {
-              "word": "写字",
-              "pinyin": "xiě zì"
+              "word": "写字"
             },
             {
-              "word": "汉字",
-              "pinyin": "hàn zì"
+              "word": "汉字"
             }
           ],
           "sentence": "我每天都要练习写字。"
@@ -764,12 +576,10 @@ module.exports = {
           "pinyin": "hóng",
           "words": [
             {
-              "word": "红色",
-              "pinyin": "hóng sè"
+              "word": "红色"
             },
             {
-              "word": "红花",
-              "pinyin": "hóng huā"
+              "word": "红花"
             }
           ],
           "sentence": "我最喜欢红色的太阳花。"
@@ -779,12 +589,10 @@ module.exports = {
           "pinyin": "dòng",
           "words": [
             {
-              "word": "运动",
-              "pinyin": "yùn dòng"
+              "word": "运动"
             },
             {
-              "word": "动作",
-              "pinyin": "dòng zuò"
+              "word": "动作"
             }
           ],
           "sentence": "我们要多运动，身体才健康。"
@@ -794,12 +602,16 @@ module.exports = {
           "pinyin": "wàn",
           "words": [
             {
-              "word": "万物",
-              "pinyin": "wàn wù"
+              "word": "万物"
             },
             {
-              "word": "万里",
-              "pinyin": "wàn lǐ"
+              "word": "万里"
+            },
+            {
+              "word": "万一"
+            },
+            {
+              "word": "千万"
             }
           ],
           "sentence": "万里长城真壮观。"
@@ -809,12 +621,16 @@ module.exports = {
           "pinyin": "wú",
           "words": [
             {
-              "word": "无声",
-              "pinyin": "wú shēng"
+              "word": "无声"
             },
             {
-              "word": "无边",
-              "pinyin": "wú biān"
+              "word": "无边"
+            },
+            {
+              "word": "无奈"
+            },
+            {
+              "word": "无聊"
             }
           ],
           "sentence": "无边的大海翻涌着层层浪花"
@@ -824,12 +640,10 @@ module.exports = {
           "pinyin": "míng",
           "words": [
             {
-              "word": "明天",
-              "pinyin": "míng tiān"
+              "word": "明天"
             },
             {
-              "word": "明亮",
-              "pinyin": "míng liàng"
+              "word": "明亮"
             }
           ],
           "sentence": "明天我们要去公园玩"
@@ -839,12 +653,10 @@ module.exports = {
           "pinyin": "cāi",
           "words": [
             {
-              "word": "猜测",
-              "pinyin": "cāi cè"
+              "word": "猜测"
             },
             {
-              "word": "猜想",
-              "pinyin": "cāi xiǎng"
+              "word": "猜想"
             }
           ],
           "sentence": "我们一起玩猜谜语的游戏，大家都很开心。"
@@ -854,12 +666,10 @@ module.exports = {
           "pinyin": "biān",
           "words": [
             {
-              "word": "旁边",
-              "pinyin": "páng biān"
+              "word": "旁边"
             },
             {
-              "word": "路边",
-              "pinyin": "lù biān"
+              "word": "路边"
             }
           ],
           "sentence": "大叔旁边坐着一位乘凉的老爷爷。"
@@ -869,12 +679,10 @@ module.exports = {
           "pinyin": "liáng",
           "words": [
             {
-              "word": "凉快",
-              "pinyin": "liáng kuài"
+              "word": "凉快"
             },
             {
-              "word": "清凉",
-              "pinyin": "qīng liáng"
+              "word": "清凉"
             }
           ],
           "sentence": "夏天吹着风扇，感觉特别凉快。"
@@ -884,12 +692,10 @@ module.exports = {
           "pinyin": "xǐ",
           "words": [
             {
-              "word": "喜欢",
-              "pinyin": "xǐ huān"
+              "word": "喜欢"
             },
             {
-              "word": "喜庆",
-              "pinyin": "xǐ qìng"
+              "word": "喜庆"
             }
           ],
           "sentence": "我们都喜欢听老师讲故事。"
@@ -899,12 +705,10 @@ module.exports = {
           "pinyin": "huān",
           "words": [
             {
-              "word": "欢乐",
-              "pinyin": "huān lè"
+              "word": "欢乐"
             },
             {
-              "word": "欢快",
-              "pinyin": "huān kuài"
+              "word": "欢快"
             }
           ],
           "sentence": "儿童节那天，校园里充满了欢乐的笑声。"
@@ -914,12 +718,10 @@ module.exports = {
           "pinyin": "shí",
           "words": [
             {
-              "word": "时间",
-              "pinyin": "shí jiān"
+              "word": "时间"
             },
             {
-              "word": "时刻",
-              "pinyin": "shí kè"
+              "word": "时刻"
             }
           ],
           "sentence": "我们要珍惜时间，好好学习，天天向上。"
@@ -929,12 +731,10 @@ module.exports = {
           "pinyin": "pà",
           "words": [
             {
-              "word": "害怕",
-              "pinyin": "hài pà"
+              "word": "害怕"
             },
             {
-              "word": "可怕",
-              "pinyin": "kě pà"
+              "word": "可怕"
             }
           ],
           "sentence": "我不害怕黑，因为妈妈说黑暗里也有星星陪伴。"
@@ -944,12 +744,10 @@ module.exports = {
           "pinyin": "gōng",
           "words": [
             {
-              "word": "进攻",
-              "pinyin": "jìn gōng"
+              "word": "进攻"
             },
             {
-              "word": "攻击",
-              "pinyin": "gōng jī"
+              "word": "攻击"
             }
           ],
           "sentence": "在玩具大战中，我们小组一举进攻，赢得了比赛。"
@@ -959,12 +757,10 @@ module.exports = {
           "pinyin": "lìng",
           "words": [
             {
-              "word": "命令",
-              "pinyin": "mìng lìng"
+              "word": "命令"
             },
             {
-              "word": "口令",
-              "pinyin": "kǒu lìng"
+              "word": "口令"
             }
           ],
           "sentence": "老师喊出口令，我们立刻站得整整齐齐。"
@@ -974,73 +770,23 @@ module.exports = {
           "pinyin": "gǎn",
           "words": [
             {
-              "word": "感动",
-              "pinyin": "gǎn dòng"
+              "word": "感动"
             },
             {
-              "word": "感觉",
-              "pinyin": "gǎn jué"
+              "word": "感觉"
             }
           ],
           "sentence": "妈妈冒雨给我送伞，我心里特别感动。"
-        },
-        {
-          "character": "动",
-          "pinyin": "dòng",
-          "words": [
-            {
-              "word": "运动",
-              "pinyin": "yùn dòng"
-            },
-            {
-              "word": "动作",
-              "pinyin": ""
-            }
-          ],
-          "sentence": "我们每天都要运动，做健康的好宝宝。"
-        },
-        {
-          "character": "万",
-          "pinyin": "wàn",
-          "words": [
-            {
-              "word": "万一",
-              "pinyin": "wàn yī"
-            },
-            {
-              "word": "千万",
-              "pinyin": "qiān wàn"
-            }
-          ],
-          "sentence": "出门要记得带雨伞，万一下雨就不会淋湿了。",
-          "pinyin_notes": "原始拼音'z0o'可能错误，已修正为'wàn'"
-        },
-        {
-          "character": "无",
-          "pinyin": "wú",
-          "words": [
-            {
-              "word": "无奈",
-              "pinyin": "wú nài"
-            },
-            {
-              "word": "无聊",
-              "pinyin": "wú liáo"
-            }
-          ],
-          "sentence": "下雨天不能出去玩,我觉得有点无聊。"
         },
         {
           "character": "文",
           "pinyin": "wén",
           "words": [
             {
-              "word": "文具",
-              "pinyin": "wén jù"
+              "word": "文具"
             },
             {
-              "word": "文字",
-              "pinyin": "wén zì"
+              "word": "文字"
             }
           ],
           "sentence": "我的文具盒里有铅笔和橡皮。"
@@ -1050,12 +796,16 @@ module.exports = {
           "pinyin": "kǎ",
           "words": [
             {
-              "word": "卡片",
-              "pinyin": "kǎ piàn"
+              "word": "卡片"
             },
             {
-              "word": "贺卡",
-              "pinyin": "hè kǎ"
+              "word": "贺卡"
+            },
+            {
+              "word": "卡通"
+            },
+            {
+              "word": "卡纸"
             }
           ],
           "sentence": "我给妈妈做了一张生日贺卡。"
@@ -1065,12 +815,10 @@ module.exports = {
           "pinyin": "piàn",
           "words": [
             {
-              "word": "一片",
-              "pinyin": "yī piàn"
+              "word": "一片"
             },
             {
-              "word": "片面",
-              "pinyin": "piàn miàn"
+              "word": "片面"
             }
           ],
           "sentence": "树上落下一片金黄的叶子。"
@@ -1080,12 +828,16 @@ module.exports = {
           "pinyin": "hé",
           "words": [
             {
-              "word": "合成",
-              "pinyin": "hé chéng"
+              "word": "合成"
             },
             {
-              "word": "合力",
-              "pinyin": "hé lì"
+              "word": "合力"
+            },
+            {
+              "word": "合作"
+            },
+            {
+              "word": "合并"
             }
           ],
           "sentence": "我们合力把桌子搬回教室。"
@@ -1095,12 +847,10 @@ module.exports = {
           "pinyin": "shí",
           "words": [
             {
-              "word": "认识",
-              "pinyin": "rèn shí"
+              "word": "认识"
             },
             {
-              "word": "识字",
-              "pinyin": "shí zì"
+              "word": "识字"
             }
           ],
           "sentence": "我每天都坚持识字，现在已经认识很多汉字了。"
@@ -1110,12 +860,10 @@ module.exports = {
           "pinyin": "zǔ",
           "words": [
             {
-              "word": "小组",
-              "pinyin": "xiǎo zǔ"
+              "word": "小组"
             },
             {
-              "word": "组成",
-              "pinyin": "zǔ chéng"
+              "word": "组成"
             }
           ],
           "sentence": "我们小组在比赛中合作得很好，获得了第一名。"
@@ -1125,12 +873,10 @@ module.exports = {
           "pinyin": "jì",
           "words": [
             {
-              "word": "算计",
-              "pinyin": "suàn jì"
+              "word": "算计"
             },
             {
-              "word": "计划",
-              "pinyin": "jì huà"
+              "word": "计划"
             }
           ],
           "sentence": "我学会了用手指计算简单的数学题。"
@@ -1140,12 +886,10 @@ module.exports = {
           "pinyin": "suàn",
           "words": [
             {
-              "word": "算数",
-              "pinyin": "suàn shù"
+              "word": "算数"
             },
             {
-              "word": "计算",
-              "pinyin": "jì suàn"
+              "word": "计算"
             }
           ],
           "sentence": "妈妈考我算数，我很快就算出了答案。"
@@ -1155,12 +899,10 @@ module.exports = {
           "pinyin": "jiǎn",
           "words": [
             {
-              "word": "减法",
-              "pinyin": "jiǎn fǎ"
+              "word": "减法"
             },
             {
-              "word": "减少",
-              "pinyin": "jiǎn shǎo"
+              "word": "减少"
             }
           ],
           "sentence": "减法题其实很简单，比如5减3等于2。"
@@ -1170,12 +912,10 @@ module.exports = {
           "pinyin": "shì",
           "words": [
             {
-              "word": "公式",
-              "pinyin": "gōng shì"
+              "word": "公式"
             },
             {
-              "word": "样式",
-              "pinyin": "yàng shì"
+              "word": "样式"
             }
           ],
           "sentence": "这个铅笔盒的样式很特别。"
@@ -1185,12 +925,10 @@ module.exports = {
           "pinyin": "tú",
           "words": [
             {
-              "word": "图片",
-              "pinyin": "tú piàn"
+              "word": "图片"
             },
             {
-              "word": "图画",
-              "pinyin": "tú huà"
+              "word": "图画"
             }
           ],
           "sentence": "我在图画本上画了一只可爱的小猫咪。"
@@ -1200,57 +938,23 @@ module.exports = {
           "pinyin": "xíng",
           "words": [
             {
-              "word": "形状",
-              "pinyin": "xíng zhuàng"
+              "word": "形状"
             },
             {
-              "word": "圆形",
-              "pinyin": "yuán xíng"
+              "word": "圆形"
             }
           ],
           "sentence": "太阳是圆形的，月亮有时候是弯弯的。"
-        },
-        {
-          "character": "卡",
-          "pinyin": "kǎ",
-          "words": [
-            {
-              "word": "卡通",
-              "pinyin": "kǎ tōng"
-            },
-            {
-              "word": "卡纸",
-              "pinyin": "kǎ zhǐ"
-            }
-          ],
-          "sentence": "我用彩色卡纸做了一张漂亮的贺卡送给妈妈。"
-        },
-        {
-          "character": "合",
-          "pinyin": "hé",
-          "words": [
-            {
-              "word": "合作",
-              "pinyin": "hé zuò"
-            },
-            {
-              "word": "合并",
-              "pinyin": "hé bìng"
-            }
-          ],
-          "sentence": "小朋友们一起合作，很快就完成了手工任务。"
         },
         {
           "character": "唱",
           "pinyin": "chàng",
           "words": [
             {
-              "word": "唱歌",
-              "pinyin": "chàng gē"
+              "word": "唱歌"
             },
             {
-              "word": "合唱",
-              "pinyin": "hé chàng"
+              "word": "合唱"
             }
           ],
           "sentence": "我们在音乐课上合唱了一首儿歌。"
@@ -1260,12 +964,10 @@ module.exports = {
           "pinyin": "tuán",
           "words": [
             {
-              "word": "团队",
-              "pinyin": "tuán duì"
+              "word": "团队"
             },
             {
-              "word": "团圆",
-              "pinyin": "tuán yuán"
+              "word": "团圆"
             }
           ],
           "sentence": "中秋节，我们一家人团圆在一起吃月饼。"
@@ -1281,12 +983,13 @@ module.exports = {
           "pinyin": "gòng",
           "words": [
             {
-              "word": "共同",
-              "pinyin": "gòng tóng"
+              "word": "共同"
             },
             {
-              "word": "一共",
-              "pinyin": "yī gòng"
+              "word": "一共"
+            },
+            {
+              "word": "公共"
             }
           ],
           "sentence": "我们共同完成了手工制作。"
@@ -1296,12 +999,16 @@ module.exports = {
           "pinyin": "chǎn",
           "words": [
             {
-              "word": "产业",
-              "pinyin": "chǎn yè"
+              "word": "产业"
             },
             {
-              "word": "产出",
-              "pinyin": "chǎn chū"
+              "word": "产出"
+            },
+            {
+              "word": "生产"
+            },
+            {
+              "word": "产品"
             }
           ],
           "sentence": "这个科研团队的技术产出十分可观。"
@@ -1311,12 +1018,16 @@ module.exports = {
           "pinyin": "dǎng",
           "words": [
             {
-              "word": "政党",
-              "pinyin": "zhèng dǎng"
+              "word": "政党"
             },
             {
-              "word": "党徽",
-              "pinyin": "dǎng huī"
+              "word": "党徽"
+            },
+            {
+              "word": "党员"
+            },
+            {
+              "word": "党旗"
             }
           ],
           "sentence": "不同的政党，代表着不同群体的利益诉求。"
@@ -1326,12 +1037,16 @@ module.exports = {
           "pinyin": "tài",
           "words": [
             {
-              "word": "太平",
-              "pinyin": "tài píng"
+              "word": "太平"
             },
             {
-              "word": "太空",
-              "pinyin": "tài kōng"
+              "word": "太空"
+            },
+            {
+              "word": "太阳"
+            },
+            {
+              "word": "太多"
             }
           ],
           "sentence": "宇航员在太空中进行科学实验。"
@@ -1341,12 +1056,10 @@ module.exports = {
           "pinyin": "yáng",
           "words": [
             {
-              "word": "阳光",
-              "pinyin": "yáng guāng"
+              "word": "阳光"
             },
             {
-              "word": "阳台",
-              "pinyin": "yáng tái"
+              "word": "阳台"
             }
           ],
           "sentence": "阳台上的阳光真温暖。"
@@ -1356,12 +1069,10 @@ module.exports = {
           "pinyin": "guāng",
           "words": [
             {
-              "word": "光明",
-              "pinyin": "guāng míng"
+              "word": "光明"
             },
             {
-              "word": "灯光",
-              "pinyin": "dēng guāng"
+              "word": "灯光"
             }
           ],
           "sentence": "夜晚，灯光照亮了回家的路。"
@@ -1371,12 +1082,10 @@ module.exports = {
           "pinyin": "rè",
           "words": [
             {
-              "word": "热闹",
-              "pinyin": "rè nào"
+              "word": "热闹"
             },
             {
-              "word": "炎热",
-              "pinyin": "yán rè"
+              "word": "炎热"
             }
           ],
           "sentence": "炎热的夏天，我们可以吃冰淇淋。"
@@ -1386,117 +1095,23 @@ module.exports = {
           "pinyin": "ài",
           "words": [
             {
-              "word": "爱心",
-              "pinyin": "ài xīn"
+              "word": "爱心"
             },
             {
-              "word": "爱护",
-              "pinyin": "ài hù"
+              "word": "爱护"
             }
           ],
           "sentence": "我们要有爱心，帮助有困难的小朋友。"
-        },
-        {
-          "character": "共",
-          "pinyin": "gòng",
-          "words": [
-            {
-              "word": "共同",
-              "pinyin": "gòng tóng"
-            },
-            {
-              "word": "公共",
-              "pinyin": "gōng gòng"
-            }
-          ],
-          "sentence": "我和小伙伴共同完成了老师布置的作业。"
-        },
-        {
-          "character": "产",
-          "pinyin": "chǎn",
-          "words": [
-            {
-              "word": "生产",
-              "pinyin": "shēng chǎn"
-            },
-            {
-              "word": "产品",
-              "pinyin": "chǎn pǐn"
-            }
-          ],
-          "sentence": "工厂里生产出很多好玩的玩具。"
-        },
-        {
-          "character": "党",
-          "pinyin": "dǎng",
-          "words": [
-            {
-              "word": "党员",
-              "pinyin": "dǎng yuán"
-            },
-            {
-              "word": "党旗",
-              "pinyin": "dǎng qí"
-            }
-          ],
-          "sentence": "爸爸是一名党员，他经常帮助别人。"
-        },
-        {
-          "character": "太",
-          "pinyin": "tài",
-          "words": [
-            {
-              "word": "太阳",
-              "pinyin": "tài yáng"
-            },
-            {
-              "word": "太多",
-              "pinyin": "tài duō"
-            }
-          ],
-          "sentence": "太阳公公每天从东方升起"
-        },
-        {
-          "character": "阳",
-          "pinyin": "yáng",
-          "words": [
-            {
-              "word": "阳光",
-              "pinyin": "yáng guāng"
-            },
-            {
-              "word": "阳台",
-              "pinyin": "yáng tái"
-            }
-          ],
-          "sentence": "清晨的阳光照进教室，我们开始了早读。"
-        },
-        {
-          "character": "光",
-          "pinyin": "guāng",
-          "words": [
-            {
-              "word": "光明",
-              "pinyin": "guāng míng"
-            },
-            {
-              "word": "灯光",
-              "pinyin": "dēng guāng"
-            }
-          ],
-          "sentence": "睡前妈妈留了一盏小灯光，我睡得特别安心。"
         },
         {
           "character": "怀",
           "pinyin": "huái",
           "words": [
             {
-              "word": "怀念",
-              "pinyin": "huái niàn"
+              "word": "怀念"
             },
             {
-              "word": "关怀",
-              "pinyin": "guān huái"
+              "word": "关怀"
             }
           ],
           "sentence": "我怀念去年夏天和小伙伴一起捉蜻蜓的时光。"
@@ -1506,12 +1121,10 @@ module.exports = {
           "pinyin": "bào",
           "words": [
             {
-              "word": "拥抱",
-              "pinyin": "yōng bào"
+              "word": "拥抱"
             },
             {
-              "word": "抱着",
-              "pinyin": "bào zhe"
+              "word": "抱着"
             }
           ],
           "sentence": "我抱着心爱的玩具熊睡着了。"
@@ -1521,12 +1134,10 @@ module.exports = {
           "pinyin": "xìng",
           "words": [
             {
-              "word": "幸福",
-              "pinyin": "xìng fú"
+              "word": "幸福"
             },
             {
-              "word": "幸运",
-              "pinyin": "xìng yùn"
+              "word": "幸运"
             }
           ],
           "sentence": "一家人坐在一起吃饭，我觉得特别幸福。"
@@ -1536,12 +1147,10 @@ module.exports = {
           "pinyin": "fú",
           "words": [
             {
-              "word": "福气",
-              "pinyin": "fú qì"
+              "word": "福气"
             },
             {
-              "word": "祝福",
-              "pinyin": "zhù fú"
+              "word": "祝福"
             }
           ],
           "sentence": "新年到了，我给爷爷奶奶送上祝福。"
@@ -1551,12 +1160,10 @@ module.exports = {
           "pinyin": "chéng",
           "words": [
             {
-              "word": "成功",
-              "pinyin": "chéng gōng"
+              "word": "成功"
             },
             {
-              "word": "成长",
-              "pinyin": "chéng cháng"
+              "word": "成长"
             }
           ],
           "sentence": "经过反复练习，我终于成功跳过了100个跳绳。"
@@ -1572,12 +1179,16 @@ module.exports = {
           "pinyin": "jǐng",
           "words": [
             {
-              "word": "市井",
-              "pinyin": ""
+              "word": "市井"
             },
             {
-              "word": "井绳",
-              "pinyin": ""
+              "word": "井绳"
+            },
+            {
+              "word": "井水"
+            },
+            {
+              "word": "井口"
             }
           ],
           "sentence": "这条老街充满了市井烟火气，特别热闹。"
@@ -1587,12 +1198,16 @@ module.exports = {
           "pinyin": "zhǔ",
           "words": [
             {
-              "word": "主持",
-              "pinyin": ""
+              "word": "主持"
             },
             {
-              "word": "主题",
-              "pinyin": ""
+              "word": "主题"
+            },
+            {
+              "word": "主人"
+            },
+            {
+              "word": "主要"
             }
           ],
           "sentence": "我在班级联欢会上主持节目。"
@@ -1602,12 +1217,10 @@ module.exports = {
           "pinyin": "jiāng",
           "words": [
             {
-              "word": "江水",
-              "pinyin": "jiāng shuǐ"
+              "word": "江水"
             },
             {
-              "word": "江河",
-              "pinyin": "jiāng hé"
+              "word": "江河"
             }
           ],
           "sentence": "江河里的水向东流。"
@@ -1617,12 +1230,16 @@ module.exports = {
           "pinyin": "zhù",
           "words": [
             {
-              "word": "留住",
-              "pinyin": "liú zhù"
+              "word": "留住"
             },
             {
-              "word": "住处",
-              "pinyin": "zhù chù"
+              "word": "住处"
+            },
+            {
+              "word": "住家"
+            },
+            {
+              "word": "居住"
             }
           ],
           "sentence": "她初到这座城市，还没找到合适的住处。"
@@ -1632,12 +1249,10 @@ module.exports = {
           "pinyin": "fāng",
           "words": [
             {
-              "word": "方向",
-              "pinyin": "fāng xiàng"
+              "word": "方向"
             },
             {
-              "word": "方法",
-              "pinyin": "fāng fǎ"
+              "word": "方法"
             }
           ],
           "sentence": "太阳升起的方向是东方。"
@@ -1647,42 +1262,23 @@ module.exports = {
           "pinyin": "hòu",
           "words": [
             {
-              "word": "后面",
-              "pinyin": "hòu miàn"
+              "word": "后面"
             },
             {
-              "word": "前后",
-              "pinyin": "qián hòu"
+              "word": "前后"
             }
           ],
           "sentence": "我走在妈妈的后面。"
-        },
-        {
-          "character": "井",
-          "pinyin": "jǐng",
-          "words": [
-            {
-              "word": "井水",
-              "pinyin": "jǐng shuǐ"
-            },
-            {
-              "word": "井口",
-              "pinyin": "jǐng kǒu"
-            }
-          ],
-          "sentence": "井口旁边有一棵大树，夏天可以乘凉。"
         },
         {
           "character": "城",
           "pinyin": "chéng",
           "words": [
             {
-              "word": "城市",
-              "pinyin": "chéng shì"
+              "word": "城市"
             },
             {
-              "word": "城墙",
-              "pinyin": "chéng qiáng"
+              "word": "城墙"
             }
           ],
           "sentence": "我生活的城市很美丽，有很多高楼大厦。",
@@ -1693,12 +1289,10 @@ module.exports = {
           "pinyin": "cūn",
           "words": [
             {
-              "word": "村庄",
-              "pinyin": "cūn zhuāng"
+              "word": "村庄"
             },
             {
-              "word": "农村",
-              "pinyin": "nóng cūn"
+              "word": "农村"
             }
           ],
           "sentence": "农村的空气很清新，还有很多绿油油的草地。"
@@ -1708,72 +1302,36 @@ module.exports = {
           "pinyin": "máo",
           "words": [
             {
-              "word": "毛巾",
-              "pinyin": "máo jīn"
+              "word": "毛巾"
             },
             {
-              "word": "毛衣",
-              "pinyin": "máo yī"
+              "word": "毛衣"
             }
           ],
           "sentence": "我用干净的毛巾擦脸，感觉很舒服。"
-        },
-        {
-          "character": "主",
-          "pinyin": "zhǔ",
-          "words": [
-            {
-              "word": "主人",
-              "pinyin": "zhǔ rén"
-            },
-            {
-              "word": "主要",
-              "pinyin": "zhǔ yào"
-            }
-          ],
-          "sentence": "我是这个玩具屋的小主人，欢迎大家来玩。"
         },
         {
           "character": "席",
           "pinyin": "xí",
           "words": [
             {
-              "word": "主席",
-              "pinyin": "zhǔ xí"
+              "word": "主席"
             },
             {
-              "word": "席位",
-              "pinyin": "xí wèi"
+              "word": "席位"
             }
           ],
           "sentence": "主席台上坐着很多令人尊敬的老师。"
-        },
-        {
-          "character": "住",
-          "pinyin": "zhù",
-          "words": [
-            {
-              "word": "住家",
-              "pinyin": "zhù jiā"
-            },
-            {
-              "word": "居住",
-              "pinyin": "jū zhù"
-            }
-          ],
-          "sentence": "我们居住的小区很热闹。"
         },
         {
           "character": "乡",
           "pinyin": "xiāng",
           "words": [
             {
-              "word": "家乡",
-              "pinyin": "jiā xiāng"
+              "word": "家乡"
             },
             {
-              "word": "乡村",
-              "pinyin": "xiāng cūn"
+              "word": "乡村"
             }
           ],
           "sentence": "我的家乡有清清的小河，清澈见底。"
@@ -1783,12 +1341,10 @@ module.exports = {
           "pinyin": "qīn",
           "words": [
             {
-              "word": "亲人",
-              "pinyin": "qīn rén"
+              "word": "亲人"
             },
             {
-              "word": "亲切",
-              "pinyin": "qīn qiē"
+              "word": "亲切"
             }
           ],
           "sentence": "爷爷奶奶爸爸妈妈是我最亲的亲人。"
@@ -1798,12 +1354,10 @@ module.exports = {
           "pinyin": "zhàn",
           "words": [
             {
-              "word": "战士",
-              "pinyin": "zhàn shì"
+              "word": "战士"
             },
             {
-              "word": "战斗",
-              "pinyin": "zhàn dòu"
+              "word": "战斗"
             }
           ],
           "sentence": "解放军战士勇敢地保卫着我们的国家。"
@@ -1813,12 +1367,10 @@ module.exports = {
           "pinyin": "shì",
           "words": [
             {
-              "word": "士兵",
-              "pinyin": "shì bīng"
+              "word": "士兵"
             },
             {
-              "word": "护士",
-              "pinyin": "hù shì"
+              "word": "护士"
             }
           ],
           "sentence": "护士阿姨温柔地帮我包扎好伤口。"
@@ -1828,12 +1380,10 @@ module.exports = {
           "pinyin": "xiǎng",
           "words": [
             {
-              "word": "想念",
-              "pinyin": "xiǎng niàn"
+              "word": "想念"
             },
             {
-              "word": "想法",
-              "pinyin": "xiǎng fǎ"
+              "word": "想法"
             }
           ],
           "sentence": "我想念在外婆家的日子，那里有很多小伙伴。"
@@ -1843,12 +1393,10 @@ module.exports = {
           "pinyin": "niàn",
           "words": [
             {
-              "word": "思念",
-              "pinyin": "sī niàn"
+              "word": "思念"
             },
             {
-              "word": "念书",
-              "pinyin": "niàn shū"
+              "word": "念书"
             }
           ],
           "sentence": "我思念远方的外婆，盼着暑假能回乡下看她。"
@@ -1864,12 +1412,16 @@ module.exports = {
           "pinyin": "gào",
           "words": [
             {
-              "word": "告状",
-              "pinyin": "gào zhuàng"
+              "word": "告状"
             },
             {
-              "word": "忠告",
-              "pinyin": "zhōng gào"
+              "word": "忠告"
+            },
+            {
+              "word": "告诉"
+            },
+            {
+              "word": "告别"
             }
           ],
           "sentence": "只有虚心接受忠告的人，才能不断完善自己。"
@@ -1879,12 +1431,10 @@ module.exports = {
           "pinyin": "de",
           "words": [
             {
-              "word": "我的",
-              "pinyin": "wǒ de"
+              "word": "我的"
             },
             {
-              "word": "你的",
-              "pinyin": "nǐ de"
+              "word": "你的"
             }
           ],
           "sentence": "这是我的书包，你的在哪里？"
@@ -1894,12 +1444,10 @@ module.exports = {
           "pinyin": "huì",
           "words": [
             {
-              "word": "开会",
-              "pinyin": ""
+              "word": "开会"
             },
             {
-              "word": "学会",
-              "pinyin": ""
+              "word": "学会"
             }
           ],
           "sentence": "我学会了自己穿衣服。"
@@ -1909,12 +1457,10 @@ module.exports = {
           "pinyin": "běi",
           "words": [
             {
-              "word": "北方",
-              "pinyin": "běi fāng"
+              "word": "北方"
             },
             {
-              "word": "北京",
-              "pinyin": "běi jīng"
+              "word": "北京"
             }
           ],
           "sentence": "北京是我们的首都。"
@@ -1924,12 +1470,13 @@ module.exports = {
           "pinyin": "jīng",
           "words": [
             {
-              "word": "京城",
-              "pinyin": "jīng chéng"
+              "word": "京城"
             },
             {
-              "word": "京剧",
-              "pinyin": "jīng jù"
+              "word": "京剧"
+            },
+            {
+              "word": "北京"
             }
           ],
           "sentence": "爷爷喜欢看京剧。"
@@ -1939,42 +1486,29 @@ module.exports = {
           "pinyin": "guǎng",
           "words": [
             {
-              "word": "广大",
-              "pinyin": "guǎng dà"
+              "word": "广大"
             },
             {
-              "word": "广场",
-              "pinyin": "guǎng chǎng"
+              "word": "广场"
+            },
+            {
+              "word": "广东"
+            },
+            {
+              "word": "广阔"
             }
           ],
           "sentence": "广场上有很多小朋友在玩耍。"
-        },
-        {
-          "character": "告",
-          "pinyin": "gào",
-          "words": [
-            {
-              "word": "告诉",
-              "pinyin": "gào sù"
-            },
-            {
-              "word": "告别",
-              "pinyin": "gào bié"
-            }
-          ],
-          "sentence": "我把今天在学校发生的事告诉了妈妈。"
         },
         {
           "character": "诉",
           "pinyin": "sù",
           "words": [
             {
-              "word": "诉说",
-              "pinyin": "sù shuō"
+              "word": "诉说"
             },
             {
-              "word": "诉求",
-              "pinyin": "sù qiú"
+              "word": "诉求"
             }
           ],
           "sentence": "小红向老师诉说了她的小烦恼。"
@@ -1984,42 +1518,23 @@ module.exports = {
           "pinyin": "zǒu",
           "words": [
             {
-              "word": "走路",
-              "pinyin": "zǒu lù"
+              "word": "走路"
             },
             {
-              "word": "走开",
-              "pinyin": "zǒu kāi"
+              "word": "走开"
             }
           ],
           "sentence": "小妹妹学会了自己走路，不用爸爸妈妈抱了。"
-        },
-        {
-          "character": "京",
-          "pinyin": "jīng",
-          "words": [
-            {
-              "word": "北京",
-              "pinyin": "běi jīng"
-            },
-            {
-              "word": "京城",
-              "pinyin": "jīng chéng"
-            }
-          ],
-          "sentence": "北京是我们的首都，有雄伟的天安门。"
         },
         {
           "character": "座",
           "pinyin": "zuò",
           "words": [
             {
-              "word": "座位",
-              "pinyin": "zuò wèi"
+              "word": "座位"
             },
             {
-              "word": "让座",
-              "pinyin": "ràng zuò"
+              "word": "让座"
             }
           ],
           "sentence": "公交车上，我给老爷爷让了一个座位。"
@@ -2029,42 +1544,23 @@ module.exports = {
           "pinyin": "ān",
           "words": [
             {
-              "word": "安全",
-              "pinyin": "ān quán"
+              "word": "安全"
             },
             {
-              "word": "安心",
-              "pinyin": "ān xīn"
+              "word": "安心"
             }
           ],
           "sentence": "过马路要注意安全，遵守交通规则。"
-        },
-        {
-          "character": "广",
-          "pinyin": "guǎng",
-          "words": [
-            {
-              "word": "广东",
-              "pinyin": "guǎng dōng"
-            },
-            {
-              "word": "广阔",
-              "pinyin": "guǎng kuò"
-            }
-          ],
-          "sentence": "天安门广场很大，很多人在这里散步。"
         },
         {
           "character": "场",
           "pinyin": "chǎng",
           "words": [
             {
-              "word": "操场",
-              "pinyin": "cāo chǎng"
+              "word": "操场"
             },
             {
-              "word": "场地",
-              "pinyin": "chǎng dì"
+              "word": "场地"
             }
           ],
           "sentence": "我们在操场上跑步、跳绳，玩得很开心。"
@@ -2074,12 +1570,10 @@ module.exports = {
           "pinyin": "fēi",
           "words": [
             {
-              "word": "非常",
-              "pinyin": "fēi cháng"
+              "word": "非常"
             },
             {
-              "word": "是非",
-              "pinyin": "shì fēi"
+              "word": "是非"
             }
           ],
           "sentence": "我非常喜欢吃妈妈做的红烧肉。"
@@ -2089,12 +1583,10 @@ module.exports = {
           "pinyin": "kuān",
           "words": [
             {
-              "word": "宽阔",
-              "pinyin": "kuān kuò"
+              "word": "宽阔"
             },
             {
-              "word": "宽敞",
-              "pinyin": "kuān chǎng"
+              "word": "宽敞"
             }
           ],
           "sentence": "我们的教室很宽敞，能坐很多小朋友。"
@@ -2104,12 +1596,10 @@ module.exports = {
           "pinyin": "lì",
           "words": [
             {
-              "word": "美丽",
-              "pinyin": "měi lì"
+              "word": "美丽"
             },
             {
-              "word": "秀丽",
-              "pinyin": "xiù lì"
+              "word": "秀丽"
             }
           ],
           "sentence": "公园里的风景很美丽，我们都舍不得离开。"
@@ -2119,12 +1609,10 @@ module.exports = {
           "pinyin": "jié",
           "words": [
             {
-              "word": "洁白",
-              "pinyin": "jié bái"
+              "word": "洁白"
             },
             {
-              "word": "整洁",
-              "pinyin": "zhěng jié"
+              "word": "整洁"
             }
           ],
           "sentence": "下雪后，大地变得洁白一片，像童话世界"
@@ -2134,12 +1622,10 @@ module.exports = {
           "pinyin": "xiě",
           "words": [
             {
-              "word": "写字",
-              "pinyin": "xiě zì"
+              "word": "写字"
             },
             {
-              "word": "书写",
-              "pinyin": "shū xiě"
+              "word": "书写"
             }
           ],
           "sentence": "老师教我们正确的握笔姿势，这样写字才不会累。"
@@ -2149,42 +1635,29 @@ module.exports = {
           "pinyin": "rèn",
           "words": [
             {
-              "word": "承认",
-              "pinyin": "chéng rèn"
+              "word": "承认"
             },
             {
-              "word": "认领",
-              "pinyin": "rèn lǐng"
+              "word": "认领"
+            },
+            {
+              "word": "认识"
+            },
+            {
+              "word": "认真"
             }
           ],
           "sentence": "做错了事情就要勇敢承认，不要找借口。"
-        },
-        {
-          "character": "认",
-          "pinyin": "rèn",
-          "words": [
-            {
-              "word": "认识",
-              "pinyin": "rèn shí"
-            },
-            {
-              "word": "认真",
-              "pinyin": "rèn zhēn"
-            }
-          ],
-          "sentence": "上课的时候我认真听讲，得到了老师的表扬。"
         },
         {
           "character": "连",
           "pinyin": "lián",
           "words": [
             {
-              "word": "连接",
-              "pinyin": "lián jiē"
+              "word": "连接"
             },
             {
-              "word": "连线",
-              "pinyin": "lián xiàn"
+              "word": "连线"
             }
           ],
           "sentence": "数学作业里的连线题，我很快就做完了。"
@@ -2194,12 +1667,10 @@ module.exports = {
           "pinyin": "xuǎn",
           "words": [
             {
-              "word": "选择",
-              "pinyin": "xuǎn zé"
+              "word": "选择"
             },
             {
-              "word": "挑选",
-              "pinyin": "tiāo xuǎn"
+              "word": "挑选"
             }
           ],
           "sentence": "生日那天，我可以自己挑选一份喜欢的礼物。"
@@ -2209,12 +1680,10 @@ module.exports = {
           "pinyin": "quān",
           "words": [
             {
-              "word": "圆圈",
-              "pinyin": "yuán quān"
+              "word": "圆圈"
             },
             {
-              "word": "圈出",
-              "pinyin": "quān chū"
+              "word": "圈出"
             }
           ],
           "sentence": "老师让我们把正确答案圈出来。"
@@ -2224,12 +1693,10 @@ module.exports = {
           "pinyin": "tú",
           "words": [
             {
-              "word": "涂色",
-              "pinyin": "tú sè"
+              "word": "涂色"
             },
             {
-              "word": "涂抹",
-              "pinyin": "tú mǒ"
+              "word": "涂抹"
             }
           ],
           "sentence": "妹妹在给小熊图案涂色。"
@@ -2239,12 +1706,10 @@ module.exports = {
           "pinyin": "tián",
           "words": [
             {
-              "word": "填空",
-              "pinyin": "tián kōng"
+              "word": "填空"
             },
             {
-              "word": "填写",
-              "pinyin": "tián xiě"
+              "word": "填写"
             }
           ],
           "sentence": "我会填写自己的名字和班级了。"
@@ -2254,12 +1719,10 @@ module.exports = {
           "pinyin": "shì",
           "words": [
             {
-              "word": "考试",
-              "pinyin": "kǎo shì"
+              "word": "考试"
             },
             {
-              "word": "尝试",
-              "pinyin": "cháng shì"
+              "word": "尝试"
             }
           ],
           "sentence": "老师说，考试要认真看题。"
@@ -2269,12 +1732,10 @@ module.exports = {
           "pinyin": "liàn",
           "words": [
             {
-              "word": "练习",
-              "pinyin": "liàn xí"
+              "word": "练习"
             },
             {
-              "word": "训练",
-              "pinyin": "xùn liàn"
+              "word": "训练"
             }
           ],
           "sentence": "我每天都练习写字，字写得越来越好看了。"
@@ -2290,12 +1751,10 @@ module.exports = {
           "pinyin": "zǒu",
           "words": [
             {
-              "word": "走路",
-              "pinyin": "zǒu lù"
+              "word": "走路"
             },
             {
-              "word": "行走",
-              "pinyin": "xíng zǒu"
+              "word": "行走"
             }
           ],
           "sentence": "我每天走路去上学。"
@@ -2305,12 +1764,10 @@ module.exports = {
           "pinyin": "hé",
           "words": [
             {
-              "word": "小河",
-              "pinyin": "xiǎo hé"
+              "word": "小河"
             },
             {
-              "word": "河水",
-              "pinyin": "hé shuǐ"
+              "word": "河水"
             }
           ],
           "sentence": "小河里有很多小鱼游来游去。"
@@ -2320,12 +1777,10 @@ module.exports = {
           "pinyin": "shuō",
           "words": [
             {
-              "word": "说话",
-              "pinyin": "shuō huà"
+              "word": "说话"
             },
             {
-              "word": "听说",
-              "pinyin": "tīng shuō"
+              "word": "听说"
             }
           ],
           "sentence": "说话要轻轻的，不要打扰别人。"
@@ -2335,12 +1790,10 @@ module.exports = {
           "pinyin": "ràng",
           "words": [
             {
-              "word": "让开",
-              "pinyin": "ràng kāi"
+              "word": "让开"
             },
             {
-              "word": "让座",
-              "pinyin": ""
+              "word": "让座"
             }
           ],
           "sentence": "我给老奶奶让座，妈妈表扬了我。"
@@ -2350,12 +1803,10 @@ module.exports = {
           "pinyin": "zì",
           "words": [
             {
-              "word": "自主",
-              "pinyin": "zì zhǔ"
+              "word": "自主"
             },
             {
-              "word": "自由",
-              "pinyin": "zì yóu"
+              "word": "自由"
             }
           ],
           "sentence": "鸟儿在天空自由自在的飞翔。"
@@ -2365,12 +1816,16 @@ module.exports = {
           "pinyin": "jǐ",
           "words": [
             {
-              "word": "自己",
-              "pinyin": ""
+              "word": "自己"
             },
             {
-              "word": "知己",
-              "pinyin": ""
+              "word": "知己"
+            },
+            {
+              "word": "克己"
+            },
+            {
+              "word": "己方"
             }
           ],
           "sentence": "自己的玩具要自己收好。"
@@ -2380,12 +1835,10 @@ module.exports = {
           "pinyin": "wán",
           "words": [
             {
-              "word": "玩耍",
-              "pinyin": "wán shuǎ"
+              "word": "玩耍"
             },
             {
-              "word": "玩具",
-              "pinyin": "wán jù"
+              "word": "玩具"
             }
           ],
           "sentence": "我和小伙伴在公园里玩耍，玩得满头大汗。"
@@ -2395,12 +1848,10 @@ module.exports = {
           "pinyin": "dé",
           "words": [
             {
-              "word": "得到",
-              "pinyin": "dé dào"
+              "word": "得到"
             },
             {
-              "word": "得意",
-              "pinyin": "dé yì"
+              "word": "得意"
             }
           ],
           "sentence": "我得到了一朵小红花。"
@@ -2410,12 +1861,10 @@ module.exports = {
           "pinyin": "jí",
           "words": [
             {
-              "word": "着急",
-              "pinyin": "zhe jí"
+              "word": "着急"
             },
             {
-              "word": "急忙",
-              "pinyin": "jí máng"
+              "word": "急忙"
             }
           ],
           "sentence": "要迟到了，我急忙背上书包向学校跑去。"
@@ -2425,12 +1874,10 @@ module.exports = {
           "pinyin": "zhí",
           "words": [
             {
-              "word": "直线",
-              "pinyin": "zhí xiàn"
+              "word": "直线"
             },
             {
-              "word": "笔直",
-              "pinyin": "bǐ zhí"
+              "word": "笔直"
             }
           ],
           "sentence": "哥哥站得笔直，像个小军人。"
@@ -2440,12 +1887,10 @@ module.exports = {
           "pinyin": "kū",
           "words": [
             {
-              "word": "哭泣",
-              "pinyin": "kū qì"
+              "word": "哭泣"
             },
             {
-              "word": "哭声",
-              "pinyin": "kū shēng"
+              "word": "哭声"
             }
           ],
           "sentence": "小妹妹找不到妈妈,伤心地哭了起来。"
@@ -2455,12 +1900,10 @@ module.exports = {
           "pinyin": "gēn",
           "words": [
             {
-              "word": "跟着",
-              "pinyin": "gēn zhe"
+              "word": "跟着"
             },
             {
-              "word": "跟随",
-              "pinyin": "gēn suí"
+              "word": "跟随"
             }
           ],
           "sentence": "我跟着妈妈去超市买东西，看到了很多零食。"
@@ -2470,12 +1913,10 @@ module.exports = {
           "pinyin": "hū",
           "words": [
             {
-              "word": "忽然",
-              "pinyin": "hū rán"
+              "word": "忽然"
             },
             {
-              "word": "突然",
-              "pinyin": "tū rán"
+              "word": "突然"
             }
           ],
           "sentence": "忽然，天空下起了小雨，我们赶紧跑回家。"
@@ -2485,12 +1926,10 @@ module.exports = {
           "pinyin": "rán",
           "words": [
             {
-              "word": "然后",
-              "pinyin": "rán hòu"
+              "word": "然后"
             },
             {
-              "word": "既然",
-              "pinyin": "jì rán"
+              "word": "既然"
             }
           ],
           "sentence": "我先写完作业，然后去看动画片。"
@@ -2500,12 +1939,10 @@ module.exports = {
           "pinyin": "tīng",
           "words": [
             {
-              "word": "听见",
-              "pinyin": "tīng jiàn"
+              "word": "听见"
             },
             {
-              "word": "听话",
-              "pinyin": "tīng huà"
+              "word": "听话"
             }
           ],
           "sentence": "我听见小鸟在树上唱歌，真好听。"
@@ -2515,12 +1952,10 @@ module.exports = {
           "pinyin": "hǎn",
           "words": [
             {
-              "word": "喊叫",
-              "pinyin": "hǎn jiào"
+              "word": "喊叫"
             },
             {
-              "word": "呼喊",
-              "pinyin": "hū hǎn"
+              "word": "呼喊"
             }
           ],
           "sentence": "妈妈在楼下呼喊我回家吃饭，我急忙跑回了家。"
@@ -2530,42 +1965,23 @@ module.exports = {
           "pinyin": "kuài",
           "words": [
             {
-              "word": "快乐",
-              "pinyin": "kuài lè"
+              "word": "快乐"
             },
             {
-              "word": "快速",
-              "pinyin": "kuài sù"
+              "word": "快速"
             }
           ],
           "sentence": "我们在操场上快速地跑步，感受风的速度。"
-        },
-        {
-          "character": "己",
-          "pinyin": "jǐ",
-          "words": [
-            {
-              "word": "克己",
-              "pinyin": "kè jǐ"
-            },
-            {
-              "word": "己方",
-              "pinyin": "jǐ fāng"
-            }
-          ],
-          "sentence": "我们要学会克己，不能随便发脾气。"
         },
         {
           "character": "背",
           "pinyin": "bèi",
           "words": [
             {
-              "word": "背包",
-              "pinyin": "bèi bāo"
+              "word": "背包"
             },
             {
-              "word": "背书",
-              "pinyin": "bèi shū"
+              "word": "背书"
             }
           ],
           "sentence": "爸爸给我买了一个漂亮的背包。"
@@ -2581,12 +1997,10 @@ module.exports = {
           "pinyin": "cóng",
           "words": [
             {
-              "word": "从来",
-              "pinyin": "cóng lái"
+              "word": "从来"
             },
             {
-              "word": "从前",
-              "pinyin": "cóng qián"
+              "word": "从前"
             }
           ],
           "sentence": "从前，奶奶总给我讲月亮的故事。"
@@ -2596,12 +2010,10 @@ module.exports = {
           "pinyin": "hǎo",
           "words": [
             {
-              "word": "好人",
-              "pinyin": "hǎo rén"
+              "word": "好人"
             },
             {
-              "word": "好看",
-              "pinyin": "hǎo kàn"
+              "word": "好看"
             }
           ],
           "sentence": "妈妈说，诚实守信的孩子是好人。"
@@ -2611,12 +2023,10 @@ module.exports = {
           "pinyin": "men",
           "words": [
             {
-              "word": "我们",
-              "pinyin": "wǒ men"
+              "word": "我们"
             },
             {
-              "word": "他们",
-              "pinyin": "tā men"
+              "word": "他们"
             }
           ],
           "sentence": "我们一起去操场跑步。"
@@ -2626,12 +2036,10 @@ module.exports = {
           "pinyin": "jiào",
           "words": [
             {
-              "word": "叫声",
-              "pinyin": "jiào shēng"
+              "word": "叫声"
             },
             {
-              "word": "叫喊",
-              "pinyin": "jiào hǎn"
+              "word": "叫喊"
             }
           ],
           "sentence": "小鸟的叫声真好听。"
@@ -2641,12 +2049,10 @@ module.exports = {
           "pinyin": "tā",
           "words": [
             {
-              "word": "他们",
-              "pinyin": "tā men"
+              "word": "他们"
             },
             {
-              "word": "他人",
-              "pinyin": "tā rén"
+              "word": "他人"
             }
           ],
           "sentence": "他们在公园里放风筝。"
@@ -2656,12 +2062,10 @@ module.exports = {
           "pinyin": "huí",
           "words": [
             {
-              "word": "回家",
-              "pinyin": "huí jiā"
+              "word": "回家"
             },
             {
-              "word": "回来",
-              "pinyin": "huí lái"
+              "word": "回来"
             }
           ],
           "sentence": "做完作业，爸爸就来接我回家啦。"
@@ -2671,12 +2075,10 @@ module.exports = {
           "pinyin": "zhǐ",
           "words": [
             {
-              "word": "只有",
-              "pinyin": "zhǐ yǒu"
+              "word": "只有"
             },
             {
-              "word": "一只",
-              "pinyin": "yī zhǐ"
+              "word": "一只"
             }
           ],
           "sentence": "我有一只可爱的小兔子，它的毛白白的。"
@@ -2686,12 +2088,10 @@ module.exports = {
           "pinyin": "hěn",
           "words": [
             {
-              "word": "很多",
-              "pinyin": "hěn duō"
+              "word": "很多"
             },
             {
-              "word": "很好",
-              "pinyin": ""
+              "word": "很好"
             }
           ],
           "sentence": "花园里开了很多五颜六色的小花。"
@@ -2701,12 +2101,10 @@ module.exports = {
           "pinyin": "gū",
           "words": [
             {
-              "word": "孤单",
-              "pinyin": "gū dān"
+              "word": "孤单"
             },
             {
-              "word": "孤独",
-              "pinyin": "gū dú"
+              "word": "孤独"
             }
           ],
           "sentence": "小鸟找不到妈妈，会觉得很孤单。"
@@ -2716,12 +2114,10 @@ module.exports = {
           "pinyin": "dān",
           "words": [
             {
-              "word": "单独",
-              "pinyin": "dān dú"
+              "word": "单独"
             },
             {
-              "word": "落单",
-              "pinyin": "luò dān"
+              "word": "落单"
             }
           ],
           "sentence": "我不敢单独一个人在家，会有点害怕。"
@@ -2731,12 +2127,10 @@ module.exports = {
           "pinyin": "zhǒng",
           "words": [
             {
-              "word": "种子",
-              "pinyin": "zhǒng zǐ"
+              "word": "种子"
             },
             {
-              "word": "种树",
-              "pinyin": "zhǒng shù"
+              "word": "种树"
             }
           ],
           "sentence": "春天来了，我们一起去公园种树。"
@@ -2746,12 +2140,10 @@ module.exports = {
           "pinyin": "měi",
           "words": [
             {
-              "word": "每天",
-              "pinyin": "měi tiān"
+              "word": "每天"
             },
             {
-              "word": "每个",
-              "pinyin": "měi gè"
+              "word": "每个"
             }
           ],
           "sentence": "我每天起床都要刷牙、洗脸。"
@@ -2761,12 +2153,10 @@ module.exports = {
           "pinyin": "dōu",
           "words": [
             {
-              "word": "都是",
-              "pinyin": "dōu shì"
+              "word": "都是"
             },
             {
-              "word": "都有",
-              "pinyin": "dōu yǒu"
+              "word": "都有"
             }
           ],
           "sentence": "班里的小朋友都有自己的爱好。"
@@ -2776,12 +2166,10 @@ module.exports = {
           "pinyin": "lín",
           "words": [
             {
-              "word": "邻居",
-              "pinyin": "lín jū"
+              "word": "邻居"
             },
             {
-              "word": "邻里",
-              "pinyin": "lín lǐ"
+              "word": "邻里"
             }
           ],
           "sentence": "我的邻居是一位和蔼的老奶奶，经常给我讲故事。"
@@ -2791,42 +2179,23 @@ module.exports = {
           "pinyin": "jū",
           "words": [
             {
-              "word": "居住",
-              "pinyin": "jū zhù"
+              "word": "居住"
             },
             {
-              "word": "居民",
-              "pinyin": "jū mín"
+              "word": "居民"
             }
           ],
           "sentence": "小区里的居民都很友好，互相帮助。"
-        },
-        {
-          "character": "叫",
-          "pinyin": "jiào",
-          "words": [
-            {
-              "word": "叫声",
-              "pinyin": "jiào shēng"
-            },
-            {
-              "word": "叫喊",
-              "pinyin": "jiào hǎn"
-            }
-          ],
-          "sentence": "小鸟的叫声清脆又好听。"
         },
         {
           "character": "招",
           "pinyin": "zhāo",
           "words": [
             {
-              "word": "招手",
-              "pinyin": "zhāo shǒu"
+              "word": "招手"
             },
             {
-              "word": "招呼",
-              "pinyin": "zhāo hū"
+              "word": "招呼"
             }
           ],
           "sentence": "看到好朋友，我连忙向他招手打招呼。"
@@ -2836,12 +2205,10 @@ module.exports = {
           "pinyin": "hū",
           "words": [
             {
-              "word": "呼唤",
-              "pinyin": "hū huàn"
+              "word": "呼唤"
             },
             {
-              "word": "呼吸",
-              "pinyin": "hū xī"
+              "word": "呼吸"
             }
           ],
           "sentence": "我们要多呼吸新鲜空气，身体健康。"
@@ -2851,12 +2218,10 @@ module.exports = {
           "pinyin": "lè",
           "words": [
             {
-              "word": "快乐",
-              "pinyin": "kuài lè"
+              "word": "快乐"
             },
             {
-              "word": "欢乐",
-              "pinyin": "huān lè"
+              "word": "欢乐"
             }
           ],
           "sentence": "和小伙伴一起玩游戏，是最快乐的事情。"
@@ -2872,12 +2237,10 @@ module.exports = {
           "pinyin": "kuài",
           "words": [
             {
-              "word": "快乐",
-              "pinyin": "kuài lè"
+              "word": "快乐"
             },
             {
-              "word": "快速",
-              "pinyin": "kuài sù"
+              "word": "快速"
             }
           ],
           "sentence": "我们在草地上快乐地玩耍。"
@@ -2887,12 +2250,10 @@ module.exports = {
           "pinyin": "lè",
           "words": [
             {
-              "word": "乐园",
-              "pinyin": "lè yuán"
+              "word": "乐园"
             },
             {
-              "word": "音乐",
-              "pinyin": "yīn lè"
+              "word": "音乐"
             }
           ],
           "sentence": "儿童乐园里有很多好玩的项目。"
@@ -2902,12 +2263,13 @@ module.exports = {
           "pinyin": "dāng",
           "words": [
             {
-              "word": "当然",
-              "pinyin": "dāng rán"
+              "word": "当然"
             },
             {
-              "word": "当心",
-              "pinyin": "dāng xīn"
+              "word": "当心"
+            },
+            {
+              "word": "当时"
             }
           ],
           "sentence": "过马路要当心，注意车辆。"
@@ -2917,12 +2279,10 @@ module.exports = {
           "pinyin": "shū",
           "words": [
             {
-              "word": "书本",
-              "pinyin": "shū běn"
+              "word": "书本"
             },
             {
-              "word": "看书",
-              "pinyin": "kàn shū"
+              "word": "看书"
             }
           ],
           "sentence": "我喜欢在睡前看书。"
@@ -2932,12 +2292,10 @@ module.exports = {
           "pinyin": "huà",
           "words": [
             {
-              "word": "画画",
-              "pinyin": "huà huà"
+              "word": "画画"
             },
             {
-              "word": "图画",
-              "pinyin": "tú huà"
+              "word": "图画"
             }
           ],
           "sentence": "我画了一幅美丽的图画。"
@@ -2947,12 +2305,10 @@ module.exports = {
           "pinyin": "máo",
           "words": [
             {
-              "word": "毛笔",
-              "pinyin": "máo bǐ"
+              "word": "毛笔"
             },
             {
-              "word": "毛病",
-              "pinyin": "máo bìng"
+              "word": "毛病"
             }
           ],
           "sentence": "这辆自行车除了一点小毛病，得拿去修一修。"
@@ -2962,12 +2318,10 @@ module.exports = {
           "pinyin": "zěn",
           "words": [
             {
-              "word": "怎么",
-              "pinyin": "zěn me"
+              "word": "怎么"
             },
             {
-              "word": "怎样",
-              "pinyin": "zěn yàng"
+              "word": "怎样"
             }
           ],
           "sentence": "你怎么还不去吃饭呢？"
@@ -2977,12 +2331,10 @@ module.exports = {
           "pinyin": "dú",
           "words": [
             {
-              "word": "独自",
-              "pinyin": "dú zì"
+              "word": "独自"
             },
             {
-              "word": "单独",
-              "pinyin": "dān dú"
+              "word": "单独"
             }
           ],
           "sentence": "我不敢独自一个人走夜路。"
@@ -2992,12 +2344,10 @@ module.exports = {
           "pinyin": "tiào",
           "words": [
             {
-              "word": "跳高",
-              "pinyin": "tiào gāo"
+              "word": "跳高"
             },
             {
-              "word": "跳跃",
-              "pinyin": "tiào yuè"
+              "word": "跳跃"
             }
           ],
           "sentence": "放学回家，我和姐姐比赛跳高。"
@@ -3007,42 +2357,23 @@ module.exports = {
           "pinyin": "shéng",
           "words": [
             {
-              "word": "绳子",
-              "pinyin": "shéng zǐ"
+              "word": "绳子"
             },
             {
-              "word": "跳绳",
-              "pinyin": "tiào shéng"
+              "word": "跳绳"
             }
           ],
           "sentence": "小狗脖子上系着一根漂亮的绳子。"
-        },
-        {
-          "character": "当",
-          "pinyin": "dāng",
-          "words": [
-            {
-              "word": "当然",
-              "pinyin": "dāng rán"
-            },
-            {
-              "word": "当时",
-              "pinyin": "dāng shí"
-            }
-          ],
-          "sentence": "老师的问题，我当然会认真思考。"
         },
         {
           "character": "还",
           "pinyin": "hái",
           "words": [
             {
-              "word": "还有",
-              "pinyin": "hái yǒu"
+              "word": "还有"
             },
             {
-              "word": "还要",
-              "pinyin": "hái yào"
+              "word": "还要"
             }
           ],
           "sentence": "我还有很多作业没写完。"
@@ -3052,12 +2383,10 @@ module.exports = {
           "pinyin": "dé",
           "words": [
             {
-              "word": "觉得",
-              "pinyin": "jué dé"
+              "word": "觉得"
             },
             {
-              "word": "得到",
-              "pinyin": ""
+              "word": "得到"
             }
           ],
           "sentence": "我觉得今天的天气真好，适合去春游。"
@@ -3067,12 +2396,10 @@ module.exports = {
           "pinyin": "yǔ",
           "words": [
             {
-              "word": "羽毛",
-              "pinyin": "yǔ máo"
+              "word": "羽毛"
             },
             {
-              "word": "羽绒",
-              "pinyin": "yǔ róng"
+              "word": "羽绒"
             }
           ],
           "sentence": "小鸟的羽毛软软的，摸起来很舒服。"
@@ -3082,12 +2409,10 @@ module.exports = {
           "pinyin": "qiú",
           "words": [
             {
-              "word": "皮球",
-              "pinyin": "pí qiú"
+              "word": "皮球"
             },
             {
-              "word": "足球",
-              "pinyin": "zú qiú"
+              "word": "足球"
             }
           ],
           "sentence": "我有一个彩色的皮球，每天都要玩一会儿。"
@@ -3097,12 +2422,10 @@ module.exports = {
           "pinyin": "jìn",
           "words": [
             {
-              "word": "使劲",
-              "pinyin": "shǐ jìn"
+              "word": "使劲"
             },
             {
-              "word": "劲道",
-              "pinyin": "jìn dào"
+              "word": "劲道"
             }
           ],
           "sentence": "拔河比赛时，我们都使劲往后拉。"
@@ -3112,12 +2435,10 @@ module.exports = {
           "pinyin": "lún",
           "words": [
             {
-              "word": "轮流",
-              "pinyin": "lún liú"
+              "word": "轮流"
             },
             {
-              "word": "轮子",
-              "pinyin": "lún zǐ"
+              "word": "轮子"
             }
           ],
           "sentence": "我们轮流玩滑梯，不推不挤。"
@@ -3127,12 +2448,10 @@ module.exports = {
           "pinyin": "pái",
           "words": [
             {
-              "word": "排队",
-              "pinyin": "pái duì"
+              "word": "排队"
             },
             {
-              "word": "排列",
-              "pinyin": "pái liè"
+              "word": "排列"
             }
           ],
           "sentence": "上课铃响了，我们排队走进教室。"
@@ -3142,12 +2461,10 @@ module.exports = {
           "pinyin": "zhǐ",
           "words": [
             {
-              "word": "停止",
-              "pinyin": "tíng zhǐ"
+              "word": "停止"
             },
             {
-              "word": "制止",
-              "pinyin": "zhì zhǐ"
+              "word": "制止"
             }
           ],
           "sentence": "上课铃响了，吵闹声立刻停止了。"
@@ -3157,12 +2474,16 @@ module.exports = {
           "pinyin": "jīn",
           "words": [
             {
-              "word": "公斤",
-              "pinyin": "gōng jīn"
+              "word": "公斤"
             },
             {
-              "word": "市斤",
-              "pinyin": "shì jīn"
+              "word": "市斤"
+            },
+            {
+              "word": "半斤"
+            },
+            {
+              "word": "斤两"
             }
           ],
           "sentence": "这袋苹果有五公斤重。"
@@ -3172,12 +2493,16 @@ module.exports = {
           "pinyin": "cùn",
           "words": [
             {
-              "word": "分寸",
-              "pinyin": "fēn cùn"
+              "word": "分寸"
             },
             {
-              "word": "尺寸",
-              "pinyin": "chǐ cùn"
+              "word": "尺寸"
+            },
+            {
+              "word": "一寸"
+            },
+            {
+              "word": "英寸"
             }
           ],
           "sentence": "这个盒子的尺寸刚好能放下我的小积木。"
@@ -3187,12 +2512,13 @@ module.exports = {
           "pinyin": "dīng",
           "words": [
             {
-              "word": "园丁",
-              "pinyin": "yuán dīng"
+              "word": "园丁"
             },
             {
-              "word": "丁香",
-              "pinyin": "dīng xiāng"
+              "word": "丁香"
+            },
+            {
+              "word": "钉子"
             }
           ],
           "sentence": "园丁叔叔在花园里浇花。"
@@ -3202,12 +2528,16 @@ module.exports = {
           "pinyin": "qiān",
           "words": [
             {
-              "word": "千秋",
-              "pinyin": "qiān qiū"
+              "word": "千秋"
             },
             {
-              "word": "千古",
-              "pinyin": "qiān gǔ"
+              "word": "千古"
+            },
+            {
+              "word": "千万"
+            },
+            {
+              "word": "千米"
             }
           ],
           "sentence": "英雄得功业，足以照耀千秋。"
@@ -3217,12 +2547,10 @@ module.exports = {
           "pinyin": "dàn",
           "words": [
             {
-              "word": "元旦",
-              "pinyin": "yuán dàn"
+              "word": "元旦"
             },
             {
-              "word": "花旦",
-              "pinyin": "huā dàn"
+              "word": "花旦"
             }
           ],
           "sentence": "元旦那天，我们全家一起吃大餐。"
@@ -3232,12 +2560,10 @@ module.exports = {
           "pinyin": "mǔ",
           "words": [
             {
-              "word": "母亲",
-              "pinyin": "mǔ qīn"
+              "word": "母亲"
             },
             {
-              "word": "母鸡",
-              "pinyin": "mǔ jī"
+              "word": "母鸡"
             }
           ],
           "sentence": "母亲是世界上最伟大的人。"
@@ -3247,102 +2573,23 @@ module.exports = {
           "pinyin": "yè",
           "words": [
             {
-              "word": "页码",
-              "pinyin": "yè mǎ"
+              "word": "页码"
             },
             {
-              "word": "页面",
-              "pinyin": "yè miàn"
+              "word": "页面"
             }
           ],
           "sentence": "看书的时候，我们可以根据页码找到想看的内容。"
-        },
-        {
-          "character": "止",
-          "pinyin": "zhǐ",
-          "words": [
-            {
-              "word": "停止",
-              "pinyin": "tíng zhǐ"
-            },
-            {
-              "word": "制止",
-              "pinyin": "zhì zhǐ"
-            }
-          ],
-          "sentence": "上课了，同学们要停止说话，认真听讲。"
-        },
-        {
-          "character": "斤",
-          "pinyin": "jīn",
-          "words": [
-            {
-              "word": "半斤",
-              "pinyin": "bàn jīn"
-            },
-            {
-              "word": "斤两",
-              "pinyin": "jīn liǎng"
-            }
-          ],
-          "sentence": "妈妈买了半斤饼干，分给我和弟弟吃。"
-        },
-        {
-          "character": "寸",
-          "pinyin": "cùn",
-          "words": [
-            {
-              "word": "一寸",
-              "pinyin": "yī cùn"
-            },
-            {
-              "word": "英寸",
-              "pinyin": "yīng cùn"
-            }
-          ],
-          "sentence": "老师教我们一寸光阴一寸金，要珍惜时间。"
-        },
-        {
-          "character": "丁",
-          "pinyin": "dīng",
-          "words": [
-            {
-              "word": "园丁",
-              "pinyin": "yuán dīng"
-            },
-            {
-              "word": "钉子",
-              "pinyin": "dīng zǐ"
-            }
-          ],
-          "sentence": "园丁叔叔辛勤地照顾着公园里的花草。"
-        },
-        {
-          "character": "千",
-          "pinyin": "qiān",
-          "words": [
-            {
-              "word": "千万",
-              "pinyin": "qiān wàn"
-            },
-            {
-              "word": "千米",
-              "pinyin": "qiān mǐ"
-            }
-          ],
-          "sentence": "千万不要闯红灯，要注意安全。"
         },
         {
           "character": "全",
           "pinyin": "quán",
           "words": [
             {
-              "word": "全部",
-              "pinyin": "quán bù"
+              "word": "全部"
             },
             {
-              "word": "安全",
-              "pinyin": "ān quán"
+              "word": "安全"
             }
           ],
           "sentence": "我们班的同学全部都到齐了。"
@@ -3352,12 +2599,10 @@ module.exports = {
           "pinyin": "yuán",
           "words": [
             {
-              "word": "元旦",
-              "pinyin": "yuán dàn"
+              "word": "元旦"
             },
             {
-              "word": "元素",
-              "pinyin": "yuán sù"
+              "word": "元素"
             }
           ],
           "sentence": "元旦那天，我们全家一起吃了团圆饭。"
@@ -3373,12 +2618,13 @@ module.exports = {
           "pinyin": "sī",
           "words": [
             {
-              "word": "思念",
-              "pinyin": "sī niàn"
+              "word": "思念"
             },
             {
-              "word": "思考",
-              "pinyin": "sī kǎo"
+              "word": "思考"
+            },
+            {
+              "word": "思想"
             }
           ],
           "sentence": "我思念远方的爷爷奶奶。"
@@ -3388,12 +2634,16 @@ module.exports = {
           "pinyin": "chuáng",
           "words": [
             {
-              "word": "床上",
-              "pinyin": "chuáng shàng"
+              "word": "床上"
             },
             {
-              "word": "床头",
-              "pinyin": ""
+              "word": "床头"
+            },
+            {
+              "word": "床单"
+            },
+            {
+              "word": "床铺"
             }
           ],
           "sentence": "我的床头放着一个小熊玩偶。"
@@ -3403,12 +2653,10 @@ module.exports = {
           "pinyin": "qián",
           "words": [
             {
-              "word": "前面",
-              "pinyin": "qián miàn"
+              "word": "前面"
             },
             {
-              "word": "前进",
-              "pinyin": "qián jìn"
+              "word": "前进"
             }
           ],
           "sentence": "前面有一棵高大的杨树。"
@@ -3418,12 +2666,10 @@ module.exports = {
           "pinyin": "dì",
           "words": [
             {
-              "word": "地面",
-              "pinyin": "dì miàn"
+              "word": "地面"
             },
             {
-              "word": "土地",
-              "pinyin": "tǔ dì"
+              "word": "土地"
             }
           ],
           "sentence": "土地里长出了嫩绿的小草。"
@@ -3433,12 +2679,16 @@ module.exports = {
           "pinyin": "gù",
           "words": [
             {
-              "word": "故乡",
-              "pinyin": "gù xiāng"
+              "word": "故乡"
             },
             {
-              "word": "故事",
-              "pinyin": "gù shì"
+              "word": "故事"
+            },
+            {
+              "word": "故意"
+            },
+            {
+              "word": "缘故"
             }
           ],
           "sentence": "爷爷给我讲故乡的故事。"
@@ -3448,12 +2698,10 @@ module.exports = {
           "pinyin": "xiāng",
           "words": [
             {
-              "word": "乡村",
-              "pinyin": "xiāng cūn"
+              "word": "乡村"
             },
             {
-              "word": "家乡",
-              "pinyin": "jiā xiāng"
+              "word": "家乡"
             }
           ],
           "sentence": "我的家乡是个美丽的乡村。"
@@ -3463,57 +2711,23 @@ module.exports = {
           "pinyin": "jìng",
           "words": [
             {
-              "word": "安静",
-              "pinyin": "ān jìng"
+              "word": "安静"
             },
             {
-              "word": "平静",
-              "pinyin": "píng jìng"
+              "word": "平静"
             }
           ],
           "sentence": "图书馆里很安静，大家都在认真看书。"
-        },
-        {
-          "character": "思",
-          "pinyin": "sī",
-          "words": [
-            {
-              "word": "思考",
-              "pinyin": "sī kǎo"
-            },
-            {
-              "word": "思想",
-              "pinyin": "sī xiǎng"
-            }
-          ],
-          "sentence": "遇到难题时，我们要认真思考，才能找到答案。"
-        },
-        {
-          "character": "床",
-          "pinyin": "chuáng",
-          "words": [
-            {
-              "word": "床单",
-              "pinyin": "chuáng dān"
-            },
-            {
-              "word": "床铺",
-              "pinyin": "chuáng pù"
-            }
-          ],
-          "sentence": "我的床单上印着可爱的小熊。"
         },
         {
           "character": "疑",
           "pinyin": "yí",
           "words": [
             {
-              "word": "怀疑",
-              "pinyin": "huái yí"
+              "word": "怀疑"
             },
             {
-              "word": "疑问",
-              "pinyin": "yí wèn"
+              "word": "疑问"
             }
           ],
           "sentence": "我有一个疑问，想请教老师。"
@@ -3523,12 +2737,10 @@ module.exports = {
           "pinyin": "jǔ",
           "words": [
             {
-              "word": "举手",
-              "pinyin": "jǔ shǒu"
+              "word": "举手"
             },
             {
-              "word": "举起",
-              "pinyin": "jǔ qǐ"
+              "word": "举起"
             }
           ],
           "sentence": "上课的时候，我积极举手回答老师的问题。"
@@ -3538,12 +2750,10 @@ module.exports = {
           "pinyin": "wàng",
           "words": [
             {
-              "word": "希望",
-              "pinyin": "xī wàng"
+              "word": "希望"
             },
             {
-              "word": "看望",
-              "pinyin": "kàn wàng"
+              "word": "看望"
             }
           ],
           "sentence": "我希望能快点长大，帮爸爸妈妈做家务。"
@@ -3553,30 +2763,13 @@ module.exports = {
           "pinyin": "dī",
           "words": [
             {
-              "word": "低头",
-              "pinyin": "dī tóu"
+              "word": "低头"
             },
             {
-              "word": "高低",
-              "pinyin": "gāo dī"
+              "word": "高低"
             }
           ],
           "sentence": "做错事情时，我会不好意思地低头认错。"
-        },
-        {
-          "character": "故",
-          "pinyin": "gù",
-          "words": [
-            {
-              "word": "故意",
-              "pinyin": "gù yì"
-            },
-            {
-              "word": "缘故",
-              "pinyin": "yuán gù"
-            }
-          ],
-          "sentence": "我不是故意弄坏你的铅笔的。"
         }
       ]
     },
@@ -3589,12 +2782,10 @@ module.exports = {
           "pinyin": "sè",
           "words": [
             {
-              "word": "颜色",
-              "pinyin": "yán sè"
+              "word": "颜色"
             },
             {
-              "word": "色彩",
-              "pinyin": "sè cǎi"
+              "word": "色彩"
             }
           ],
           "sentence": "彩虹有七种美丽的颜色。",
@@ -3605,12 +2796,10 @@ module.exports = {
           "pinyin": "bǎ",
           "words": [
             {
-              "word": "把手",
-              "pinyin": "bǎ shǒu"
+              "word": "把手"
             },
             {
-              "word": "一把",
-              "pinyin": "yī bǎ"
+              "word": "一把"
             }
           ],
           "sentence": "我有一把漂亮的小雨伞。",
@@ -3621,12 +2810,16 @@ module.exports = {
           "pinyin": "jiǎng",
           "words": [
             {
-              "word": "讲师",
-              "pinyin": "jiǎng shī"
+              "word": "讲师"
             },
             {
-              "word": "演讲",
-              "pinyin": "yǎn jiǎng"
+              "word": "演讲"
+            },
+            {
+              "word": "讲课"
+            },
+            {
+              "word": "听讲"
             }
           ],
           "sentence": "他在台上演讲声音洪亮，赢得阵阵掌声。"
@@ -3636,12 +2829,16 @@ module.exports = {
           "pinyin": "yàng",
           "words": [
             {
-              "word": "样子",
-              "pinyin": "yàng zǐ"
+              "word": "样子"
             },
             {
-              "word": "同样",
-              "pinyin": "tóng yàng"
+              "word": "同样"
+            },
+            {
+              "word": "模样"
+            },
+            {
+              "word": "样品"
             }
           ],
           "sentence": "弟弟的玩具车和我的是同样的款式。"
@@ -3651,12 +2848,16 @@ module.exports = {
           "pinyin": "xiào",
           "words": [
             {
-              "word": "笑容",
-              "pinyin": "xiào róng"
+              "word": "笑容"
             },
             {
-              "word": "大笑",
-              "pinyin": "dà xiào"
+              "word": "大笑"
+            },
+            {
+              "word": "笑话"
+            },
+            {
+              "word": "微笑"
             }
           ],
           "sentence": "妹妹的笑容像春天的阳光一样温暖。"
@@ -3666,12 +2867,16 @@ module.exports = {
           "pinyin": "zài",
           "words": [
             {
-              "word": "再见",
-              "pinyin": "zài jiàn"
+              "word": "再见"
             },
             {
-              "word": "再次",
-              "pinyin": "zài cì"
+              "word": "再次"
+            },
+            {
+              "word": "再来"
+            },
+            {
+              "word": "再也"
             }
           ],
           "sentence": "放学时，我和同学说再见。"
@@ -3681,12 +2886,10 @@ module.exports = {
           "pinyin": "dǎn",
           "words": [
             {
-              "word": "胆子",
-              "pinyin": "dǎn zǐ"
+              "word": "胆子"
             },
             {
-              "word": "胆小",
-              "pinyin": "dǎn xiǎo"
+              "word": "胆小"
             }
           ],
           "sentence": "我有点胆小，不敢一个人睡觉。"
@@ -3696,12 +2899,10 @@ module.exports = {
           "pinyin": "gǎn",
           "words": [
             {
-              "word": "勇敢",
-              "pinyin": "yǒng gǎn"
+              "word": "勇敢"
             },
             {
-              "word": "不敢",
-              "pinyin": "bù gǎn"
+              "word": "不敢"
             }
           ],
           "sentence": "我是一个勇敢的小朋友，不怕打针。"
@@ -3711,42 +2912,23 @@ module.exports = {
           "pinyin": "yǒng",
           "words": [
             {
-              "word": "勇士",
-              "pinyin": "yǒng shì"
+              "word": "勇士"
             },
             {
-              "word": "勇气",
-              "pinyin": "yǒng qì"
+              "word": "勇气"
             }
           ],
           "sentence": "我鼓起勇气主动向老师承认了错误。"
-        },
-        {
-          "character": "讲",
-          "pinyin": "jiǎng",
-          "words": [
-            {
-              "word": "讲课",
-              "pinyin": "jiǎng kè"
-            },
-            {
-              "word": "听讲",
-              "pinyin": "tīng jiǎng"
-            }
-          ],
-          "sentence": "数学老师讲课逻辑清晰，难懂的知识点也变简单了。"
         },
         {
           "character": "窗",
           "pinyin": "chuāng",
           "words": [
             {
-              "word": "窗户",
-              "pinyin": "chuāng hù"
+              "word": "窗户"
             },
             {
-              "word": "窗外",
-              "pinyin": "chuāng wài"
+              "word": "窗外"
             }
           ],
           "sentence": "窗外的风景很美，有绿树和小花。"
@@ -3756,12 +2938,10 @@ module.exports = {
           "pinyin": "luàn",
           "words": [
             {
-              "word": "混乱",
-              "pinyin": "hùn luàn"
+              "word": "混乱"
             },
             {
-              "word": "杂乱",
-              "pinyin": "zá luàn"
+              "word": "杂乱"
             }
           ],
           "sentence": "我的书桌有点杂乱，我要整理一下。"
@@ -3771,72 +2951,23 @@ module.exports = {
           "pinyin": "lā",
           "words": [
             {
-              "word": "拉车",
-              "pinyin": "lā chē"
+              "word": "拉车"
             },
             {
-              "word": "拉手",
-              "pinyin": "lā shǒu"
+              "word": "拉手"
             }
           ],
           "sentence": "我和好朋友手拉手，一起去上学。"
-        },
-        {
-          "character": "样",
-          "pinyin": "yàng",
-          "words": [
-            {
-              "word": "模样",
-              "pinyin": "mó yàng"
-            },
-            {
-              "word": "样品",
-              "pinyin": "yàng pǐn"
-            }
-          ],
-          "sentence": "蛋糕店的蛋糕样品，看起来特别好吃。"
-        },
-        {
-          "character": "笑",
-          "pinyin": "xiào",
-          "words": [
-            {
-              "word": "笑话",
-              "pinyin": "xiào huà"
-            },
-            {
-              "word": "微笑",
-              "pinyin": "wēi xiào"
-            }
-          ],
-          "sentence": "见到老师时，我会露出礼貌的微笑。"
-        },
-        {
-          "character": "再",
-          "pinyin": "zài",
-          "words": [
-            {
-              "word": "再来",
-              "pinyin": "zài lái"
-            },
-            {
-              "word": "再也",
-              "pinyin": "zài yě"
-            }
-          ],
-          "sentence": "我再也不随便浪费粮食了。"
         },
         {
           "character": "睡",
           "pinyin": "shuì",
           "words": [
             {
-              "word": "睡着",
-              "pinyin": "shuì zhe"
+              "word": "睡着"
             },
             {
-              "word": "午睡",
-              "pinyin": "wǔ shuì"
+              "word": "午睡"
             }
           ],
           "sentence": "中午午睡一会儿，下午上课更有精神。"
@@ -3846,12 +2977,10 @@ module.exports = {
           "pinyin": "jué",
           "words": [
             {
-              "word": "睡觉",
-              "pinyin": "shuì jué"
+              "word": "睡觉"
             },
             {
-              "word": "觉得",
-              "pinyin": "jué dé"
+              "word": "觉得"
             }
           ],
           "sentence": "我觉得今天的饭特别香，吃了满满一碗。"
@@ -3867,12 +2996,16 @@ module.exports = {
           "pinyin": "jié",
           "words": [
             {
-              "word": "节日",
-              "pinyin": "jié rì"
+              "word": "节日"
             },
             {
-              "word": "节气",
-              "pinyin": "jié qì"
+              "word": "节气"
+            },
+            {
+              "word": "春节"
+            },
+            {
+              "word": "关节"
             }
           ],
           "sentence": "春节是我们最重要的节日。"
@@ -3882,12 +3015,10 @@ module.exports = {
           "pinyin": "mǐ",
           "words": [
             {
-              "word": "米饭",
-              "pinyin": "mǐ fàn"
+              "word": "米饭"
             },
             {
-              "word": "大米",
-              "pinyin": "dà mǐ"
+              "word": "大米"
             }
           ],
           "sentence": "我们不能浪费米饭。"
@@ -3897,12 +3028,10 @@ module.exports = {
           "pinyin": "jiān",
           "words": [
             {
-              "word": "房间",
-              "pinyin": "fáng jiān"
+              "word": "房间"
             },
             {
-              "word": "时间",
-              "pinyin": "shí jiān"
+              "word": "时间"
             }
           ],
           "sentence": "我的房间很干净。"
@@ -3912,12 +3041,13 @@ module.exports = {
           "pinyin": "fēn",
           "words": [
             {
-              "word": "分开",
-              "pinyin": "fēn kāi"
+              "word": "分开"
             },
             {
-              "word": "分心",
-              "pinyin": "fēn xīn"
+              "word": "分心"
+            },
+            {
+              "word": "分享"
             }
           ],
           "sentence": "上课要专心，不要分心。"
@@ -3927,12 +3057,10 @@ module.exports = {
           "pinyin": "chī",
           "words": [
             {
-              "word": "吃饭",
-              "pinyin": "chī fàn"
+              "word": "吃饭"
             },
             {
-              "word": "吃食",
-              "pinyin": "chī shí"
+              "word": "吃食"
             }
           ],
           "sentence": "幼儿园里，小朋友们排队吃饭。"
@@ -3942,12 +3070,13 @@ module.exports = {
           "pinyin": "ròu",
           "words": [
             {
-              "word": "猪肉",
-              "pinyin": "zhū ròu"
+              "word": "猪肉"
             },
             {
-              "word": "鱼肉",
-              "pinyin": "yú ròu"
+              "word": "鱼肉"
+            },
+            {
+              "word": "牛肉"
             }
           ],
           "sentence": "鱼肉很有营养。"
@@ -3957,12 +3086,10 @@ module.exports = {
           "pinyin": "duān",
           "words": [
             {
-              "word": "端正",
-              "pinyin": "duān zhèng"
+              "word": "端正"
             },
             {
-              "word": "端庄",
-              "pinyin": "duān zhuāng"
+              "word": "端庄"
             }
           ],
           "sentence": "写字时，我们要坐得端正，保护眼睛。"
@@ -3972,42 +3099,23 @@ module.exports = {
           "pinyin": "zòng",
           "words": [
             {
-              "word": "粽子",
-              "pinyin": "zòng zǐ"
+              "word": "粽子"
             },
             {
-              "word": "粽叶",
-              "pinyin": "zòng yè"
+              "word": "粽叶"
             }
           ],
           "sentence": "端午节，妈妈包了很多美味的粽子。"
-        },
-        {
-          "character": "节",
-          "pinyin": "jié",
-          "words": [
-            {
-              "word": "春节",
-              "pinyin": "chūn jié"
-            },
-            {
-              "word": "关节",
-              "pinyin": "guān jié"
-            }
-          ],
-          "sentence": "运动前要活动关节，避免受伤。"
         },
         {
           "character": "总",
           "pinyin": "zǒng",
           "words": [
             {
-              "word": "总是",
-              "pinyin": "zǒng shì"
+              "word": "总是"
             },
             {
-              "word": "总共",
-              "pinyin": "zǒng gòng"
+              "word": "总共"
             }
           ],
           "sentence": "妈妈总是很关心我，给我很多爱。"
@@ -4017,12 +3125,10 @@ module.exports = {
           "pinyin": "zhǔ",
           "words": [
             {
-              "word": "煮饭",
-              "pinyin": "zhǔ fàn"
+              "word": "煮饭"
             },
             {
-              "word": "煮开",
-              "pinyin": "zhǔ kāi"
+              "word": "煮开"
             }
           ],
           "sentence": "妈妈在厨房里煮饭，香味飘满了整个屋子。"
@@ -4032,42 +3138,23 @@ module.exports = {
           "pinyin": "pàn",
           "words": [
             {
-              "word": "盼望",
-              "pinyin": "pàn wàng"
+              "word": "盼望"
             },
             {
-              "word": "期盼",
-              "pinyin": "qī pàn"
+              "word": "期盼"
             }
           ],
           "sentence": "爷爷盼望远方的叔叔能回家过年。"
-        },
-        {
-          "character": "米",
-          "pinyin": "mǐ",
-          "words": [
-            {
-              "word": "米饭",
-              "pinyin": "mǐ fàn"
-            },
-            {
-              "word": "大米",
-              "pinyin": "dà mǐ"
-            }
-          ],
-          "sentence": "我们要爱惜粮食，不能浪费米饭。"
         },
         {
           "character": "枣",
           "pinyin": "zǎo",
           "words": [
             {
-              "word": "红枣",
-              "pinyin": "hóng zǎo"
+              "word": "红枣"
             },
             {
-              "word": "枣糕",
-              "pinyin": ""
+              "word": "枣糕"
             }
           ],
           "sentence": "红枣甜甜的，营养很丰富。"
@@ -4077,72 +3164,36 @@ module.exports = {
           "pinyin": "tián",
           "words": [
             {
-              "word": "甜蜜",
-              "pinyin": "tián mì"
+              "word": "甜蜜"
             },
             {
-              "word": "香甜",
-              "pinyin": "xiāng tián"
+              "word": "香甜"
             }
           ],
           "sentence": "和爸爸妈妈一起看星星，是甜蜜的时光。"
-        },
-        {
-          "character": "分",
-          "pinyin": "fēn",
-          "words": [
-            {
-              "word": "分开",
-              "pinyin": "fēn kāi"
-            },
-            {
-              "word": "分享",
-              "pinyin": "fēn xiǎng"
-            }
-          ],
-          "sentence": "我把糖果分享给小伙伴，大家一起吃更开心。"
         },
         {
           "character": "鲜",
           "pinyin": "xiān",
           "words": [
             {
-              "word": "新鲜",
-              "pinyin": "xīn xiān"
+              "word": "新鲜"
             },
             {
-              "word": "鲜美",
-              "pinyin": "xiān měi"
+              "word": "鲜美"
             }
           ],
           "sentence": "妈妈买的蔬菜很新鲜，吃起来很健康。"
-        },
-        {
-          "character": "肉",
-          "pinyin": "ròu",
-          "words": [
-            {
-              "word": "猪肉",
-              "pinyin": "zhū ròu"
-            },
-            {
-              "word": "牛肉",
-              "pinyin": "niú ròu"
-            }
-          ],
-          "sentence": "我喜欢吃妈妈做的牛肉，味道很鲜美。"
         },
         {
           "character": "了",
           "pinyin": "le",
           "words": [
             {
-              "word": "知了",
-              "pinyin": "zhī le"
+              "word": "知了"
             },
             {
-              "word": "了解",
-              "pinyin": "le jiě"
+              "word": "了解"
             }
           ],
           "sentence": "知了在枝头唱歌。"
@@ -4152,12 +3203,16 @@ module.exports = {
           "pinyin": "cè",
           "words": [
             {
-              "word": "相册",
-              "pinyin": "xiāng cè"
+              "word": "相册"
             },
             {
-              "word": "纪念册",
-              "pinyin": "jì niàn cè"
+              "word": "纪念册"
+            },
+            {
+              "word": "手册"
+            },
+            {
+              "word": "画册"
             }
           ],
           "sentence": "妈妈帮我整理照片，做了一本精美的成长纪念册。"
@@ -4167,12 +3222,16 @@ module.exports = {
           "pinyin": "zhī",
           "words": [
             {
-              "word": "一支",
-              "pinyin": "yī zhī"
+              "word": "一支"
             },
             {
-              "word": "支持",
-              "pinyin": "zhī chí"
+              "word": "支持"
+            },
+            {
+              "word": "支出"
+            },
+            {
+              "word": "支架"
             }
           ],
           "sentence": "我有一支红色的铅笔。",
@@ -4183,12 +3242,16 @@ module.exports = {
           "pinyin": "diàn",
           "words": [
             {
-              "word": "电话",
-              "pinyin": "diàn huà"
+              "word": "电话"
             },
             {
-              "word": "电灯",
-              "pinyin": "diàn dēng"
+              "word": "电灯"
+            },
+            {
+              "word": "闪电"
+            },
+            {
+              "word": "充电"
             }
           ],
           "sentence": "爸爸正在打电话跟同事商量事情。"
@@ -4198,87 +3261,42 @@ module.exports = {
           "pinyin": "yī",
           "words": [
             {
-              "word": "衣领",
-              "pinyin": "yī lǐng"
+              "word": "衣领"
             },
             {
-              "word": "毛衣",
-              "pinyin": "máo yī"
+              "word": "毛衣"
+            },
+            {
+              "word": "衣服"
+            },
+            {
+              "word": "上衣"
             }
           ],
           "sentence": "冬天要穿厚厚的毛衣。"
-        },
-        {
-          "character": "册",
-          "pinyin": "cè",
-          "words": [
-            {
-              "word": "手册",
-              "pinyin": "shǒu cè"
-            },
-            {
-              "word": "画册",
-              "pinyin": "huà cè"
-            }
-          ],
-          "sentence": "我有一本精美的画册，里面有很多好看的图片。"
-        },
-        {
-          "character": "支",
-          "pinyin": "zhī",
-          "words": [
-            {
-              "word": "支出",
-              "pinyin": "zhī chū"
-            },
-            {
-              "word": "支架",
-              "pinyin": "zhī jià"
-            }
-          ],
-          "sentence": "妈妈把画放在支架上，方便我临摹。"
         },
         {
           "character": "台",
           "pinyin": "tái",
           "words": [
             {
-              "word": "讲台",
-              "pinyin": "jiǎng tái"
+              "word": "讲台"
             },
             {
-              "word": "台灯",
-              "pinyin": "tái dēng"
+              "word": "台灯"
             }
           ],
           "sentence": "老师站在讲台上给我们讲课。"
-        },
-        {
-          "character": "电",
-          "pinyin": "diàn",
-          "words": [
-            {
-              "word": "闪电",
-              "pinyin": "shǎn diàn"
-            },
-            {
-              "word": "充电",
-              "pinyin": "chōng diàn"
-            }
-          ],
-          "sentence": "夏天的晚上，闪电划过天空，照亮了整个院子。"
         },
         {
           "character": "视",
           "pinyin": "shì",
           "words": [
             {
-              "word": "电视",
-              "pinyin": "diàn shì"
+              "word": "电视"
             },
             {
-              "word": "视频",
-              "pinyin": "shì pín"
+              "word": "视频"
             }
           ],
           "sentence": "我每天只能看一会儿电视，不能看太久。"
@@ -4288,12 +3306,10 @@ module.exports = {
           "pinyin": "bù",
           "words": [
             {
-              "word": "部分",
-              "pinyin": "bù fēn"
+              "word": "部分"
             },
             {
-              "word": "部门",
-              "pinyin": "bù mén"
+              "word": "部门"
             }
           ],
           "sentence": "这本书的部分内容很有趣，我很喜欢。"
@@ -4303,42 +3319,23 @@ module.exports = {
           "pinyin": "jī",
           "words": [
             {
-              "word": "飞机",
-              "pinyin": "fēi jī"
+              "word": "飞机"
             },
             {
-              "word": "机器",
-              "pinyin": "jī qì"
+              "word": "机器"
             }
           ],
           "sentence": "我最喜欢的玩具是飞机模型。"
-        },
-        {
-          "character": "衣",
-          "pinyin": "yī",
-          "words": [
-            {
-              "word": "衣服",
-              "pinyin": "yī fú"
-            },
-            {
-              "word": "上衣",
-              "pinyin": "shàng yī"
-            }
-          ],
-          "sentence": "我有一件红色的衣服，穿起来很暖和。"
         },
         {
           "character": "裤",
           "pinyin": "kù",
           "words": [
             {
-              "word": "裤角",
-              "pinyin": "kù jiǎo"
+              "word": "裤角"
             },
             {
-              "word": "西裤",
-              "pinyin": "xī kù"
+              "word": "西裤"
             }
           ],
           "sentence": "爸爸穿笔挺的西裤去参加重要会议。"
@@ -4348,12 +3345,10 @@ module.exports = {
           "pinyin": "bèi",
           "words": [
             {
-              "word": "被套",
-              "pinyin": "bèi tào"
+              "word": "被套"
             },
             {
-              "word": "棉被",
-              "pinyin": "mián bèi"
+              "word": "棉被"
             }
           ],
           "sentence": "冬天，盖着厚厚的棉被睡觉，特别暖和。"
@@ -4369,12 +3364,16 @@ module.exports = {
           "pinyin": "wù",
           "words": [
             {
-              "word": "礼物",
-              "pinyin": "lǐ wù"
+              "word": "礼物"
             },
             {
-              "word": "生物",
-              "pinyin": "shēng wù"
+              "word": "生物"
+            },
+            {
+              "word": "动物"
+            },
+            {
+              "word": "物品"
             }
           ],
           "sentence": "妈妈生日，我亲手制作了一张贺卡作为生日礼物。"
@@ -4384,12 +3383,16 @@ module.exports = {
           "pinyin": "zào",
           "words": [
             {
-              "word": "制造",
-              "pinyin": "zhì zào"
+              "word": "制造"
             },
             {
-              "word": "创造",
-              "pinyin": "chuàng zào"
+              "word": "创造"
+            },
+            {
+              "word": "建造"
+            },
+            {
+              "word": "深造"
             }
           ],
           "sentence": "工人叔叔制造了很多玩具。"
@@ -4399,12 +3402,16 @@ module.exports = {
           "pinyin": "yùn",
           "words": [
             {
-              "word": "运动",
-              "pinyin": "yùn dòng"
+              "word": "运动"
             },
             {
-              "word": "运气",
-              "pinyin": "yùn qì"
+              "word": "运气"
+            },
+            {
+              "word": "运用"
+            },
+            {
+              "word": "运输"
             }
           ],
           "sentence": "学校要开运动会了，我报名参加了跑步比赛。"
@@ -4414,12 +3421,10 @@ module.exports = {
           "pinyin": "huān",
           "words": [
             {
-              "word": "欢乐",
-              "pinyin": "huān lè"
+              "word": "欢乐"
             },
             {
-              "word": "喜欢",
-              "pinyin": "xǐ huān"
+              "word": "喜欢"
             }
           ],
           "sentence": "我喜欢和小伙伴们一起玩。"
@@ -4429,12 +3434,16 @@ module.exports = {
           "pinyin": "fáng",
           "words": [
             {
-              "word": "书房",
-              "pinyin": "shū fáng"
+              "word": "书房"
             },
             {
-              "word": "房东",
-              "pinyin": "fáng dōng"
+              "word": "房东"
+            },
+            {
+              "word": "房子"
+            },
+            {
+              "word": "房间"
             }
           ],
           "sentence": "热心的房东帮我们修好了漏水的水管。"
@@ -4444,42 +3453,29 @@ module.exports = {
           "pinyin": "wǎng",
           "words": [
             {
-              "word": "网络",
-              "pinyin": "wǎng luò"
+              "word": "网络"
             },
             {
-              "word": "渔网",
-              "pinyin": "yú wǎng"
+              "word": "渔网"
+            },
+            {
+              "word": "网鞋"
+            },
+            {
+              "word": "法网"
             }
           ],
           "sentence": "渔民伯伯用渔网捕鱼。"
-        },
-        {
-          "character": "物",
-          "pinyin": "wù",
-          "words": [
-            {
-              "word": "动物",
-              "pinyin": "dòng wù"
-            },
-            {
-              "word": "物品",
-              "pinyin": "wù pǐn"
-            }
-          ],
-          "sentence": "动物园里有很多可爱的动物，我最喜欢熊猫。"
         },
         {
           "character": "捉",
           "pinyin": "zhuō",
           "words": [
             {
-              "word": "捉住",
-              "pinyin": "zhuō zhù"
+              "word": "捉住"
             },
             {
-              "word": "捉虫",
-              "pinyin": "zhuō chóng"
+              "word": "捉虫"
             }
           ],
           "sentence": "小鸟在树上捉虫子吃。"
@@ -4489,12 +3485,10 @@ module.exports = {
           "pinyin": "mí",
           "words": [
             {
-              "word": "迷路",
-              "pinyin": "mí lù"
+              "word": "迷路"
             },
             {
-              "word": "着迷",
-              "pinyin": "zhe mí"
+              "word": "着迷"
             }
           ],
           "sentence": "在公园里，我们不要乱跑，以免迷路。"
@@ -4504,42 +3498,23 @@ module.exports = {
           "pinyin": "cáng",
           "words": [
             {
-              "word": "躲藏",
-              "pinyin": "duǒ cáng"
+              "word": "躲藏"
             },
             {
-              "word": "隐藏",
-              "pinyin": "yǐn cáng"
+              "word": "隐藏"
             }
           ],
           "sentence": "我们玩捉迷藏的游戏，我躲藏在大树后面。"
-        },
-        {
-          "character": "造",
-          "pinyin": "zào",
-          "words": [
-            {
-              "word": "建造",
-              "pinyin": "jiàn zào"
-            },
-            {
-              "word": "深造",
-              "pinyin": "shēn zào"
-            }
-          ],
-          "sentence": "工人们正在郊外建造一座跨河大桥。"
         },
         {
           "character": "蚂",
           "pinyin": "mǎ",
           "words": [
             {
-              "word": "蚂蚁",
-              "pinyin": "mǎ yǐ"
+              "word": "蚂蚁"
             },
             {
-              "word": "蚂蟥",
-              "pinyin": "mǎ huáng"
+              "word": "蚂蟥"
             }
           ],
           "sentence": "蚂蚁虽然很小，但很勤劳，会搬很多食物。"
@@ -4549,42 +3524,23 @@ module.exports = {
           "pinyin": "yǐ",
           "words": [
             {
-              "word": "蝼蚁",
-              "pinyin": "lóu yǐ"
+              "word": "蝼蚁"
             },
             {
-              "word": "蚁穴",
-              "pinyin": "yǐ xué"
+              "word": "蚁穴"
             }
           ],
           "sentence": "我看到蚂蚁们排着队，向蚁穴走去。"
-        },
-        {
-          "character": "运",
-          "pinyin": "yùn",
-          "words": [
-            {
-              "word": "运用",
-              "pinyin": "yùn yòng"
-            },
-            {
-              "word": "运输",
-              "pinyin": "yùn shū"
-            }
-          ],
-          "sentence": "我们要经常运动，保持身体健康。"
         },
         {
           "character": "食",
           "pinyin": "shí",
           "words": [
             {
-              "word": "食物",
-              "pinyin": "shí wù"
+              "word": "食物"
             },
             {
-              "word": "食堂",
-              "pinyin": "shí táng"
+              "word": "食堂"
             }
           ],
           "sentence": "学校食堂里有很多好吃的菜。"
@@ -4594,60 +3550,23 @@ module.exports = {
           "pinyin": "liáng",
           "words": [
             {
-              "word": "粮食",
-              "pinyin": "liáng shí"
+              "word": "粮食"
             },
             {
-              "word": "粮草",
-              "pinyin": "liáng cǎo"
+              "word": "粮草"
             }
           ],
           "sentence": "没有足够的粮草，军队就没办法长时间驻守边关。"
-        },
-        {
-          "character": "房",
-          "pinyin": "fáng",
-          "words": [
-            {
-              "word": "房子",
-              "pinyin": "fáng zǐ"
-            },
-            {
-              "word": "房间",
-              "pinyin": "fáng jiān"
-            }
-          ],
-          "sentence": "我有一个漂亮的房间，里面有很多玩具。"
         },
         {
           "character": "结",
           "pinyin": "jié",
           "words": [
             {
-              "word": "结果",
-              "pinyin": "jié guǒ"
-            },
-            {
-              "word": "结果",
-              "pinyin": "jié guǒ"
+              "word": "结果"
             }
           ],
           "sentence": "苹果树经过几年的生长，终于结果了。"
-        },
-        {
-          "character": "网",
-          "pinyin": "wǎng",
-          "words": [
-            {
-              "word": "网鞋",
-              "pinyin": "wǎng xié"
-            },
-            {
-              "word": "法网",
-              "pinyin": "fǎ wǎng"
-            }
-          ],
-          "sentence": "夏天穿网鞋透气，一点都不闷脚。"
         }
       ]
     },
@@ -4660,12 +3579,10 @@ module.exports = {
           "pinyin": "duì",
           "words": [
             {
-              "word": "对错",
-              "pinyin": "duì cuò"
+              "word": "对错"
             },
             {
-              "word": "对面",
-              "pinyin": "duì miàn"
+              "word": "对面"
             }
           ],
           "sentence": "我们要分清是非对错。"
@@ -4675,12 +3592,10 @@ module.exports = {
           "pinyin": "jīn",
           "words": [
             {
-              "word": "今天",
-              "pinyin": "jīn tiān"
+              "word": "今天"
             },
             {
-              "word": "今年",
-              "pinyin": "jīn nián"
+              "word": "今年"
             }
           ],
           "sentence": "今天的天气真不错。"
@@ -4690,12 +3605,10 @@ module.exports = {
           "pinyin": "xuě",
           "words": [
             {
-              "word": "雪花",
-              "pinyin": "xuě huā"
+              "word": "雪花"
             },
             {
-              "word": "下雪",
-              "pinyin": "xià xuě"
+              "word": "下雪"
             }
           ],
           "sentence": "下雪的冬天，真像一个童话世界。"
@@ -4705,12 +3618,13 @@ module.exports = {
           "pinyin": "xì",
           "words": [
             {
-              "word": "细心",
-              "pinyin": "xì xīn"
+              "word": "细心"
             },
             {
-              "word": "仔细",
-              "pinyin": "zǐ xì"
+              "word": "仔细"
+            },
+            {
+              "word": "细小"
             }
           ],
           "sentence": "做题要细心，不要马虎。"
@@ -4720,12 +3634,16 @@ module.exports = {
           "pinyin": "xī",
           "words": [
             {
-              "word": "夕阳",
-              "pinyin": "xī yáng"
+              "word": "夕阳"
             },
             {
-              "word": "朝夕",
-              "pinyin": "cháo xī"
+              "word": "朝夕"
+            },
+            {
+              "word": "出席"
+            },
+            {
+              "word": "前夕"
             }
           ],
           "sentence": "傍晚时分，夕阳把天空染成暖暖的橘红色。"
@@ -4735,12 +3653,10 @@ module.exports = {
           "pinyin": "yǔ",
           "words": [
             {
-              "word": "语言",
-              "pinyin": "yǔ yán"
+              "word": "语言"
             },
             {
-              "word": "语文",
-              "pinyin": "yǔ wén"
+              "word": "语文"
             }
           ],
           "sentence": "我最喜欢上语文课。"
@@ -4750,12 +3666,10 @@ module.exports = {
           "pinyin": "yuán",
           "words": [
             {
-              "word": "圆形",
-              "pinyin": "yuán xíng"
+              "word": "圆形"
             },
             {
-              "word": "圆圈",
-              "pinyin": ""
+              "word": "圆圈"
             }
           ],
           "sentence": "皮球是圆形的，可以滚来滚去。"
@@ -4765,12 +3679,10 @@ module.exports = {
           "pinyin": "yán",
           "words": [
             {
-              "word": "严格",
-              "pinyin": "yán gé"
+              "word": "严格"
             },
             {
-              "word": "严肃",
-              "pinyin": "yán sù"
+              "word": "严肃"
             }
           ],
           "sentence": "老师对我们的要求很严格，我们要认真遵守。"
@@ -4780,12 +3692,10 @@ module.exports = {
           "pinyin": "hán",
           "words": [
             {
-              "word": "寒冷",
-              "pinyin": "hán lěng"
+              "word": "寒冷"
             },
             {
-              "word": "寒冬",
-              "pinyin": "hán dōng"
+              "word": "寒冬"
             }
           ],
           "sentence": "寒冬腊月，天气很冷，我们要穿厚衣服。"
@@ -4795,12 +3705,10 @@ module.exports = {
           "pinyin": "kù",
           "words": [
             {
-              "word": "冷酷",
-              "pinyin": "lěng kù"
+              "word": "冷酷"
             },
             {
-              "word": "酷热",
-              "pinyin": "kù rè"
+              "word": "酷热"
             }
           ],
           "sentence": "夏天的太阳很酷热，我们要做好防晒。"
@@ -4810,12 +3718,10 @@ module.exports = {
           "pinyin": "shǔ",
           "words": [
             {
-              "word": "暑假",
-              "pinyin": "shǔ jiǎ"
+              "word": "暑假"
             },
             {
-              "word": "中暑",
-              "pinyin": "zhōng shǔ"
+              "word": "中暑"
             }
           ],
           "sentence": "暑假到了，我可以去外婆家玩了。"
@@ -4825,12 +3731,10 @@ module.exports = {
           "pinyin": "nuǎn",
           "words": [
             {
-              "word": "温暖",
-              "pinyin": "wēn nuǎn"
+              "word": "温暖"
             },
             {
-              "word": "暖和",
-              "pinyin": "nuǎn hé"
+              "word": "暖和"
             }
           ],
           "sentence": "妈妈的怀抱很温暖，让我不再害怕。"
@@ -4840,42 +3744,23 @@ module.exports = {
           "pinyin": "chén",
           "words": [
             {
-              "word": "早晨",
-              "pinyin": "zǎo chén"
+              "word": "早晨"
             },
             {
-              "word": "晨光",
-              "pinyin": "chén guāng"
+              "word": "晨光"
             }
           ],
           "sentence": "早晨的空气很清新，我喜欢在公园散步。"
-        },
-        {
-          "character": "细",
-          "pinyin": "xì",
-          "words": [
-            {
-              "word": "仔细",
-              "pinyin": "zǐ xì"
-            },
-            {
-              "word": "细小",
-              "pinyin": "xì xiǎo"
-            }
-          ],
-          "sentence": "我仔细地观察蚂蚁，发现它们很勤劳。"
         },
         {
           "character": "朝",
           "pinyin": "cháo",
           "words": [
             {
-              "word": "朝阳",
-              "pinyin": "cháo yáng"
+              "word": "朝阳"
             },
             {
-              "word": "朝向",
-              "pinyin": "cháo xiàng"
+              "word": "朝向"
             }
           ],
           "sentence": "教室里的课桌整齐地朝向讲台摆放。"
@@ -4885,42 +3770,23 @@ module.exports = {
           "pinyin": "xiá",
           "words": [
             {
-              "word": "晚霞",
-              "pinyin": "wǎn xiá"
+              "word": "晚霞"
             },
             {
-              "word": "朝霞",
-              "pinyin": "cháo xiá"
+              "word": "朝霞"
             }
           ],
           "sentence": "天边的晚霞泼洒成一片绚烂的橘红。"
-        },
-        {
-          "character": "夕",
-          "pinyin": "xī",
-          "words": [
-            {
-              "word": "出席",
-              "pinyin": "chū xí"
-            },
-            {
-              "word": "前夕",
-              "pinyin": "qián xī"
-            }
-          ],
-          "sentence": "除夕夜里，全家围在一起吃饺子看春晚。"
         },
         {
           "character": "杨",
           "pinyin": "yáng",
           "words": [
             {
-              "word": "杨树",
-              "pinyin": "yáng shù"
+              "word": "杨树"
             },
             {
-              "word": "杨柳",
-              "pinyin": "yáng liǔ"
+              "word": "杨柳"
             }
           ],
           "sentence": "道路两旁种着很多杨树，夏天可以乘凉。"
@@ -4930,12 +3796,10 @@ module.exports = {
           "pinyin": "xiāng",
           "words": [
             {
-              "word": "香味",
-              "pinyin": "xiāng wèi"
+              "word": "香味"
             },
             {
-              "word": "香气",
-              "pinyin": "xiāng qì"
+              "word": "香气"
             }
           ],
           "sentence": "雨后的泥土有一股清新的香味，让人心情舒畅。"
@@ -4951,12 +3815,10 @@ module.exports = {
           "pinyin": "dǎ",
           "words": [
             {
-              "word": "打球",
-              "pinyin": "dǎ qiú"
+              "word": "打球"
             },
             {
-              "word": "打架",
-              "pinyin": "dǎ jià"
+              "word": "打架"
             }
           ],
           "sentence": "我们不能打架，要友好相处。"
@@ -4966,12 +3828,10 @@ module.exports = {
           "pinyin": "pí",
           "words": [
             {
-              "word": "皮球",
-              "pinyin": "pí qiú"
+              "word": "皮球"
             },
             {
-              "word": "皮肤",
-              "pinyin": "pí fū"
+              "word": "皮肤"
             }
           ],
           "sentence": "我有一个彩色的皮球。"
@@ -4981,12 +3841,16 @@ module.exports = {
           "pinyin": "pǎo",
           "words": [
             {
-              "word": "跑步",
-              "pinyin": "pǎo bù"
+              "word": "跑步"
             },
             {
-              "word": "奔跑",
-              "pinyin": "bēn pǎo"
+              "word": "奔跑"
+            },
+            {
+              "word": "赛跑"
+            },
+            {
+              "word": "跑腿"
             }
           ],
           "sentence": "我每天早上都要跑步。"
@@ -4996,12 +3860,10 @@ module.exports = {
           "pinyin": "zú",
           "words": [
             {
-              "word": "足球",
-              "pinyin": "zú qiú"
+              "word": "足球"
             },
             {
-              "word": "知足",
-              "pinyin": "zhī zú"
+              "word": "知足"
             }
           ],
           "sentence": "我最喜欢踢足球。"
@@ -5011,12 +3873,13 @@ module.exports = {
           "pinyin": "shā",
           "words": [
             {
-              "word": "沙子",
-              "pinyin": "shā zǐ"
+              "word": "沙子"
             },
             {
-              "word": "沙滩",
-              "pinyin": "shā tān"
+              "word": "沙滩"
+            },
+            {
+              "word": "豆沙"
             }
           ],
           "sentence": "沙滩上有很多漂亮的贝壳。"
@@ -5026,12 +3889,10 @@ module.exports = {
           "pinyin": "bāo",
           "words": [
             {
-              "word": "书包",
-              "pinyin": "shū bāo"
+              "word": "书包"
             },
             {
-              "word": "包子",
-              "pinyin": "bāo zǐ"
+              "word": "包子"
             }
           ],
           "sentence": "妈妈在我的书包上缝了一个名字贴，这样不会弄丢。"
@@ -5041,12 +3902,10 @@ module.exports = {
           "pinyin": "cāo",
           "words": [
             {
-              "word": "操场",
-              "pinyin": "cāo chǎng"
+              "word": "操场"
             },
             {
-              "word": "做操",
-              "pinyin": "zuò cāo"
+              "word": "做操"
             }
           ],
           "sentence": "我们每天都要在操场上做操，锻炼身体。"
@@ -5056,12 +3915,10 @@ module.exports = {
           "pinyin": "bá",
           "words": [
             {
-              "word": "拔河",
-              "pinyin": "bá hé"
+              "word": "拔河"
             },
             {
-              "word": "拔掉",
-              "pinyin": "bá diào"
+              "word": "拔掉"
             }
           ],
           "sentence": "我们班和二班进行拔河比赛，我们赢了。",
@@ -5072,42 +3929,23 @@ module.exports = {
           "pinyin": "pāi",
           "words": [
             {
-              "word": "拍手",
-              "pinyin": "pāi shǒu"
+              "word": "拍手"
             },
             {
-              "word": "拍照",
-              "pinyin": "pāi zhào"
+              "word": "拍照"
             }
           ],
           "sentence": "爸爸带我去公园玩，帮我拍照留念。"
-        },
-        {
-          "character": "跑",
-          "pinyin": "pǎo",
-          "words": [
-            {
-              "word": "赛跑",
-              "pinyin": "sài pǎo"
-            },
-            {
-              "word": "跑腿",
-              "pinyin": "pǎo tuǐ"
-            }
-          ],
-          "sentence": "我帮妈妈跑腿，去楼下超市买盐。"
         },
         {
           "character": "踢",
           "pinyin": "tī",
           "words": [
             {
-              "word": "踢球",
-              "pinyin": "tī qiú"
+              "word": "踢球"
             },
             {
-              "word": "踢毽子",
-              "pinyin": "tī jiàn zǐ"
+              "word": "踢毽子"
             }
           ],
           "sentence": "我喜欢踢球，每天都要踢一会儿。"
@@ -5117,12 +3955,10 @@ module.exports = {
           "pinyin": "líng",
           "words": [
             {
-              "word": "铃声",
-              "pinyin": "líng shēng"
+              "word": "铃声"
             },
             {
-              "word": "铃铛",
-              "pinyin": "líng dāng"
+              "word": "铃铛"
             }
           ],
           "sentence": "上课铃声响了，我们要立刻回到座位上。"
@@ -5132,12 +3968,10 @@ module.exports = {
           "pinyin": "zhēn",
           "words": [
             {
-              "word": "真实",
-              "pinyin": "zhēn shí"
+              "word": "真实"
             },
             {
-              "word": "真假",
-              "pinyin": "zhēn jiǎ"
+              "word": "真假"
             }
           ],
           "sentence": "买玩具的时候要学会分辨真假，才不会买到劣质品。"
@@ -5147,12 +3981,10 @@ module.exports = {
           "pinyin": "nào",
           "words": [
             {
-              "word": "热闹",
-              "pinyin": "rè nào"
+              "word": "热闹"
             },
             {
-              "word": "吵闹",
-              "pinyin": "chǎo nào"
+              "word": "吵闹"
             }
           ],
           "sentence": "菜市场很热闹，叫卖声、讨价还价声此起彼伏。"
@@ -5162,42 +3994,23 @@ module.exports = {
           "pinyin": "diū",
           "words": [
             {
-              "word": "丢失",
-              "pinyin": "diū shī"
+              "word": "丢失"
             },
             {
-              "word": "丢掉",
-              "pinyin": "diū diào"
+              "word": "丢掉"
             }
           ],
           "sentence": "妹妹丢失了她最喜欢的布娃娃，急得在地上哭。"
-        },
-        {
-          "character": "沙",
-          "pinyin": "shā",
-          "words": [
-            {
-              "word": "豆沙",
-              "pinyin": "dòu shā"
-            },
-            {
-              "word": "沙滩",
-              "pinyin": "shā tān"
-            }
-          ],
-          "sentence": "我喜欢在沙滩上堆城堡，玩得很开心。"
         },
         {
           "character": "身",
           "pinyin": "shēn",
           "words": [
             {
-              "word": "身体",
-              "pinyin": "shēn tǐ"
+              "word": "身体"
             },
             {
-              "word": "身边",
-              "pinyin": "shēn biān"
+              "word": "身边"
             }
           ],
           "sentence": "妈妈说不挑食、多喝水，才能养好身体。",
@@ -5208,12 +4021,10 @@ module.exports = {
           "pinyin": "tǐ",
           "words": [
             {
-              "word": "体育",
-              "pinyin": "tǐ yù"
+              "word": "体育"
             },
             {
-              "word": "身体",
-              "pinyin": "shēn tǐ"
+              "word": "身体"
             }
           ],
           "sentence": "多参加体育运动，能让我们的身体更健康。"
@@ -5229,12 +4040,16 @@ module.exports = {
           "pinyin": "jìn",
           "words": [
             {
-              "word": "附近",
-              "pinyin": "fù jìn"
+              "word": "附近"
             },
             {
-              "word": "亲近",
-              "pinyin": "qīn jìn"
+              "word": "亲近"
+            },
+            {
+              "word": "近处"
+            },
+            {
+              "word": "靠近"
             }
           ],
           "sentence": "我家附近有一个小公园，周末我经常去那里玩。"
@@ -5244,12 +4059,16 @@ module.exports = {
           "pinyin": "xí",
           "words": [
             {
-              "word": "学习",
-              "pinyin": "xué xí"
+              "word": "学习"
             },
             {
-              "word": "习惯",
-              "pinyin": "xí guàn"
+              "word": "习惯"
+            },
+            {
+              "word": "练习"
+            },
+            {
+              "word": "实习"
             }
           ],
           "sentence": "我们要养成良好的学习习惯。"
@@ -5259,12 +4078,16 @@ module.exports = {
           "pinyin": "yuǎn",
           "words": [
             {
-              "word": "远方",
-              "pinyin": "yuǎn fāng"
+              "word": "远方"
             },
             {
-              "word": "遥远",
-              "pinyin": "yáo yuǎn"
+              "word": "遥远"
+            },
+            {
+              "word": "长远"
+            },
+            {
+              "word": "疏远"
             }
           ],
           "sentence": "远方的朋友要来我家做客。"
@@ -5274,12 +4097,10 @@ module.exports = {
           "pinyin": "xué",
           "words": [
             {
-              "word": "学校",
-              "pinyin": "xué xiào"
+              "word": "学校"
             },
             {
-              "word": "学问",
-              "pinyin": "xué wèn"
+              "word": "学问"
             }
           ],
           "sentence": "我在学校里快乐学习。"
@@ -5289,12 +4110,16 @@ module.exports = {
           "pinyin": "yù",
           "words": [
             {
-              "word": "玉石",
-              "pinyin": "yù shí"
+              "word": "玉石"
             },
             {
-              "word": "宝玉",
-              "pinyin": "bǎo yù"
+              "word": "宝玉"
+            },
+            {
+              "word": "玉米"
+            },
+            {
+              "word": "玉佩"
             }
           ],
           "sentence": "这块玉石亮晶晶的。"
@@ -5304,12 +4129,16 @@ module.exports = {
           "pinyin": "yì",
           "words": [
             {
-              "word": "意义",
-              "pinyin": "yì yì"
+              "word": "意义"
             },
             {
-              "word": "义务",
-              "pinyin": "yì wù"
+              "word": "义务"
+            },
+            {
+              "word": "正义"
+            },
+            {
+              "word": "义气"
             }
           ],
           "sentence": "帮助别人是一件有意义的事。"
@@ -5319,12 +4148,10 @@ module.exports = {
           "pinyin": "zhī",
           "words": [
             {
-              "word": "之后",
-              "pinyin": "zhī hòu"
+              "word": "之后"
             },
             {
-              "word": "之间",
-              "pinyin": "zhī jiān"
+              "word": "之间"
             }
           ],
           "sentence": "写完作业之后，我可以看一会儿动画片。"
@@ -5334,12 +4161,10 @@ module.exports = {
           "pinyin": "chū",
           "words": [
             {
-              "word": "当初",
-              "pinyin": "dāng chū"
+              "word": "当初"
             },
             {
-              "word": "初始",
-              "pinyin": "chū shǐ"
+              "word": "初始"
             }
           ],
           "sentence": "当初我刚上一年级的时候，认识的字很少。"
@@ -5349,72 +4174,23 @@ module.exports = {
           "pinyin": "xiāng",
           "words": [
             {
-              "word": "相信",
-              "pinyin": "xiāng xìn"
+              "word": "相信"
             },
             {
-              "word": "相互",
-              "pinyin": "xiāng hù"
+              "word": "相互"
             }
           ],
           "sentence": "朋友之间要相互信任，互相帮助。"
-        },
-        {
-          "character": "近",
-          "pinyin": "jìn",
-          "words": [
-            {
-              "word": "近处",
-              "pinyin": "jìn chù"
-            },
-            {
-              "word": "靠近",
-              "pinyin": "kào jìn"
-            }
-          ],
-          "sentence": "近处有一棵大树，树上有很多小鸟。"
-        },
-        {
-          "character": "习",
-          "pinyin": "xí",
-          "words": [
-            {
-              "word": "练习",
-              "pinyin": "liàn xí"
-            },
-            {
-              "word": "实习",
-              "pinyin": "shí xí"
-            }
-          ],
-          "sentence": "为了提高口算速度，我每天会花10分钟练习计算。"
-        },
-        {
-          "character": "远",
-          "pinyin": "yuǎn",
-          "words": [
-            {
-              "word": "长远",
-              "pinyin": "cháng yuǎn"
-            },
-            {
-              "word": "疏远",
-              "pinyin": "shū yuǎn"
-            }
-          ],
-          "sentence": "因为观念不同，他们渐渐疏远，来往也变少了。"
         },
         {
           "character": "教",
           "pinyin": "jiào",
           "words": [
             {
-              "word": "教书",
-              "pinyin": "jiào shū"
+              "word": "教书"
             },
             {
-              "word": "教导",
-              "pinyin": "jiào dǎo"
+              "word": "教导"
             }
           ],
           "sentence": "老师教导我们要做一个有礼貌的孩子。"
@@ -5424,12 +4200,10 @@ module.exports = {
           "pinyin": "dào",
           "words": [
             {
-              "word": "道路",
-              "pinyin": "dào lù"
+              "word": "道路"
             },
             {
-              "word": "道理",
-              "pinyin": "dào lǐ"
+              "word": "道理"
             }
           ],
           "sentence": "我们要走正确的道路，做一个好孩子。"
@@ -5439,12 +4213,10 @@ module.exports = {
           "pinyin": "zhuān",
           "words": [
             {
-              "word": "专心",
-              "pinyin": "zhuān xīn"
+              "word": "专心"
             },
             {
-              "word": "专门",
-              "pinyin": "zhuān mén"
+              "word": "专门"
             }
           ],
           "sentence": "上课的时候，我们要专心听讲。"
@@ -5454,72 +4226,39 @@ module.exports = {
           "pinyin": "yòu",
           "words": [
             {
-              "word": "幼儿",
-              "pinyin": "yòu ér"
+              "word": "幼儿"
             },
             {
-              "word": "幼小",
-              "pinyin": "yòu xiǎo"
+              "word": "幼小"
             }
           ],
           "sentence": "幼儿园的小朋友很可爱，他们在快乐地玩耍。"
-        },
-        {
-          "character": "玉",
-          "pinyin": "yù",
-          "words": [
-            {
-              "word": "玉米",
-              "pinyin": "yù mǐ"
-            },
-            {
-              "word": "玉佩",
-              "pinyin": "yù pèi"
-            }
-          ],
-          "sentence": "秋天到了，田里的玉米都长成了金黄的模样。"
         },
         {
           "character": "知",
           "pinyin": "zhī",
           "words": [
             {
-              "word": "知道",
-              "pinyin": "zhī dào"
+              "word": "知道"
             },
             {
-              "word": "知识",
-              "pinyin": ""
+              "word": "知识"
             }
           ],
           "sentence": "我知道很多小知识，都是从书上学来的。"
-        },
-        {
-          "character": "义",
-          "pinyin": "yì",
-          "words": [
-            {
-              "word": "正义",
-              "pinyin": "zhèng yì"
-            },
-            {
-              "word": "义气",
-              "pinyin": "yì qì"
-            }
-          ],
-          "sentence": "他在故事里总扮演着维护正义的英雄角色。"
         },
         {
           "character": "饱",
           "pinyin": "bǎo",
           "words": [
             {
-              "word": "吃饱",
-              "pinyin": "chī bǎo"
+              "word": "吃饱"
             },
             {
-              "word": "饱满",
-              "pinyin": "bǎo mǎn"
+              "word": "饱满"
+            },
+            {
+              "word": "饱和"
             }
           ],
           "sentence": "我吃饱了，不想再吃了。"
@@ -5529,12 +4268,10 @@ module.exports = {
           "pinyin": "bào",
           "words": [
             {
-              "word": "拥抱",
-              "pinyin": "yōng bào"
+              "word": "拥抱"
             },
             {
-              "word": "抱着",
-              "pinyin": "bào zhe"
+              "word": "抱着"
             }
           ],
           "sentence": "分别多年的老友重逢，忍不住紧紧拥抱在一起。"
@@ -5544,42 +4281,23 @@ module.exports = {
           "pinyin": "fàn",
           "words": [
             {
-              "word": "吃饭",
-              "pinyin": "chī fàn"
+              "word": "吃饭"
             },
             {
-              "word": "米饭",
-              "pinyin": "mǐ fàn"
+              "word": "米饭"
             }
           ],
           "sentence": "我每天都按时吃饭，不挑食。"
-        },
-        {
-          "character": "饱",
-          "pinyin": "bǎo",
-          "words": [
-            {
-              "word": "吃饱",
-              "pinyin": "chī bǎo"
-            },
-            {
-              "word": "饱和",
-              "pinyin": "bǎo hé"
-            }
-          ],
-          "sentence": "我吃饱了饭，感觉很有力气。"
         },
         {
           "character": "茶",
           "pinyin": "chá",
           "words": [
             {
-              "word": "喝茶",
-              "pinyin": "hē chá"
+              "word": "喝茶"
             },
             {
-              "word": "茶叶",
-              "pinyin": "chá yè"
+              "word": "茶叶"
             }
           ],
           "sentence": "爷爷喜欢喝茶，说茶的味道很香。"
@@ -5589,12 +4307,10 @@ module.exports = {
           "pinyin": "pào",
           "words": [
             {
-              "word": "泡茶",
-              "pinyin": "pào chá"
+              "word": "泡茶"
             },
             {
-              "word": "泡泡",
-              "pinyin": "pào pào"
+              "word": "泡泡"
             }
           ],
           "sentence": "我用肥皂水吹泡泡，泡泡五颜六色的真好看。"
@@ -5604,12 +4320,10 @@ module.exports = {
           "pinyin": "qīng",
           "words": [
             {
-              "word": "轻松",
-              "pinyin": "qīng sōng"
+              "word": "轻松"
             },
             {
-              "word": "轻重",
-              "pinyin": "qīng zhòng"
+              "word": "轻重"
             }
           ],
           "sentence": "做事情要懂得拿捏轻重，不能只顾眼前的小利益。"
@@ -5619,12 +4333,10 @@ module.exports = {
           "pinyin": "chuān",
           "words": [
             {
-              "word": "穿衣",
-              "pinyin": "chuān yī"
+              "word": "穿衣"
             },
             {
-              "word": "穿着",
-              "pinyin": "chuān zhe"
+              "word": "穿着"
             }
           ],
           "sentence": "早上起床，我自己穿衣服去上学。"
@@ -5634,12 +4346,10 @@ module.exports = {
           "pinyin": "páo",
           "words": [
             {
-              "word": "棉袍",
-              "pinyin": "mián páo"
+              "word": "棉袍"
             },
             {
-              "word": "长袍",
-              "pinyin": "cháng páo"
+              "word": "长袍"
             }
           ],
           "sentence": "冬天，爷爷穿着厚厚的棉袍，很暖和。"
@@ -5649,12 +4359,10 @@ module.exports = {
           "pinyin": "biān",
           "words": [
             {
-              "word": "鞭炮",
-              "pinyin": "biān pào"
+              "word": "鞭炮"
             },
             {
-              "word": "鞭子",
-              "pinyin": "biān zǐ"
+              "word": "鞭子"
             }
           ],
           "sentence": "过年的时候，我们可以放鞭炮，真热闹。"
@@ -5664,12 +4372,10 @@ module.exports = {
           "pinyin": "pào",
           "words": [
             {
-              "word": "大炮",
-              "pinyin": "dà pào"
+              "word": "大炮"
             },
             {
-              "word": "炮仗",
-              "pinyin": "pào zhàng"
+              "word": "炮仗"
             }
           ],
           "sentence": "玩具大炮可以发射塑料子弹。"
@@ -5685,12 +4391,16 @@ module.exports = {
           "pinyin": "shǒu",
           "words": [
             {
-              "word": "首都",
-              "pinyin": "shǒu dōu"
+              "word": "首都"
             },
             {
-              "word": "首先",
-              "pinyin": "shǒu xiān"
+              "word": "首先"
+            },
+            {
+              "word": "首席"
+            },
+            {
+              "word": "首饰"
             }
           ],
           "sentence": "北京是我们的首都。"
@@ -5700,12 +4410,10 @@ module.exports = {
           "pinyin": "chí",
           "words": [
             {
-              "word": "池塘",
-              "pinyin": "chí táng"
+              "word": "池塘"
             },
             {
-              "word": "水池",
-              "pinyin": "shuǐ chí"
+              "word": "水池"
             }
           ],
           "sentence": "池塘里有很多荷花。"
@@ -5715,12 +4423,10 @@ module.exports = {
           "pinyin": "cǎi",
           "words": [
             {
-              "word": "采摘",
-              "pinyin": "cǎi zhāi"
+              "word": "采摘"
             },
             {
-              "word": "采花",
-              "pinyin": "cǎi huā"
+              "word": "采花"
             }
           ],
           "sentence": "我们不能采摘公园的花。"
@@ -5730,12 +4436,10 @@ module.exports = {
           "pinyin": "jiān",
           "words": [
             {
-              "word": "尖锐",
-              "pinyin": "jiān ruì"
+              "word": "尖锐"
             },
             {
-              "word": "笔尖",
-              "pinyin": "bǐ jiān"
+              "word": "笔尖"
             }
           ],
           "sentence": "这把小刀十分尖锐，使用时要非常小心。"
@@ -5745,12 +4449,16 @@ module.exports = {
           "pinyin": "jiǎo",
           "words": [
             {
-              "word": "角色",
-              "pinyin": "jiǎo sè"
+              "word": "角色"
             },
             {
-              "word": "主角",
-              "pinyin": "zhǔ jiǎo"
+              "word": "主角"
+            },
+            {
+              "word": "角落"
+            },
+            {
+              "word": "牛角"
             }
           ],
           "sentence": "这部电影的主角是一位默默守护城市的普通警察。"
@@ -5760,12 +4468,10 @@ module.exports = {
           "pinyin": "zǎo",
           "words": [
             {
-              "word": "早上",
-              "pinyin": "zǎo shàng"
+              "word": "早上"
             },
             {
-              "word": "早餐",
-              "pinyin": "zǎo cān"
+              "word": "早餐"
             }
           ],
           "sentence": "妈妈每天都会早起，为全家人准备热腾腾的早餐。"
@@ -5775,42 +4481,23 @@ module.exports = {
           "pinyin": "shī",
           "words": [
             {
-              "word": "诗歌",
-              "pinyin": "shī gē"
+              "word": "诗歌"
             },
             {
-              "word": "古诗",
-              "pinyin": "gǔ shī"
+              "word": "古诗"
             }
           ],
           "sentence": "我会背很多古诗，老师经常表扬我。"
-        },
-        {
-          "character": "首",
-          "pinyin": "shǒu",
-          "words": [
-            {
-              "word": "首席",
-              "pinyin": "shǒu xí"
-            },
-            {
-              "word": "首饰",
-              "pinyin": "shǒu shì"
-            }
-          ],
-          "sentence": "那套复古首饰，是奶奶的传家宝。"
         },
         {
           "character": "偷",
           "pinyin": "tōu",
           "words": [
             {
-              "word": "偷摸",
-              "pinyin": "tōu mō"
+              "word": "偷摸"
             },
             {
-              "word": "小偷",
-              "pinyin": "xiǎo tōu"
+              "word": "小偷"
             }
           ],
           "sentence": "我偷摸地给妈妈准备了生日礼物。"
@@ -5820,12 +4507,10 @@ module.exports = {
           "pinyin": "fú",
           "words": [
             {
-              "word": "漂浮",
-              "pinyin": "piào fú"
+              "word": "漂浮"
             },
             {
-              "word": "浮动",
-              "pinyin": "fú dòng"
+              "word": "浮动"
             }
           ],
           "sentence": "树叶漂浮在水面上，像小船一样。"
@@ -5835,16 +4520,13 @@ module.exports = {
           "pinyin": "píng",
           "words": [
             {
-              "word": "浮萍",
-              "pinyin": "fú píng"
+              "word": "浮萍"
             },
             {
-              "word": "萍水",
-              "pinyin": "píng shuǐ"
+              "word": "萍水"
             },
             {
-              "word": "相逢",
-              "pinyin": "xiāng féng"
+              "word": "相逢"
             }
           ],
           "sentence": "池塘里的浮萍绿油油的，很漂亮。"
@@ -5854,12 +4536,10 @@ module.exports = {
           "pinyin": "quán",
           "words": [
             {
-              "word": "泉水",
-              "pinyin": "quán shuǐ"
+              "word": "泉水"
             },
             {
-              "word": "清泉",
-              "pinyin": "qīng quán"
+              "word": "清泉"
             }
           ],
           "sentence": "山脚下有一股清泉，水很清澈。"
@@ -5869,12 +4549,10 @@ module.exports = {
           "pinyin": "xī",
           "words": [
             {
-              "word": "珍惜",
-              "pinyin": "zhēn xī"
+              "word": "珍惜"
             },
             {
-              "word": "爱惜",
-              "pinyin": "ài xī"
+              "word": "爱惜"
             }
           ],
           "sentence": "我们要珍惜时间，好好学习。"
@@ -5884,12 +4562,10 @@ module.exports = {
           "pinyin": "zhào",
           "words": [
             {
-              "word": "照耀",
-              "pinyin": "zhào yào"
+              "word": "照耀"
             },
             {
-              "word": "拍照",
-              "pinyin": "pāi zhào"
+              "word": "拍照"
             }
           ],
           "sentence": "太阳照耀着大地，万物都生机勃勃。"
@@ -5899,12 +4575,10 @@ module.exports = {
           "pinyin": "róu",
           "words": [
             {
-              "word": "温柔",
-              "pinyin": "wēn róu"
+              "word": "温柔"
             },
             {
-              "word": "柔软",
-              "pinyin": "róu ruǎn"
+              "word": "柔软"
             }
           ],
           "sentence": "妈妈的手很温柔，轻轻地抚摸着我。"
@@ -5914,12 +4588,10 @@ module.exports = {
           "pinyin": "hé",
           "words": [
             {
-              "word": "荷花",
-              "pinyin": "hé huā"
+              "word": "荷花"
             },
             {
-              "word": "荷叶",
-              "pinyin": "hé yè"
+              "word": "荷叶"
             }
           ],
           "sentence": "夏天，池塘里的荷花盛开了，真美呀！"
@@ -5929,30 +4601,13 @@ module.exports = {
           "pinyin": "lù",
           "words": [
             {
-              "word": "露水",
-              "pinyin": "lù shuǐ"
+              "word": "露水"
             },
             {
-              "word": "露珠",
-              "pinyin": "lù zhū"
+              "word": "露珠"
             }
           ],
           "sentence": "清晨，树叶上有很多露珠，像珍珠一样。"
-        },
-        {
-          "character": "角",
-          "pinyin": "jiǎo",
-          "words": [
-            {
-              "word": "角落",
-              "pinyin": "jiǎo luò"
-            },
-            {
-              "word": "牛角",
-              "pinyin": "niú jiǎo"
-            }
-          ],
-          "sentence": "小猫躲在角落里，不敢出来。"
         }
       ]
     },
@@ -5965,12 +4620,10 @@ module.exports = {
           "pinyin": "wá",
           "words": [
             {
-              "word": "娃娃",
-              "pinyin": "wá wá"
+              "word": "娃娃"
             },
             {
-              "word": "女娃",
-              "pinyin": ""
+              "word": "女娃"
             }
           ],
           "sentence": "我有很多好看的娃娃。"
@@ -5980,12 +4633,10 @@ module.exports = {
           "pinyin": "yǎn",
           "words": [
             {
-              "word": "眼睛",
-              "pinyin": "yǎn jīng"
+              "word": "眼睛"
             },
             {
-              "word": "眼神",
-              "pinyin": "yǎn shén"
+              "word": "眼神"
             }
           ],
           "sentence": "我们要保护好自己的眼睛。"
@@ -5995,12 +4646,16 @@ module.exports = {
           "pinyin": "lèi",
           "words": [
             {
-              "word": "泪珠",
-              "pinyin": "lèi zhū"
+              "word": "泪珠"
             },
             {
-              "word": "流泪",
-              "pinyin": "liú lèi"
+              "word": "流泪"
+            },
+            {
+              "word": "眼泪"
+            },
+            {
+              "word": "泪水"
             }
           ],
           "sentence": "晶莹的泪珠从脸颊滑落到衣襟上。"
@@ -6010,12 +4665,10 @@ module.exports = {
           "pinyin": "tā",
           "words": [
             {
-              "word": "它们",
-              "pinyin": "tā men"
+              "word": "它们"
             },
             {
-              "word": "它的",
-              "pinyin": "tā de"
+              "word": "它的"
             }
           ],
           "sentence": "它们是可爱的小鸭子。"
@@ -6025,12 +4678,10 @@ module.exports = {
           "pinyin": "bèi",
           "words": [
             {
-              "word": "贝壳",
-              "pinyin": "bèi ké"
+              "word": "贝壳"
             },
             {
-              "word": "宝贝",
-              "pinyin": "bǎo bèi"
+              "word": "宝贝"
             }
           ],
           "sentence": "我捡到了一个漂亮的贝壳。"
@@ -6040,12 +4691,10 @@ module.exports = {
           "pinyin": "qì",
           "words": [
             {
-              "word": "生气",
-              "pinyin": "shēng qì"
+              "word": "生气"
             },
             {
-              "word": "空气",
-              "pinyin": "kōng qì"
+              "word": "空气"
             }
           ],
           "sentence": "新鲜的空气对身体好。"
@@ -6055,12 +4704,10 @@ module.exports = {
           "pinyin": "làng",
           "words": [
             {
-              "word": "浪花",
-              "pinyin": "làng huā"
+              "word": "浪花"
             },
             {
-              "word": "海浪",
-              "pinyin": "hǎi làng"
+              "word": "海浪"
             }
           ],
           "sentence": "海浪拍打着沙滩，发出哗哗的声音。"
@@ -6070,12 +4717,10 @@ module.exports = {
           "pinyin": "mài",
           "words": [
             {
-              "word": "迈步",
-              "pinyin": "mài bù"
+              "word": "迈步"
             },
             {
-              "word": "迈进",
-              "pinyin": "mài jìn"
+              "word": "迈进"
             }
           ],
           "sentence": "我迈步向学校走去。"
@@ -6085,42 +4730,23 @@ module.exports = {
           "pinyin": "qiāo",
           "words": [
             {
-              "word": "悄悄",
-              "pinyin": "qiāo qiāo"
+              "word": "悄悄"
             },
             {
-              "word": "悄然",
-              "pinyin": "qiāo rán"
+              "word": "悄然"
             }
           ],
           "sentence": "我悄悄地走进房间，不想打扰妈妈休息。"
-        },
-        {
-          "character": "泪",
-          "pinyin": "lèi",
-          "words": [
-            {
-              "word": "眼泪",
-              "pinyin": "yǎn lèi"
-            },
-            {
-              "word": "泪水",
-              "pinyin": "lèi shuǐ"
-            }
-          ],
-          "sentence": "感动的时候，我们会流下幸福的泪水。"
         },
         {
           "character": "次",
           "pinyin": "cì",
           "words": [
             {
-              "word": "次数",
-              "pinyin": "cì shù"
+              "word": "次数"
             },
             {
-              "word": "每次",
-              "pinyin": "měi cì"
+              "word": "每次"
             }
           ],
           "sentence": "每次考试，我都认真答题，争取考高分。"
@@ -6130,12 +4756,10 @@ module.exports = {
           "pinyin": "gěi",
           "words": [
             {
-              "word": "给予",
-              "pinyin": "gěi yǔ"
+              "word": "给予"
             },
             {
-              "word": "送给",
-              "pinyin": "sòng gěi"
+              "word": "送给"
             }
           ],
           "sentence": "我送给好朋友一本书，他很开心。"
@@ -6145,12 +4769,10 @@ module.exports = {
           "pinyin": "ké",
           "words": [
             {
-              "word": "贝壳",
-              "pinyin": "bèi ké"
+              "word": "贝壳"
             },
             {
-              "word": "外壳",
-              "pinyin": "wài ké"
+              "word": "外壳"
             }
           ],
           "sentence": "海边有很多漂亮的贝壳，我捡了很多。"
@@ -6160,12 +4782,10 @@ module.exports = {
           "pinyin": "xiā",
           "words": [
             {
-              "word": "河虾",
-              "pinyin": "hé xiā"
+              "word": "河虾"
             },
             {
-              "word": "龙虾",
-              "pinyin": "lóng xiā"
+              "word": "龙虾"
             }
           ],
           "sentence": "龙虾的钳子很大，看起来很厉害。"
@@ -6175,12 +4795,10 @@ module.exports = {
           "pinyin": "zhuāng",
           "words": [
             {
-              "word": "装扮",
-              "pinyin": "zhuāng bàn"
+              "word": "装扮"
             },
             {
-              "word": "包装",
-              "pinyin": "bāo zhuāng"
+              "word": "包装"
             }
           ],
           "sentence": "我用彩纸包装礼物，送给妈妈。"
@@ -6190,12 +4808,10 @@ module.exports = {
           "pinyin": "xiàng",
           "words": [
             {
-              "word": "好像",
-              "pinyin": "hǎo xiàng"
+              "word": "好像"
             },
             {
-              "word": "相像",
-              "pinyin": "xiāng xiàng"
+              "word": "相像"
             }
           ],
           "sentence": "天上的云朵好像棉花糖，软软的。"
@@ -6205,30 +4821,13 @@ module.exports = {
           "pinyin": "táo",
           "words": [
             {
-              "word": "淘气",
-              "pinyin": "táo qì"
+              "word": "淘气"
             },
             {
-              "word": "淘米",
-              "pinyin": "táo mǐ"
+              "word": "淘米"
             }
           ],
           "sentence": "弟弟特别淘气，总爱摆弄玩具。"
-        },
-        {
-          "character": "娃",
-          "pinyin": "wá",
-          "words": [
-            {
-              "word": "娃娃",
-              "pinyin": "wá wá"
-            },
-            {
-              "word": "女娃",
-              "pinyin": "nǚ wá"
-            }
-          ],
-          "sentence": "我有一个漂亮的布娃娃。"
         }
       ]
     },
@@ -6241,12 +4840,10 @@ module.exports = {
           "pinyin": "jī",
           "words": [
             {
-              "word": "飞机",
-              "pinyin": "fēi jī"
+              "word": "飞机"
             },
             {
-              "word": "机器",
-              "pinyin": "jī qì"
+              "word": "机器"
             }
           ],
           "sentence": "飞机冲上了湛蓝的天空。"
@@ -6256,12 +4853,10 @@ module.exports = {
           "pinyin": "tái",
           "words": [
             {
-              "word": "台风",
-              "pinyin": "tái fēng"
+              "word": "台风"
             },
             {
-              "word": "讲台",
-              "pinyin": "jiǎng tái"
+              "word": "讲台"
             }
           ],
           "sentence": "老师站在讲台上讲课。"
@@ -6271,12 +4866,10 @@ module.exports = {
           "pinyin": "chàng",
           "words": [
             {
-              "word": "唱歌",
-              "pinyin": "chàng gē"
+              "word": "唱歌"
             },
             {
-              "word": "合唱",
-              "pinyin": "hé chàng"
+              "word": "合唱"
             }
           ],
           "sentence": "我们在音乐课上唱歌。"
@@ -6286,12 +4879,10 @@ module.exports = {
           "pinyin": "sǎn",
           "words": [
             {
-              "word": "雨伞",
-              "pinyin": "yǔ sǎn"
+              "word": "雨伞"
             },
             {
-              "word": "伞骨",
-              "pinyin": "sǎn gǔ"
+              "word": "伞骨"
             }
           ],
           "sentence": "下雨了，我撑开雨伞。"
@@ -6301,12 +4892,10 @@ module.exports = {
           "pinyin": "duǒ",
           "words": [
             {
-              "word": "花朵",
-              "pinyin": "huā duǒ"
+              "word": "花朵"
             },
             {
-              "word": "云朵",
-              "pinyin": "yún duǒ"
+              "word": "云朵"
             }
           ],
           "sentence": "天上的云朵像棉花糖。"
@@ -6316,12 +4905,10 @@ module.exports = {
           "pinyin": "měi",
           "words": [
             {
-              "word": "美丽",
-              "pinyin": "měi lì"
+              "word": "美丽"
             },
             {
-              "word": "美好",
-              "pinyin": "měi hǎo"
+              "word": "美好"
             }
           ],
           "sentence": "美丽的蝴蝶在花丛中飞。"
@@ -6331,12 +4918,10 @@ module.exports = {
           "pinyin": "zhū",
           "words": [
             {
-              "word": "珍珠",
-              "pinyin": "zhēn zhū"
+              "word": "珍珠"
             },
             {
-              "word": "珠宝",
-              "pinyin": "zhū bǎo"
+              "word": "珠宝"
             }
           ],
           "sentence": "珍珠很漂亮，戴在脖子上很好看。",
@@ -6347,12 +4932,10 @@ module.exports = {
           "pinyin": "yáo",
           "words": [
             {
-              "word": "摇晃",
-              "pinyin": "yáo huàng"
+              "word": "摇晃"
             },
             {
-              "word": "摇动",
-              "pinyin": "yáo dòng"
+              "word": "摇动"
             }
           ],
           "sentence": "我摇晃着小铃铛，铃铛发出清脆的声音。",
@@ -6363,12 +4946,10 @@ module.exports = {
           "pinyin": "lán",
           "words": [
             {
-              "word": "篮子",
-              "pinyin": "lán zǐ"
+              "word": "篮子"
             },
             {
-              "word": "篮球",
-              "pinyin": "lán qiú"
+              "word": "篮球"
             }
           ],
           "sentence": "妈妈用篮子装蔬菜，很方便。"
@@ -6378,12 +4959,10 @@ module.exports = {
           "pinyin": "liàng",
           "words": [
             {
-              "word": "明亮",
-              "pinyin": "míng liàng"
+              "word": "明亮"
             },
             {
-              "word": "敞亮",
-              "pinyin": "chǎng liàng"
+              "word": "敞亮"
             }
           ],
           "sentence": "教室宽敞明亮真舒服。"
@@ -6393,12 +4972,10 @@ module.exports = {
           "pinyin": "jīng",
           "words": [
             {
-              "word": "晶莹",
-              "pinyin": "jīng yíng"
+              "word": "晶莹"
             },
             {
-              "word": "水晶",
-              "pinyin": "shuǐ jīng"
+              "word": "水晶"
             }
           ],
           "sentence": "水晶晶莹剔透，很漂亮。"
@@ -6408,12 +4985,10 @@ module.exports = {
           "pinyin": "tíng",
           "words": [
             {
-              "word": "停止",
-              "pinyin": "tíng zhǐ"
+              "word": "停止"
             },
             {
-              "word": "停下",
-              "pinyin": "tíng xià"
+              "word": "停下"
             }
           ],
           "sentence": "红灯亮了，汽车要停下等待。",
@@ -6424,12 +4999,10 @@ module.exports = {
           "pinyin": "píng",
           "words": [
             {
-              "word": "草坪",
-              "pinyin": "cǎo píng"
+              "word": "草坪"
             },
             {
-              "word": "停机坪",
-              "pinyin": "tíng jī píng"
+              "word": "停机坪"
             }
           ],
           "sentence": "草坪上的草绿油油的，我们可以在上面玩耍。",
@@ -6440,12 +5013,10 @@ module.exports = {
           "pinyin": "zhǎn",
           "words": [
             {
-              "word": "展开",
-              "pinyin": "zhǎn kāi"
+              "word": "展开"
             },
             {
-              "word": "展览",
-              "pinyin": "zhǎn lǎn"
+              "word": "展览"
             }
           ],
           "sentence": "小鸟展开翅膀，飞向蓝天。"
@@ -6455,12 +5026,10 @@ module.exports = {
           "pinyin": "tòu",
           "words": [
             {
-              "word": "透明",
-              "pinyin": "tòu míng"
+              "word": "透明"
             },
             {
-              "word": "透过",
-              "pinyin": "tòu guò"
+              "word": "透过"
             }
           ],
           "sentence": "玻璃是透明的，我们可以透过玻璃看到外面。"
@@ -6470,12 +5039,10 @@ module.exports = {
           "pinyin": "chì",
           "words": [
             {
-              "word": "翅膀",
-              "pinyin": "chì bǎng"
+              "word": "翅膀"
             },
             {
-              "word": "展翅",
-              "pinyin": "zhǎn chì"
+              "word": "展翅"
             }
           ],
           "sentence": "小鸟的翅膀很有力，能飞得很高。",
@@ -6486,31 +5053,14 @@ module.exports = {
           "pinyin": "bǎng",
           "words": [
             {
-              "word": "肩膀",
-              "pinyin": "jiān bǎng"
+              "word": "肩膀"
             },
             {
-              "word": "翅膀",
-              "pinyin": "chì bǎng"
+              "word": "翅膀"
             }
           ],
           "sentence": "爸爸的肩膀很宽阔，我可以坐在上面。",
           "pinyin_notes": "原始拼音'z00'可能错误，已修正为'bǎng'"
-        },
-        {
-          "character": "朵",
-          "pinyin": "duǒ",
-          "words": [
-            {
-              "word": "花朵",
-              "pinyin": "huā duǒ"
-            },
-            {
-              "word": "云朵",
-              "pinyin": "yún duǒ"
-            }
-          ],
-          "sentence": "花园里有很多美丽的花朵，五颜六色的。"
         }
       ]
     },
@@ -6523,12 +5073,10 @@ module.exports = {
           "pinyin": "zhè",
           "words": [
             {
-              "word": "这里",
-              "pinyin": "zhè lǐ"
+              "word": "这里"
             },
             {
-              "word": "这个",
-              "pinyin": "zhè gè"
+              "word": "这个"
             }
           ],
           "sentence": "这里有很多小朋友。"
@@ -6538,12 +5086,10 @@ module.exports = {
           "pinyin": "kàn",
           "words": [
             {
-              "word": "看见",
-              "pinyin": "kàn jiàn"
+              "word": "看见"
             },
             {
-              "word": "看书",
-              "pinyin": "kàn shū"
+              "word": "看书"
             }
           ],
           "sentence": "我看见小鸟在树上筑巢。"
@@ -6553,12 +5099,10 @@ module.exports = {
           "pinyin": "yú",
           "words": [
             {
-              "word": "小鱼",
-              "pinyin": "xiǎo yú"
+              "word": "小鱼"
             },
             {
-              "word": "鱼儿",
-              "pinyin": "yú ér"
+              "word": "鱼儿"
             }
           ],
           "sentence": "小鱼在水里游来游去。"
@@ -6568,12 +5112,10 @@ module.exports = {
           "pinyin": "miàn",
           "words": [
             {
-              "word": "面条",
-              "pinyin": "miàn tiáo"
+              "word": "面条"
             },
             {
-              "word": "面包",
-              "pinyin": "miàn bāo"
+              "word": "面包"
             }
           ],
           "sentence": "我喜欢吃面条。"
@@ -6589,12 +5131,10 @@ module.exports = {
           "pinyin": "wèn",
           "words": [
             {
-              "word": "问题",
-              "pinyin": "wèn tí"
+              "word": "问题"
             },
             {
-              "word": "问好",
-              "pinyin": "wèn hǎo"
+              "word": "问好"
             }
           ],
           "sentence": "我向老师问好。"
@@ -6604,12 +5144,10 @@ module.exports = {
           "pinyin": "jiā",
           "words": [
             {
-              "word": "加法",
-              "pinyin": "jiā fǎ"
+              "word": "加法"
             },
             {
-              "word": "加上",
-              "pinyin": "jiā shàng"
+              "word": "加上"
             }
           ],
           "sentence": "我学会了十以内的加法。",
@@ -6620,12 +5158,10 @@ module.exports = {
           "pinyin": "yào",
           "words": [
             {
-              "word": "想要",
-              "pinyin": "xiǎng yào"
+              "word": "想要"
             },
             {
-              "word": "需要",
-              "pinyin": "xū yào"
+              "word": "需要"
             }
           ],
           "sentence": "我想要一本童话书，妈妈答应给我买。"
@@ -6635,12 +5171,10 @@ module.exports = {
           "pinyin": "yāo",
           "words": [
             {
-              "word": "腰部",
-              "pinyin": "yāo bù"
+              "word": "腰部"
             },
             {
-              "word": "弯腰",
-              "pinyin": "wān yāo"
+              "word": "弯腰"
             }
           ],
           "sentence": "我弯腰捡起地上的垃圾，保护环境。"
@@ -6650,12 +5184,10 @@ module.exports = {
           "pinyin": "yīn",
           "words": [
             {
-              "word": "阴天",
-              "pinyin": "yīn tiān"
+              "word": "阴天"
             },
             {
-              "word": "阴凉",
-              "pinyin": "yīn liáng"
+              "word": "阴凉"
             }
           ],
           "sentence": "阴天的时候，天气很凉爽，适合出去玩。"
@@ -6665,12 +5197,10 @@ module.exports = {
           "pinyin": "chén",
           "words": [
             {
-              "word": "沉重",
-              "pinyin": "chén zhòng"
+              "word": "沉重"
             },
             {
-              "word": "下沉",
-              "pinyin": "xià chén"
+              "word": "下沉"
             }
           ],
           "sentence": "石头很重，会下沉到水底。"
@@ -6680,12 +5210,10 @@ module.exports = {
           "pinyin": "ya",
           "words": [
             {
-              "word": "呀呼",
-              "pinyin": "ya hū"
+              "word": "呀呼"
             },
             {
-              "word": "哎呀",
-              "pinyin": "āi ya"
+              "word": "哎呀"
             }
           ],
           "sentence": "哎呀，我不小心摔倒了，幸好没受伤。",
@@ -6696,12 +5224,10 @@ module.exports = {
           "pinyin": "máng",
           "words": [
             {
-              "word": "忙碌",
-              "pinyin": "máng liù"
+              "word": "忙碌"
             },
             {
-              "word": "帮忙",
-              "pinyin": ""
+              "word": "帮忙"
             }
           ],
           "sentence": "妈妈每天都很忙碌，要上班还要做家务。"
@@ -6711,12 +5237,10 @@ module.exports = {
           "pinyin": "ne",
           "words": [
             {
-              "word": "呢绒",
-              "pinyin": "ne róng"
+              "word": "呢绒"
             },
             {
-              "word": "哪呢",
-              "pinyin": "nǎ ne"
+              "word": "哪呢"
             }
           ],
           "sentence": "我的小皮球在哪呢？"
@@ -6726,12 +5250,10 @@ module.exports = {
           "pinyin": "ma",
           "words": [
             {
-              "word": "好吗",
-              "pinyin": "hǎo ma"
+              "word": "好吗"
             },
             {
-              "word": "是吗",
-              "pinyin": "shì ma"
+              "word": "是吗"
             }
           ],
           "sentence": "我们一起去公园玩，好吗？"
@@ -6741,12 +5263,10 @@ module.exports = {
           "pinyin": "miàn",
           "words": [
             {
-              "word": "面前",
-              "pinyin": "miàn qián"
+              "word": "面前"
             },
             {
-              "word": "面子",
-              "pinyin": "miàn zǐ"
+              "word": "面子"
             }
           ],
           "sentence": "在老师面前，我总是很有礼貌。"
@@ -6756,12 +5276,10 @@ module.exports = {
           "pinyin": "kōng",
           "words": [
             {
-              "word": "天空",
-              "pinyin": "tiān kōng"
+              "word": "天空"
             },
             {
-              "word": "空气",
-              "pinyin": "kōng qì"
+              "word": "空气"
             }
           ],
           "sentence": "天空蓝蓝的，空气很清新。"
@@ -6771,12 +5289,10 @@ module.exports = {
           "pinyin": "mèn",
           "words": [
             {
-              "word": "闷热",
-              "pinyin": "mèn rè"
+              "word": "闷热"
             },
             {
-              "word": "烦闷",
-              "pinyin": "fán mèn"
+              "word": "烦闷"
             }
           ],
           "sentence": "夏天的天气很闷热，让人不舒服。"
@@ -6786,12 +5302,10 @@ module.exports = {
           "pinyin": "ba",
           "words": [
             {
-              "word": "好吧",
-              "pinyin": "hǎo ba"
+              "word": "好吧"
             },
             {
-              "word": "吧台",
-              "pinyin": "ba tái"
+              "word": "吧台"
             }
           ],
           "sentence": "好吧，我答应和你一起完成作业。"
@@ -6801,12 +5315,10 @@ module.exports = {
           "pinyin": "xiāo",
           "words": [
             {
-              "word": "消失",
-              "pinyin": "xiāo shī"
+              "word": "消失"
             },
             {
-              "word": "消灭",
-              "pinyin": "xiāo miè"
+              "word": "消灭"
             }
           ],
           "sentence": "太阳出来了，露珠慢慢消失了。"
@@ -6816,12 +5328,10 @@ module.exports = {
           "pinyin": "xī",
           "words": [
             {
-              "word": "休息",
-              "pinyin": "xiū xī"
+              "word": "休息"
             },
             {
-              "word": "消息",
-              "pinyin": "xiāo xī"
+              "word": "消息"
             }
           ],
           "sentence": "上完体育课，我们要休息一会儿。"
@@ -6831,12 +5341,16 @@ module.exports = {
           "pinyin": "dòu",
           "words": [
             {
-              "word": "豆浆",
-              "pinyin": "dòu jiāng"
+              "word": "豆浆"
             },
             {
-              "word": "豆芽",
-              "pinyin": "dòu yá"
+              "word": "豆芽"
+            },
+            {
+              "word": "红豆"
+            },
+            {
+              "word": "大豆"
             }
           ],
           "sentence": "早上喝一杯豆浆很暖胃。"
@@ -6846,12 +5360,16 @@ module.exports = {
           "pinyin": "dòu",
           "words": [
             {
-              "word": "斗笠",
-              "pinyin": "dòu lì"
+              "word": "斗笠"
             },
             {
-              "word": "北斗",
-              "pinyin": "běi dòu"
+              "word": "北斗"
+            },
+            {
+              "word": "斗争"
+            },
+            {
+              "word": "奋斗"
             }
           ],
           "sentence": "农民伯伯戴着斗笠在田里干活。"
@@ -6861,42 +5379,23 @@ module.exports = {
           "pinyin": "gùn",
           "words": [
             {
-              "word": "棍子",
-              "pinyin": "gùn zǐ"
+              "word": "棍子"
             },
             {
-              "word": "木棍",
-              "pinyin": "mù gùn"
+              "word": "木棍"
             }
           ],
           "sentence": "我用木棍在沙地上画画。"
-        },
-        {
-          "character": "豆",
-          "pinyin": "dòu",
-          "words": [
-            {
-              "word": "红豆",
-              "pinyin": "hóng dòu"
-            },
-            {
-              "word": "大豆",
-              "pinyin": "dà dòu"
-            }
-          ],
-          "sentence": "妈妈买了很多大豆，用来打豆浆。"
         },
         {
           "character": "汤",
           "pinyin": "tāng",
           "words": [
             {
-              "word": "喝汤",
-              "pinyin": "hē tāng"
+              "word": "喝汤"
             },
             {
-              "word": "汤水",
-              "pinyin": "tāng shuǐ"
+              "word": "汤水"
             }
           ],
           "sentence": "冬天喝汤会让身体很舒服。"
@@ -6906,12 +5405,10 @@ module.exports = {
           "pinyin": "wén",
           "words": [
             {
-              "word": "蚊子",
-              "pinyin": "wén zǐ"
+              "word": "蚊子"
             },
             {
-              "word": "蚊虫",
-              "pinyin": ""
+              "word": "蚊虫"
             }
           ],
           "sentence": "夏天有很多蚊子，我们要做好防蚊措施。"
@@ -6921,12 +5418,10 @@ module.exports = {
           "pinyin": "shàn",
           "words": [
             {
-              "word": "扇子",
-              "pinyin": "shàn zǐ"
+              "word": "扇子"
             },
             {
-              "word": "扇风",
-              "pinyin": "shàn fēng"
+              "word": "扇风"
             }
           ],
           "sentence": "她蹲在火炉旁扇风，火苗旺了起来。"
@@ -6936,12 +5431,10 @@ module.exports = {
           "pinyin": "yǐ",
           "words": [
             {
-              "word": "椅子",
-              "pinyin": "yǐ zǐ"
+              "word": "椅子"
             },
             {
-              "word": "桌椅",
-              "pinyin": "zhuō yǐ"
+              "word": "桌椅"
             }
           ],
           "sentence": "我坐在椅子上，认真地看书。"
@@ -6951,12 +5444,10 @@ module.exports = {
           "pinyin": "qiān",
           "words": [
             {
-              "word": "牵手",
-              "pinyin": "qiān shǒu"
+              "word": "牵手"
             },
             {
-              "word": "牵引",
-              "pinyin": "qiān yǐn"
+              "word": "牵引"
             }
           ],
           "sentence": "我和妈妈牵手过马路。"
@@ -6966,42 +5457,23 @@ module.exports = {
           "pinyin": "zhī",
           "words": [
             {
-              "word": "织布",
-              "pinyin": "zhī bù"
+              "word": "织布"
             },
             {
-              "word": "编织",
-              "pinyin": "biān zhī"
+              "word": "编织"
             }
           ],
           "sentence": "奶奶会编织毛衣，织的毛衣很暖和。"
-        },
-        {
-          "character": "斗",
-          "pinyin": "dòu",
-          "words": [
-            {
-              "word": "斗争",
-              "pinyin": "dòu zhēng"
-            },
-            {
-              "word": "奋斗",
-              "pinyin": "fèn dòu"
-            }
-          ],
-          "sentence": "战士们与敌人展开了激烈斗争。"
         },
         {
           "character": "进",
           "pinyin": "jìn",
           "words": [
             {
-              "word": "进入",
-              "pinyin": "jìn rù"
+              "word": "进入"
             },
             {
-              "word": "前进",
-              "pinyin": "qián jìn"
+              "word": "前进"
             }
           ],
           "sentence": "上课铃响了，我们有序进入教室。"
@@ -7011,12 +5483,10 @@ module.exports = {
           "pinyin": "hóu",
           "words": [
             {
-              "word": "猴子",
-              "pinyin": "hóu zǐ"
+              "word": "猴子"
             },
             {
-              "word": "猴王",
-              "pinyin": "hóu wáng"
+              "word": "猴王"
             }
           ],
           "sentence": "猴子很机灵，在树上跳来跳去。"
@@ -7026,12 +5496,10 @@ module.exports = {
           "pinyin": "kuài",
           "words": [
             {
-              "word": "一块",
-              "pinyin": "yī kuài"
+              "word": "一块"
             },
             {
-              "word": "石块",
-              "pinyin": "shí kuài"
+              "word": "石块"
             }
           ],
           "sentence": "我在海边捡到一块漂亮的小石头。",
@@ -7042,12 +5510,10 @@ module.exports = {
           "pinyin": "jié",
           "words": [
             {
-              "word": "结实",
-              "pinyin": "jié shí"
+              "word": "结实"
             },
             {
-              "word": "结果",
-              "pinyin": "jié guǒ"
+              "word": "结果"
             }
           ],
           "sentence": "这棵树很结实，大风也吹不倒。"
@@ -7057,12 +5523,10 @@ module.exports = {
           "pinyin": "xīng",
           "words": [
             {
-              "word": "高兴",
-              "pinyin": "gāo xīng"
+              "word": "高兴"
             },
             {
-              "word": "兴奋",
-              "pinyin": "xīng fèn"
+              "word": "兴奋"
             }
           ],
           "sentence": "我很高兴能和好朋友一起玩。"
@@ -7072,12 +5536,10 @@ module.exports = {
           "pinyin": "bāi",
           "words": [
             {
-              "word": "掰开",
-              "pinyin": "bāi kāi"
+              "word": "掰开"
             },
             {
-              "word": "掰断",
-              "pinyin": "bāi duàn"
+              "word": "掰断"
             }
           ],
           "sentence": "我把苹果掰开，分给弟弟一半。"
@@ -7087,12 +5549,10 @@ module.exports = {
           "pinyin": "káng",
           "words": [
             {
-              "word": "扛着",
-              "pinyin": "káng zhe"
+              "word": "扛着"
             },
             {
-              "word": "扛枪",
-              "pinyin": "káng qiāng"
+              "word": "扛枪"
             }
           ],
           "sentence": "爸爸扛着大米，走进了家门。"
@@ -7102,12 +5562,10 @@ module.exports = {
           "pinyin": "wǎng",
           "words": [
             {
-              "word": "向往",
-              "pinyin": "xiàng wǎng"
+              "word": "向往"
             },
             {
-              "word": "往常",
-              "pinyin": "wǎng cháng"
+              "word": "往常"
             }
           ],
           "sentence": "我向往去北京天安门看一看。"
@@ -7117,12 +5575,10 @@ module.exports = {
           "pinyin": "kē",
           "words": [
             {
-              "word": "一棵",
-              "pinyin": "yī kē"
+              "word": "一棵"
             },
             {
-              "word": "几棵",
-              "pinyin": "jǐ kē"
+              "word": "几棵"
             }
           ],
           "sentence": "院子里有一棵大树，夏天可以乘凉。"
@@ -7132,12 +5588,10 @@ module.exports = {
           "pinyin": "mǎn",
           "words": [
             {
-              "word": "满足",
-              "pinyin": "mǎn zú"
+              "word": "满足"
             },
             {
-              "word": "满意",
-              "pinyin": "mǎn yì"
+              "word": "满意"
             }
           ],
           "sentence": "妈妈对我的表现很满意，表扬了我。"
@@ -7147,12 +5601,10 @@ module.exports = {
           "pinyin": "rēng",
           "words": [
             {
-              "word": "扔掉",
-              "pinyin": "rēng diào"
+              "word": "扔掉"
             },
             {
-              "word": "扔下",
-              "pinyin": "rēng xià"
+              "word": "扔下"
             }
           ],
           "sentence": "过期的食品要扔掉。"
@@ -7162,12 +5614,10 @@ module.exports = {
           "pinyin": "zhāi",
           "words": [
             {
-              "word": "摘下",
-              "pinyin": "zhāi xià"
+              "word": "摘下"
             },
             {
-              "word": "采摘",
-              "pinyin": "cǎi zhāi"
+              "word": "采摘"
             }
           ],
           "sentence": "我摘下一朵小花，送给妈妈。"
@@ -7177,12 +5627,10 @@ module.exports = {
           "pinyin": "pěng",
           "words": [
             {
-              "word": "捧场",
-              "pinyin": "pěng chǎng"
+              "word": "捧场"
             },
             {
-              "word": "吹捧",
-              "pinyin": "chuī pěng"
+              "word": "吹捧"
             }
           ],
           "sentence": "那些围着他吹捧的人，不过是想占点小便宜。"
@@ -7192,12 +5640,10 @@ module.exports = {
           "pinyin": "zhuī",
           "words": [
             {
-              "word": "追赶",
-              "pinyin": "zhuī gǎn"
+              "word": "追赶"
             },
             {
-              "word": "追求",
-              "pinyin": "zhuī qiú"
+              "word": "追求"
             }
           ],
           "sentence": "他加快脚步，努力追赶前面的旅行大部队。"
@@ -7207,12 +5653,16 @@ module.exports = {
           "pinyin": "jīn",
           "words": [
             {
-              "word": "围巾",
-              "pinyin": "wéi jīn"
+              "word": "围巾"
             },
             {
-              "word": "红领巾",
-              "pinyin": "hóng lǐng jīn"
+              "word": "红领巾"
+            },
+            {
+              "word": "毛巾"
+            },
+            {
+              "word": "纸巾"
             }
           ],
           "sentence": "我们戴着红领巾参加庄严的升旗仪式。"
@@ -7222,12 +5672,10 @@ module.exports = {
           "pinyin": "xǐ",
           "words": [
             {
-              "word": "洗手",
-              "pinyin": "xǐ shǒu"
+              "word": "洗手"
             },
             {
-              "word": "洗脸",
-              "pinyin": "xǐ liǎn"
+              "word": "洗脸"
             }
           ],
           "sentence": "饭前要洗手，讲卫生。"
@@ -7237,12 +5685,10 @@ module.exports = {
           "pinyin": "shuā",
           "words": [
             {
-              "word": "刷牙",
-              "pinyin": "shuā yá"
+              "word": "刷牙"
             },
             {
-              "word": "刷子",
-              "pinyin": "shuā zǐ"
+              "word": "刷子"
             }
           ],
           "sentence": "每天早晚，我都要认真刷牙。"
@@ -7252,73 +5698,37 @@ module.exports = {
           "pinyin": "shū",
           "words": [
             {
-              "word": "梳头",
-              "pinyin": "shū tóu"
+              "word": "梳头"
             },
             {
-              "word": "梳理",
-              "pinyin": "shū lǐ"
+              "word": "梳理"
             }
           ],
           "sentence": "妈妈用梳子给我梳头，扎了一个漂亮的辫子。"
-        },
-        {
-          "character": "巾",
-          "pinyin": "jīn",
-          "words": [
-            {
-              "word": "毛巾",
-              "pinyin": "máo jīn"
-            },
-            {
-              "word": "纸巾",
-              "pinyin": ""
-            }
-          ],
-          "sentence": "夏天运动完后，我用纸巾擦去额头的汗水。"
         },
         {
           "character": "皂",
           "pinyin": "zào",
           "words": [
             {
-              "word": "肥皂",
-              "pinyin": "féi zào"
+              "word": "肥皂"
             },
             {
-              "word": "香皂",
-              "pinyin": "xiāng zào"
+              "word": "香皂"
             }
           ],
           "sentence": "饭前要用肥皂洗净双手。",
           "pinyin_notes": "原始拼音'zd0'可能错误，已修正为'zào'"
         },
         {
-          "character": "洗",
-          "pinyin": "xǐ",
-          "words": [
-            {
-              "word": "洗脸",
-              "pinyin": "xǐ liǎn"
-            },
-            {
-              "word": "洗手",
-              "pinyin": "xǐ shǒu"
-            }
-          ],
-          "sentence": "饭前便后要洗手，养成好习惯。"
-        },
-        {
           "character": "澡",
           "pinyin": "zǎo",
           "words": [
             {
-              "word": "洗澡",
-              "pinyin": "xǐ zǎo"
+              "word": "洗澡"
             },
             {
-              "word": "澡堂",
-              "pinyin": "zǎo táng"
+              "word": "澡堂"
             }
           ],
           "sentence": "夏天天气热，我每天都要洗澡。"
@@ -7328,12 +5738,10 @@ module.exports = {
           "pinyin": "liǎn",
           "words": [
             {
-              "word": "脸蛋",
-              "pinyin": "liǎn dàn"
+              "word": "脸蛋"
             },
             {
-              "word": "洗脸",
-              "pinyin": "xǐ liǎn"
+              "word": "洗脸"
             }
           ],
           "sentence": "我的脸蛋红红的，像苹果一样。"
@@ -7343,12 +5751,10 @@ module.exports = {
           "pinyin": "pén",
           "words": [
             {
-              "word": "脸盆",
-              "pinyin": "liǎn pén"
+              "word": "脸盆"
             },
             {
-              "word": "水盆",
-              "pinyin": "shuǐ pén"
+              "word": "水盆"
             }
           ],
           "sentence": "我用脸盆接水，浇花浇草。"
@@ -7358,12 +5764,16 @@ module.exports = {
           "pinyin": "guò",
           "words": [
             {
-              "word": "过关",
-              "pinyin": "guò guān"
+              "word": "过关"
             },
             {
-              "word": "过冬",
-              "pinyin": "guò dōng"
+              "word": "过冬"
+            },
+            {
+              "word": "经过"
+            },
+            {
+              "word": "过程"
             }
           ],
           "sentence": "勤劳的小松鼠会提前备好坚果，用来安稳过冬。"
@@ -7373,12 +5783,10 @@ module.exports = {
           "pinyin": "zhǎo",
           "words": [
             {
-              "word": "找到",
-              "pinyin": "zhǎo dào"
+              "word": "找到"
             },
             {
-              "word": "寻找",
-              "pinyin": "xún zhǎo"
+              "word": "寻找"
             }
           ],
           "sentence": "我找到了丢失的铅笔。"
@@ -7388,12 +5796,10 @@ module.exports = {
           "pinyin": "bì",
           "words": [
             {
-              "word": "墙壁",
-              "pinyin": "qiáng bì"
+              "word": "墙壁"
             },
             {
-              "word": "壁纸",
-              "pinyin": "bì zhǐ"
+              "word": "壁纸"
             }
           ],
           "sentence": "我们家的墙壁是白色的，很干净。"
@@ -7403,12 +5809,10 @@ module.exports = {
           "pinyin": "jiè",
           "words": [
             {
-              "word": "借书",
-              "pinyin": "jiè shū"
+              "word": "借书"
             },
             {
-              "word": "借钱",
-              "pinyin": "jiè qián"
+              "word": "借钱"
             }
           ],
           "sentence": "借书要记得及时归还。"
@@ -7418,12 +5822,10 @@ module.exports = {
           "pinyin": "yǎo",
           "words": [
             {
-              "word": "咬牙",
-              "pinyin": "yǎo yá"
+              "word": "咬牙"
             },
             {
-              "word": "叮咬",
-              "pinyin": "dīng yǎo"
+              "word": "叮咬"
             }
           ],
           "sentence": "面对困难，他咬牙坚持，从来没想过放弃。"
@@ -7433,12 +5835,10 @@ module.exports = {
           "pinyin": "nán",
           "words": [
             {
-              "word": "困难",
-              "pinyin": "kùn nán"
+              "word": "困难"
             },
             {
-              "word": "难过",
-              "pinyin": "nán guò"
+              "word": "难过"
             }
           ],
           "sentence": "遇到困难我们要勇敢面对。"
@@ -7448,12 +5848,10 @@ module.exports = {
           "pinyin": "nǎ",
           "words": [
             {
-              "word": "天哪",
-              "pinyin": "tiān nǎ"
+              "word": "天哪"
             },
             {
-              "word": "哪些",
-              "pinyin": "nǎ xiē"
+              "word": "哪些"
             }
           ],
           "sentence": "天哪，我的气球飞走了。"
@@ -7463,12 +5861,10 @@ module.exports = {
           "pinyin": "pá",
           "words": [
             {
-              "word": "爬山",
-              "pinyin": "pá shān"
+              "word": "爬山"
             },
             {
-              "word": "爬行",
-              "pinyin": "pá xíng"
+              "word": "爬行"
             }
           ],
           "sentence": "周末我和家人一起爬山。"
@@ -7478,12 +5874,10 @@ module.exports = {
           "pinyin": "nín",
           "words": [
             {
-              "word": "您好",
-              "pinyin": "nín hǎo"
+              "word": "您好"
             },
             {
-              "word": "您们",
-              "pinyin": "nín men"
+              "word": "您们"
             }
           ],
           "sentence": "见到老师，要说“老师您好”。"
@@ -7493,12 +5887,10 @@ module.exports = {
           "pinyin": "bō",
           "words": [
             {
-              "word": "拨开",
-              "pinyin": "bō kāi"
+              "word": "拨开"
             },
             {
-              "word": "拨打",
-              "pinyin": "bō dǎ"
+              "word": "拨打"
             }
           ],
           "sentence": "我拨开草丛，看到了一只小蜗牛。"
@@ -7508,12 +5900,10 @@ module.exports = {
           "pinyin": "gǎn",
           "words": [
             {
-              "word": "赶走",
-              "pinyin": "gǎn zǒu"
+              "word": "赶走"
             },
             {
-              "word": "赶紧",
-              "pinyin": ""
+              "word": "赶紧"
             }
           ],
           "sentence": "我们赶紧走吧，不然就要迟到了。"
@@ -7523,42 +5913,23 @@ module.exports = {
           "pinyin": "bǎi",
           "words": [
             {
-              "word": "摆放",
-              "pinyin": "bǎi fàng"
+              "word": "摆放"
             },
             {
-              "word": "摆动",
-              "pinyin": "bǎi dòng"
+              "word": "摆动"
             }
           ],
           "sentence": "我把玩具摆放整齐，房间更干净了。"
-        },
-        {
-          "character": "过",
-          "pinyin": "guò",
-          "words": [
-            {
-              "word": "经过",
-              "pinyin": "jīng guò"
-            },
-            {
-              "word": "过程",
-              "pinyin": "guò chéng"
-            }
-          ],
-          "sentence": "结果固然重要，但努力拼搏的过程更值得珍惜。"
         },
         {
           "character": "孩",
           "pinyin": "hái",
           "words": [
             {
-              "word": "孩子",
-              "pinyin": "hái zǐ"
+              "word": "孩子"
             },
             {
-              "word": "孩童",
-              "pinyin": "hái tóng"
+              "word": "孩童"
             }
           ],
           "sentence": "这位老画家最擅长描绘乡间孩童的纯真模样。"
@@ -7568,12 +5939,10 @@ module.exports = {
           "pinyin": "zhuǎn",
           "words": [
             {
-              "word": "转弯",
-              "pinyin": "zhuǎn wān"
+              "word": "转弯"
             },
             {
-              "word": "转动",
-              "pinyin": "zhuǎn dòng"
+              "word": "转动"
             }
           ],
           "sentence": "山路弯弯曲曲，司机每到转弯处都会减速慢行。"
@@ -7583,12 +5952,10 @@ module.exports = {
           "pinyin": "yè",
           "words": [
             {
-              "word": "页码",
-              "pinyin": "yè mǎ"
+              "word": "页码"
             },
             {
-              "word": "页面",
-              "pinyin": "yè miàn"
+              "word": "页面"
             }
           ],
           "sentence": "我按页码很快找到了那篇文章。"
@@ -7598,12 +5965,13 @@ module.exports = {
           "pinyin": "hù",
           "words": [
             {
-              "word": "户口",
-              "pinyin": "hù kǒu"
+              "word": "户口"
             },
             {
-              "word": "住户",
-              "pinyin": "zhù hù"
+              "word": "住户"
+            },
+            {
+              "word": "门户"
             }
           ],
           "sentence": "我们是这个小区的住户。"
@@ -7613,12 +5981,16 @@ module.exports = {
           "pinyin": "jiāo",
           "words": [
             {
-              "word": "交往",
-              "pinyin": "jiāo wǎng"
+              "word": "交往"
             },
             {
-              "word": "交给",
-              "pinyin": "jiāo gěi"
+              "word": "交给"
+            },
+            {
+              "word": "交流"
+            },
+            {
+              "word": "交友"
             }
           ],
           "sentence": "我把作业交给老师。"
@@ -7628,12 +6000,16 @@ module.exports = {
           "pinyin": "fù",
           "words": [
             {
-              "word": "父亲",
-              "pinyin": "fù qīn"
+              "word": "父亲"
             },
             {
-              "word": "父母",
-              "pinyin": "fù mǔ"
+              "word": "父母"
+            },
+            {
+              "word": "父女"
+            },
+            {
+              "word": "父辈"
             }
           ],
           "sentence": "父母总是默默为我们付出一切。"
@@ -7643,12 +6019,10 @@ module.exports = {
           "pinyin": "chǎo",
           "words": [
             {
-              "word": "吵闹",
-              "pinyin": "chǎo nào"
+              "word": "吵闹"
             },
             {
-              "word": "吵架",
-              "pinyin": ""
+              "word": "吵架"
             }
           ],
           "sentence": "不要在教室里吵闹，要保持安静。"
@@ -7658,12 +6032,10 @@ module.exports = {
           "pinyin": "xiàn",
           "words": [
             {
-              "word": "现在",
-              "pinyin": "xiàn zài"
+              "word": "现在"
             },
             {
-              "word": "出现",
-              "pinyin": "chū xiàn"
+              "word": "出现"
             }
           ],
           "sentence": "现在是上课时间，我们要认真听讲。"
@@ -7673,12 +6045,10 @@ module.exports = {
           "pinyin": "dǐng",
           "words": [
             {
-              "word": "头顶",
-              "pinyin": "tóu dǐng"
+              "word": "头顶"
             },
             {
-              "word": "山顶",
-              "pinyin": "shān dǐng"
+              "word": "山顶"
             }
           ],
           "sentence": "山顶的风景很美，我们都舍不得离开。"
@@ -7688,12 +6058,10 @@ module.exports = {
           "pinyin": "pàng",
           "words": [
             {
-              "word": "胖子",
-              "pinyin": "pàng zǐ"
+              "word": "胖子"
             },
             {
-              "word": "肥胖",
-              "pinyin": "féi pàng"
+              "word": "肥胖"
             }
           ],
           "sentence": "我们要多运动才不会变得肥胖。",
@@ -7704,60 +6072,13 @@ module.exports = {
           "pinyin": "piào",
           "words": [
             {
-              "word": "车票",
-              "pinyin": "chē piào"
+              "word": "车票"
             },
             {
-              "word": "门票",
-              "pinyin": "mén piào"
+              "word": "门票"
             }
           ],
           "sentence": "去公园玩需要买门票，"
-        },
-        {
-          "character": "户",
-          "pinyin": "hù",
-          "words": [
-            {
-              "word": "户口",
-              "pinyin": "hù kǒu"
-            },
-            {
-              "word": "门户",
-              "pinyin": "mén hù"
-            }
-          ],
-          "sentence": "我们家的门户很干净，妈妈每天都打扫。"
-        },
-        {
-          "character": "交",
-          "pinyin": "jiāo",
-          "words": [
-            {
-              "word": "交流",
-              "pinyin": "jiāo liú"
-            },
-            {
-              "word": "交友",
-              "pinyin": "jiāo yǒu"
-            }
-          ],
-          "sentence": "我喜欢和小朋友交流，一起玩耍。"
-        },
-        {
-          "character": "父",
-          "pinyin": "fù",
-          "words": [
-            {
-              "word": "父女",
-              "pinyin": "fù nǚ"
-            },
-            {
-              "word": "父辈",
-              "pinyin": "fù bèi"
-            }
-          ],
-          "sentence": "父辈们的奋斗故事值得我们铭记。"
         }
       ]
     },
@@ -7770,12 +6091,10 @@ module.exports = {
           "pinyin": "bǐ",
           "words": [
             {
-              "word": "画笔",
-              "pinyin": "huà bǐ"
+              "word": "画笔"
             },
             {
-              "word": "笔记",
-              "pinyin": "bǐ jì"
+              "word": "笔记"
             }
           ],
           "sentence": "上课要认真做好课堂笔记。"
@@ -7785,12 +6104,10 @@ module.exports = {
           "pinyin": "zhī",
           "words": [
             {
-              "word": "知道",
-              "pinyin": "zhī dào"
+              "word": "知道"
             },
             {
-              "word": "知识",
-              "pinyin": "zhī shí"
+              "word": "知识"
             }
           ],
           "sentence": "我知道今天不用去学校。"
@@ -7800,12 +6117,10 @@ module.exports = {
           "pinyin": "dào",
           "words": [
             {
-              "word": "道路",
-              "pinyin": "dào lù"
+              "word": "道路"
             },
             {
-              "word": "道理",
-              "pinyin": "dào lǐ"
+              "word": "道理"
             }
           ],
           "sentence": "老师教给我们很多做人的道理。"
@@ -7815,12 +6130,10 @@ module.exports = {
           "pinyin": "fàng",
           "words": [
             {
-              "word": "放学",
-              "pinyin": "fàng xué"
+              "word": "放学"
             },
             {
-              "word": "放假",
-              "pinyin": "fàng jiǎ"
+              "word": "放假"
             }
           ],
           "sentence": "放假也要记得完成作业。"
@@ -7830,12 +6143,13 @@ module.exports = {
           "pinyin": "píng",
           "words": [
             {
-              "word": "平安",
-              "pinyin": "píng ān"
+              "word": "平安"
             },
             {
-              "word": "平时",
-              "pinyin": "píng shí"
+              "word": "平时"
+            },
+            {
+              "word": "平坦"
             }
           ],
           "sentence": "平安夜，我们全家一起吃苹果。"
@@ -7845,12 +6159,10 @@ module.exports = {
           "pinyin": "ān",
           "words": [
             {
-              "word": "安全",
-              "pinyin": "ān quán"
+              "word": "安全"
             },
             {
-              "word": "安心",
-              "pinyin": "ān xīn"
+              "word": "安心"
             }
           ],
           "sentence": "过马路要注意安全。"
@@ -7860,12 +6172,10 @@ module.exports = {
           "pinyin": "jù",
           "words": [
             {
-              "word": "工具",
-              "pinyin": "gōng jù"
+              "word": "工具"
             },
             {
-              "word": "文具",
-              "pinyin": "wén jù"
+              "word": "文具"
             }
           ],
           "sentence": "同桌忘了带文具，我主动借给他。",
@@ -7876,12 +6186,10 @@ module.exports = {
           "pinyin": "qiān",
           "words": [
             {
-              "word": "铅笔",
-              "pinyin": "qiān bǐ"
+              "word": "铅笔"
             },
             {
-              "word": "铅球",
-              "pinyin": "qiān qiú"
+              "word": "铅球"
             }
           ],
           "sentence": "我用铅笔写字，写错了可以用橡皮擦掉。"
@@ -7891,43 +6199,23 @@ module.exports = {
           "pinyin": "xīn",
           "words": [
             {
-              "word": "新年",
-              "pinyin": "xīn nián"
+              "word": "新年"
             },
             {
-              "word": "新鲜",
-              "pinyin": "xīn xiān"
+              "word": "新鲜"
             }
           ],
           "sentence": "新年到，家家户户贴春联。"
-        },
-        {
-          "character": "平",
-          "pinyin": "píng",
-          "words": [
-            {
-              "word": "平安",
-              "pinyin": "píng ān"
-            },
-            {
-              "word": "平坦",
-              "pinyin": "píng tǎn"
-            }
-          ],
-          "sentence": "山坡下有一片平坦的草地，适合野餐。",
-          "pinyin_notes": "原始拼音'zi0'可能错误，已修正为'píng'"
         },
         {
           "character": "盒",
           "pinyin": "hé",
           "words": [
             {
-              "word": "盒子",
-              "pinyin": "hé zǐ"
+              "word": "盒子"
             },
             {
-              "word": "饭盒",
-              "pinyin": "fàn hé"
+              "word": "饭盒"
             }
           ],
           "sentence": "我有一个漂亮的盒子，用来装玩具。"
@@ -7937,12 +6225,10 @@ module.exports = {
           "pinyin": "xiē",
           "words": [
             {
-              "word": "一些",
-              "pinyin": "yī xiē"
+              "word": "一些"
             },
             {
-              "word": "些许",
-              "pinyin": "xiē xǔ"
+              "word": "些许"
             }
           ],
           "sentence": "我有一些糖果，想分给小伙伴吃。"
@@ -7952,12 +6238,10 @@ module.exports = {
           "pinyin": "cǐ",
           "words": [
             {
-              "word": "此时",
-              "pinyin": "cǐ shí"
+              "word": "此时"
             },
             {
-              "word": "此刻",
-              "pinyin": "cǐ kè"
+              "word": "此刻"
             }
           ],
           "sentence": "此刻，我正在认真地写作业。"
@@ -7967,12 +6251,10 @@ module.exports = {
           "pinyin": "zǐ",
           "words": [
             {
-              "word": "仔细",
-              "pinyin": "zǐ xì"
+              "word": "仔细"
             },
             {
-              "word": "仔密",
-              "pinyin": "zǐ mì"
+              "word": "仔密"
             }
           ],
           "sentence": "老师仔细批改每一份试卷。"
@@ -7982,12 +6264,10 @@ module.exports = {
           "pinyin": "jiǎn",
           "words": [
             {
-              "word": "检查",
-              "pinyin": "jiǎn chá"
+              "word": "检查"
             },
             {
-              "word": "检验",
-              "pinyin": "jiǎn yàn"
+              "word": "检验"
             }
           ],
           "sentence": "爷爷定期去医院检查身体。"
@@ -7997,12 +6277,10 @@ module.exports = {
           "pinyin": "chá",
           "words": [
             {
-              "word": "查找",
-              "pinyin": "chá zhǎo"
+              "word": "查找"
             },
             {
-              "word": "查询",
-              "pinyin": "chá xún"
+              "word": "查询"
             }
           ],
           "sentence": "我在字典里查找不认识的字。"
@@ -8012,12 +6290,10 @@ module.exports = {
           "pinyin": "suǒ",
           "words": [
             {
-              "word": "所以",
-              "pinyin": "suǒ yǐ"
+              "word": "所以"
             },
             {
-              "word": "场所",
-              "pinyin": "chǎng suǒ"
+              "word": "场所"
             }
           ],
           "sentence": "图书馆是看书的好场所，很安静。"
@@ -8027,12 +6303,10 @@ module.exports = {
           "pinyin": "huǒ",
           "words": [
             {
-              "word": "伙食",
-              "pinyin": "huǒ shí"
+              "word": "伙食"
             },
             {
-              "word": "同伙",
-              "pinyin": "tóng huǒ"
+              "word": "同伙"
             }
           ],
           "sentence": "我和小伙伴一起去公园玩。"
@@ -8042,12 +6316,10 @@ module.exports = {
           "pinyin": "bàn",
           "words": [
             {
-              "word": "陪伴",
-              "pinyin": "péi bàn"
+              "word": "陪伴"
             },
             {
-              "word": "伴随",
-              "pinyin": "bàn suí"
+              "word": "伴随"
             }
           ],
           "sentence": "有小伙伴的陪伴，我不再孤单。"
@@ -8063,12 +6335,16 @@ module.exports = {
           "pinyin": "dēng",
           "words": [
             {
-              "word": "灯光",
-              "pinyin": "dēng guāng"
+              "word": "灯光"
             },
             {
-              "word": "电灯",
-              "pinyin": "diàn dēng"
+              "word": "电灯"
+            },
+            {
+              "word": "路灯"
+            },
+            {
+              "word": "灯笼"
             }
           ],
           "sentence": "妈妈在灯光下认真地缝衣服。"
@@ -8078,12 +6354,10 @@ module.exports = {
           "pinyin": "chē",
           "words": [
             {
-              "word": "汽车",
-              "pinyin": "qì chē"
+              "word": "汽车"
             },
             {
-              "word": "火车",
-              "pinyin": "huǒ chē"
+              "word": "火车"
             }
           ],
           "sentence": "火车头喷出白烟，缓缓驶出了站台。"
@@ -8093,12 +6367,10 @@ module.exports = {
           "pinyin": "zhàn",
           "words": [
             {
-              "word": "车站",
-              "pinyin": "chē zhàn"
+              "word": "车站"
             },
             {
-              "word": "站立",
-              "pinyin": "zhàn lì"
+              "word": "站立"
             }
           ],
           "sentence": "车站的广播正播报着列车到站信息。",
@@ -8109,12 +6381,10 @@ module.exports = {
           "pinyin": "yuán",
           "words": [
             {
-              "word": "元旦",
-              "pinyin": "yuán dàn"
+              "word": "元旦"
             },
             {
-              "word": "元月",
-              "pinyin": "yuán yuè"
+              "word": "元月"
             }
           ],
           "sentence": "每年元旦爸爸都会带我去游乐场玩。"
@@ -8124,12 +6394,10 @@ module.exports = {
           "pinyin": "zuò",
           "words": [
             {
-              "word": "坐下",
-              "pinyin": "zuò xià"
+              "word": "坐下"
             },
             {
-              "word": "坐车",
-              "pinyin": "zuò chē"
+              "word": "坐车"
             }
           ],
           "sentence": "我和妈妈坐车去外婆家。"
@@ -8139,12 +6407,10 @@ module.exports = {
           "pinyin": "lǎo",
           "words": [
             {
-              "word": "老乡",
-              "pinyin": "lǎo xiāng"
+              "word": "老乡"
             },
             {
-              "word": "老人",
-              "pinyin": "lǎo rén"
+              "word": "老人"
             }
           ],
           "sentence": "出门在外，遇到老乡格外亲切。"
@@ -8154,12 +6420,10 @@ module.exports = {
           "pinyin": "shī",
           "words": [
             {
-              "word": "恩师",
-              "pinyin": "ēn shī"
+              "word": "恩师"
             },
             {
-              "word": "师范",
-              "pinyin": "shī fàn"
+              "word": "师范"
             }
           ],
           "sentence": "姐姐考上了师范大学，立志成为一名老师。"
@@ -8169,12 +6433,10 @@ module.exports = {
           "pinyin": "zhōng",
           "words": [
             {
-              "word": "钟表",
-              "pinyin": "zhōng biǎo"
+              "word": "钟表"
             },
             {
-              "word": "时钟",
-              "pinyin": "shí zhōng"
+              "word": "时钟"
             }
           ],
           "sentence": "那位老师傅修钟表的手艺特别精湛。"
@@ -8184,12 +6446,10 @@ module.exports = {
           "pinyin": "chí",
           "words": [
             {
-              "word": "迟到",
-              "pinyin": "chí dào"
+              "word": "迟到"
             },
             {
-              "word": "推迟",
-              "pinyin": "tuī chí"
+              "word": "推迟"
             }
           ],
           "sentence": "我再也不迟到了，要做个守时的孩子。"
@@ -8199,42 +6459,23 @@ module.exports = {
           "pinyin": "bèi",
           "words": [
             {
-              "word": "背包",
-              "pinyin": "bèi bāo"
+              "word": "背包"
             },
             {
-              "word": "背书",
-              "pinyin": "bèi shū"
+              "word": "背书"
             }
           ],
           "sentence": "我的背包上有可爱的小熊。"
-        },
-        {
-          "character": "灯",
-          "pinyin": "dēng",
-          "words": [
-            {
-              "word": "路灯",
-              "pinyin": "lù dēng"
-            },
-            {
-              "word": "灯笼",
-              "pinyin": "dēng lóng"
-            }
-          ],
-          "sentence": "夜晚的路灯照亮了行人回家的路。"
         },
         {
           "character": "等",
           "pinyin": "děng",
           "words": [
             {
-              "word": "等待",
-              "pinyin": "děng dài"
+              "word": "等待"
             },
             {
-              "word": "等候",
-              "pinyin": "děng hòu"
+              "word": "等候"
             }
           ],
           "sentence": "我在学校门口等待妈妈来接我。"
@@ -8244,12 +6485,10 @@ module.exports = {
           "pinyin": "ā",
           "words": [
             {
-              "word": "啊呀",
-              "pinyin": "ā ya"
+              "word": "啊呀"
             },
             {
-              "word": "啊哈",
-              "pinyin": "ā hā"
+              "word": "啊哈"
             }
           ],
           "sentence": "啊哈，我终于解开这道难题了！"
@@ -8259,12 +6498,10 @@ module.exports = {
           "pinyin": "jué",
           "words": [
             {
-              "word": "决定",
-              "pinyin": "jué dìng"
+              "word": "决定"
             },
             {
-              "word": "坚决",
-              "pinyin": "jiān jué"
+              "word": "坚决"
             }
           ],
           "sentence": "我决定每天都早起锻炼身体。"
@@ -8274,12 +6511,10 @@ module.exports = {
           "pinyin": "dìng",
           "words": [
             {
-              "word": "一定",
-              "pinyin": "yī dìng"
+              "word": "一定"
             },
             {
-              "word": "定时",
-              "pinyin": "dìng shí"
+              "word": "定时"
             }
           ],
           "sentence": "我一定会好好学习，不辜负爸爸妈妈的期望。"
@@ -8289,12 +6524,10 @@ module.exports = {
           "pinyin": "yǐ",
           "words": [
             {
-              "word": "已经",
-              "pinyin": "yǐ jīng"
+              "word": "已经"
             },
             {
-              "word": "已然",
-              "pinyin": "yǐ rán"
+              "word": "已然"
             }
           ],
           "sentence": "我已经写完作业了，可以去玩一会儿了。"
@@ -8304,12 +6537,10 @@ module.exports = {
           "pinyin": "jīng",
           "words": [
             {
-              "word": "经过",
-              "pinyin": "jīng guò"
+              "word": "经过"
             },
             {
-              "word": "已经",
-              "pinyin": "yǐ jīng"
+              "word": "已经"
             }
           ],
           "sentence": "经过努力，我终于学会了骑自行车。"
@@ -8319,12 +6550,10 @@ module.exports = {
           "pinyin": "wèi",
           "words": [
             {
-              "word": "位置",
-              "pinyin": "wèi zhì"
+              "word": "位置"
             },
             {
-              "word": "座位",
-              "pinyin": "zuò wèi"
+              "word": "座位"
             }
           ],
           "sentence": "请你回到自己的座位上，准备上课。"
@@ -8334,12 +6563,10 @@ module.exports = {
           "pinyin": "biǎo",
           "words": [
             {
-              "word": "手表",
-              "pinyin": "shǒu biǎo"
+              "word": "手表"
             },
             {
-              "word": "表面",
-              "pinyin": "biǎo miàn"
+              "word": "表面"
             }
           ],
           "sentence": "我的手表是5岁时爸爸送我的生日礼物。"
@@ -8355,12 +6582,10 @@ module.exports = {
           "pinyin": "guó",
           "words": [
             {
-              "word": "国家",
-              "pinyin": "guó jiā"
+              "word": "国家"
             },
             {
-              "word": "国旗",
-              "pinyin": "guó qí"
+              "word": "国旗"
             }
           ],
           "sentence": "我们爱自己的国家。"
@@ -8370,12 +6595,10 @@ module.exports = {
           "pinyin": "dōu",
           "words": [
             {
-              "word": "首都",
-              "pinyin": "shǒu dōu"
+              "word": "首都"
             },
             {
-              "word": "都是",
-              "pinyin": "dōu shì"
+              "word": "都是"
             }
           ],
           "sentence": "我们都是小学生。"
@@ -8385,12 +6608,16 @@ module.exports = {
           "pinyin": "bǎi",
           "words": [
             {
-              "word": "百般",
-              "pinyin": "bǎi bān"
+              "word": "百般"
             },
             {
-              "word": "百年",
-              "pinyin": "bǎi nián"
+              "word": "百年"
+            },
+            {
+              "word": "百合"
+            },
+            {
+              "word": "百货"
             }
           ],
           "sentence": "弟弟百般央求妈妈允许他养一只可爱的小仓鼠。"
@@ -8400,12 +6627,10 @@ module.exports = {
           "pinyin": "tīng",
           "words": [
             {
-              "word": "听话",
-              "pinyin": "tīng huà"
+              "word": "听话"
             },
             {
-              "word": "听见",
-              "pinyin": "tīng jiàn"
+              "word": "听见"
             }
           ],
           "sentence": "我们要听话，做乖孩子。"
@@ -8415,12 +6640,10 @@ module.exports = {
           "pinyin": "shí",
           "words": [
             {
-              "word": "时间",
-              "pinyin": "shí jiān"
+              "word": "时间"
             },
             {
-              "word": "时光",
-              "pinyin": "shí guāng"
+              "word": "时光"
             }
           ],
           "sentence": "我们要珍惜时间。"
@@ -8430,12 +6653,10 @@ module.exports = {
           "pinyin": "diǎn",
           "words": [
             {
-              "word": "点心",
-              "pinyin": "diǎn xīn"
+              "word": "点心"
             },
             {
-              "word": "早点",
-              "pinyin": "zǎo diǎn"
+              "word": "早点"
             }
           ],
           "sentence": "妈妈做的点心真好吃。"
@@ -8445,12 +6666,10 @@ module.exports = {
           "pinyin": "lín",
           "words": [
             {
-              "word": "树林",
-              "pinyin": "shù lín"
+              "word": "树林"
             },
             {
-              "word": "森林",
-              "pinyin": "sēn lín"
+              "word": "森林"
             }
           ],
           "sentence": "树林里有很多小鸟。"
@@ -8460,12 +6679,10 @@ module.exports = {
           "pinyin": "hǔ",
           "words": [
             {
-              "word": "老虎",
-              "pinyin": "lǎo hǔ"
+              "word": "老虎"
             },
             {
-              "word": "虎牙",
-              "pinyin": "hǔ yá"
+              "word": "虎牙"
             }
           ],
           "sentence": "老虎是森林之王，很威风。"
@@ -8475,12 +6692,10 @@ module.exports = {
           "pinyin": "xióng",
           "words": [
             {
-              "word": "熊猫",
-              "pinyin": "xióng māo"
+              "word": "熊猫"
             },
             {
-              "word": "狗熊",
-              "pinyin": "gǒu xióng"
+              "word": "狗熊"
             }
           ],
           "sentence": "熊猫是中国的国宝，喜欢吃竹子。"
@@ -8490,12 +6705,10 @@ module.exports = {
           "pinyin": "tōng",
           "words": [
             {
-              "word": "通过",
-              "pinyin": "tōng guò"
+              "word": "通过"
             },
             {
-              "word": "通知",
-              "pinyin": "tōng zhī"
+              "word": "通知"
             }
           ],
           "sentence": "我顺利通过了考试，很开心。",
@@ -8506,12 +6719,10 @@ module.exports = {
           "pinyin": "zhù",
           "words": [
             {
-              "word": "注意",
-              "pinyin": "zhù yì"
+              "word": "注意"
             },
             {
-              "word": "关注",
-              "pinyin": "guān zhù"
+              "word": "关注"
             }
           ],
           "sentence": "过马路要注意安全，遵守交通规则。"
@@ -8521,12 +6732,10 @@ module.exports = {
           "pinyin": "yì",
           "words": [
             {
-              "word": "意思",
-              "pinyin": "yì sī"
+              "word": "意思"
             },
             {
-              "word": "意义",
-              "pinyin": "yì yì"
+              "word": "意义"
             }
           ],
           "sentence": "坚持的意义在于不辜负自己。"
@@ -8536,42 +6745,23 @@ module.exports = {
           "pinyin": "biàn",
           "words": [
             {
-              "word": "走遍",
-              "pinyin": "zǒu biàn"
+              "word": "走遍"
             },
             {
-              "word": "遍布",
-              "pinyin": "biàn bù"
+              "word": "遍布"
             }
           ],
           "sentence": "爷爷走遍了祖国的大江南北。"
-        },
-        {
-          "character": "百",
-          "pinyin": "bǎi",
-          "words": [
-            {
-              "word": "百合",
-              "pinyin": "bǎi hé"
-            },
-            {
-              "word": "百货",
-              "pinyin": "bǎi huò"
-            }
-          ],
-          "sentence": "百合的香气很淡，却能让人心情平静。"
         },
         {
           "character": "为",
           "pinyin": "wèi",
           "words": [
             {
-              "word": "因为",
-              "pinyin": "yīn wèi"
+              "word": "因为"
             },
             {
-              "word": "为了",
-              "pinyin": "wèi le"
+              "word": "为了"
             }
           ],
           "sentence": "因为今天下雨，所以我们没有去春游。"
@@ -8581,12 +6771,10 @@ module.exports = {
           "pinyin": "yīn",
           "words": [
             {
-              "word": "因果",
-              "pinyin": "yīn guǒ"
+              "word": "因果"
             },
             {
-              "word": "原因",
-              "pinyin": "yuán yīn"
+              "word": "原因"
             }
           ],
           "sentence": "我不知道他迟到的原因是什么。"
@@ -8596,12 +6784,10 @@ module.exports = {
           "pinyin": "shé",
           "words": [
             {
-              "word": "舌头",
-              "pinyin": "shé tóu"
+              "word": "舌头"
             },
             {
-              "word": "舌尖",
-              "pinyin": "shé jiān"
+              "word": "舌尖"
             }
           ],
           "sentence": "我的舌头可以尝到酸甜苦辣。"
@@ -8611,12 +6797,10 @@ module.exports = {
           "pinyin": "lǐ",
           "words": [
             {
-              "word": "道理",
-              "pinyin": "dào lǐ"
+              "word": "道理"
             },
             {
-              "word": "理解",
-              "pinyin": "lǐ jiě"
+              "word": "理解"
             }
           ],
           "sentence": "换位思考，才能更好地理解他人的难处。"
@@ -8626,12 +6810,10 @@ module.exports = {
           "pinyin": "ya",
           "words": [
             {
-              "word": "呀呼",
-              "pinyin": "ya hū"
+              "word": "呀呼"
             },
             {
-              "word": "哎呀",
-              "pinyin": "āi ya"
+              "word": "哎呀"
             }
           ],
           "sentence": "哎呀，我的铅笔掉在地上了。"
@@ -8641,12 +6823,10 @@ module.exports = {
           "pinyin": "wàng",
           "words": [
             {
-              "word": "忘记",
-              "pinyin": "wàng jì"
+              "word": "忘记"
             },
             {
-              "word": "难忘",
-              "pinyin": "nán wàng"
+              "word": "难忘"
             }
           ],
           "sentence": "这场毕业典礼，留下了太多难忘的瞬间。"
@@ -8656,12 +6836,10 @@ module.exports = {
           "pinyin": "dì",
           "words": [
             {
-              "word": "第一",
-              "pinyin": "dì yī"
+              "word": "第一"
             },
             {
-              "word": "门第",
-              "pinyin": "mén dì"
+              "word": "门第"
             }
           ],
           "sentence": "这次跳绳比赛，他拿下了年级第一。"
@@ -8677,12 +6855,10 @@ module.exports = {
           "pinyin": "gāo",
           "words": [
             {
-              "word": "高兴",
-              "pinyin": "gāo xīng"
+              "word": "高兴"
             },
             {
-              "word": "高大",
-              "pinyin": "gāo dà"
+              "word": "高大"
             }
           ],
           "sentence": "看到我考了好成绩，妈妈高兴地笑了。"
@@ -8692,12 +6868,10 @@ module.exports = {
           "pinyin": "xīng",
           "words": [
             {
-              "word": "兴奋",
-              "pinyin": "xīng fèn"
+              "word": "兴奋"
             },
             {
-              "word": "兴趣",
-              "pinyin": "xīng qù"
+              "word": "兴趣"
             }
           ],
           "sentence": "妈妈鼓励我学陶艺，慢慢培养艺术兴趣。"
@@ -8707,12 +6881,10 @@ module.exports = {
           "pinyin": "zhe",
           "words": [
             {
-              "word": "看着",
-              "pinyin": "kàn zhe"
+              "word": "看着"
             },
             {
-              "word": "听着",
-              "pinyin": "tīng zhe"
+              "word": "听着"
             }
           ],
           "sentence": "我们看着冉冉升起的国旗，心中无比自豪。"
@@ -8722,12 +6894,10 @@ module.exports = {
           "pinyin": "wǎng",
           "words": [
             {
-              "word": "向往",
-              "pinyin": "xiàng wǎng"
+              "word": "向往"
             },
             {
-              "word": "来往",
-              "pinyin": "lái wǎng"
+              "word": "来往"
             }
           ],
           "sentence": "我向往去北京游玩。"
@@ -8737,12 +6907,10 @@ module.exports = {
           "pinyin": "guā",
           "words": [
             {
-              "word": "西瓜",
-              "pinyin": "xī guā"
+              "word": "西瓜"
             },
             {
-              "word": "瓜子",
-              "pinyin": "guā zǐ"
+              "word": "瓜子"
             }
           ],
           "sentence": "夏天吃西瓜真凉快。"
@@ -8752,12 +6920,10 @@ module.exports = {
           "pinyin": "tù",
           "words": [
             {
-              "word": "兔子",
-              "pinyin": "tù zǐ"
+              "word": "兔子"
             },
             {
-              "word": "白兔",
-              "pinyin": "bái tù"
+              "word": "白兔"
             }
           ],
           "sentence": "小白兔爱吃胡萝卜。"
@@ -8773,12 +6939,10 @@ module.exports = {
           "pinyin": "tā",
           "words": [
             {
-              "word": "她们",
-              "pinyin": "tā men"
+              "word": "她们"
             },
             {
-              "word": "她的",
-              "pinyin": "tā de"
+              "word": "她的"
             }
           ],
           "sentence": "她们是我的好朋友。"
@@ -8788,12 +6952,10 @@ module.exports = {
           "pinyin": "kōng",
           "words": [
             {
-              "word": "填空",
-              "pinyin": "tián kōng"
+              "word": "填空"
             },
             {
-              "word": "空气",
-              "pinyin": "kōng qì"
+              "word": "空气"
             }
           ],
           "sentence": "我最喜欢做填空的练习题。"
@@ -8803,12 +6965,10 @@ module.exports = {
           "pinyin": "hái",
           "words": [
             {
-              "word": "还有",
-              "pinyin": "hái yǒu"
+              "word": "还有"
             },
             {
-              "word": "还要",
-              "pinyin": "hái yào"
+              "word": "还要"
             }
           ],
           "sentence": "我还有很多作业没写完。"
@@ -8818,12 +6978,13 @@ module.exports = {
           "pinyin": "gān",
           "words": [
             {
-              "word": "干净",
-              "pinyin": "gān jìng"
+              "word": "干净"
             },
             {
-              "word": "干燥",
-              "pinyin": "gān zào"
+              "word": "干燥"
+            },
+            {
+              "word": "干活"
             }
           ],
           "sentence": "我的衣服很干净。"
@@ -8833,12 +6994,10 @@ module.exports = {
           "pinyin": "shēn",
           "words": [
             {
-              "word": "身体",
-              "pinyin": "shēn tǐ"
+              "word": "身体"
             },
             {
-              "word": "上身",
-              "pinyin": ""
+              "word": "上身"
             }
           ],
           "sentence": "我们要爱护自己的身体。"
@@ -8848,12 +7007,10 @@ module.exports = {
           "pinyin": "xīng",
           "words": [
             {
-              "word": "星星",
-              "pinyin": "xīng xīng"
+              "word": "星星"
             },
             {
-              "word": "星空",
-              "pinyin": "xīng kōng"
+              "word": "星空"
             }
           ],
           "sentence": "夜晚的星空真美丽。"
@@ -8863,12 +7020,10 @@ module.exports = {
           "pinyin": "jiǔ",
           "words": [
             {
-              "word": "长久",
-              "pinyin": "cháng jiǔ"
+              "word": "长久"
             },
             {
-              "word": "很久",
-              "pinyin": "hěn jiǔ"
+              "word": "很久"
             }
           ],
           "sentence": "我很久没见爷爷奶奶了。"
@@ -8878,12 +7033,10 @@ module.exports = {
           "pinyin": "mián",
           "words": [
             {
-              "word": "棉花",
-              "pinyin": "mián huā"
+              "word": "棉花"
             },
             {
-              "word": "棉衣",
-              "pinyin": "mián yī"
+              "word": "棉衣"
             }
           ],
           "sentence": "棉花软软的，可以用来做棉衣。"
@@ -8893,12 +7046,10 @@ module.exports = {
           "pinyin": "gū",
           "words": [
             {
-              "word": "姑姑",
-              "pinyin": ""
+              "word": "姑姑"
             },
             {
-              "word": "姑娘",
-              "pinyin": ""
+              "word": "姑娘"
             }
           ],
           "sentence": "姑姑来看我，给我带了很多礼物。"
@@ -8908,12 +7059,10 @@ module.exports = {
           "pinyin": "niáng",
           "words": [
             {
-              "word": "娘亲",
-              "pinyin": "niáng qīn"
+              "word": "娘亲"
             },
             {
-              "word": "新娘",
-              "pinyin": "xīn niáng"
+              "word": "新娘"
             }
           ],
           "sentence": "村子里的姑娘们都很勤劳。",
@@ -8924,42 +7073,23 @@ module.exports = {
           "pinyin": "bìng",
           "words": [
             {
-              "word": "生病",
-              "pinyin": "shēng bìng"
+              "word": "生病"
             },
             {
-              "word": "病人",
-              "pinyin": "bìng rén"
+              "word": "病人"
             }
           ],
           "sentence": "生病的时候，要好好休息，多喝水。"
-        },
-        {
-          "character": "她",
-          "pinyin": "tā",
-          "words": [
-            {
-              "word": "她们",
-              "pinyin": "tā men"
-            },
-            {
-              "word": "她的",
-              "pinyin": "tā de"
-            }
-          ],
-          "sentence": "她的书包很漂亮，我很喜欢。"
         },
         {
           "character": "治",
           "pinyin": "zhì",
           "words": [
             {
-              "word": "治疗",
-              "pinyin": "zhì liáo"
+              "word": "治疗"
             },
             {
-              "word": "治病",
-              "pinyin": "zhì bìng"
+              "word": "治病"
             }
           ],
           "sentence": "医生正在为受伤的运动员治疗扭伤的膝盖。"
@@ -8969,12 +7099,10 @@ module.exports = {
           "pinyin": "yàn",
           "words": [
             {
-              "word": "燕子",
-              "pinyin": "yàn zǐ"
+              "word": "燕子"
             },
             {
-              "word": "燕窝",
-              "pinyin": "yàn wō"
+              "word": "燕窝"
             }
           ],
           "sentence": "春天来了，燕子从南方飞回来了。"
@@ -8984,12 +7112,10 @@ module.exports = {
           "pinyin": "bāng",
           "words": [
             {
-              "word": "帮助",
-              "pinyin": "bāng zhù"
+              "word": "帮助"
             },
             {
-              "word": "帮忙",
-              "pinyin": "bāng máng"
+              "word": "帮忙"
             }
           ],
           "sentence": "我帮助老奶奶过马路，老奶奶表扬了我。",
@@ -9000,12 +7126,10 @@ module.exports = {
           "pinyin": "hài",
           "words": [
             {
-              "word": "害怕",
-              "pinyin": "hài pà"
+              "word": "害怕"
             },
             {
-              "word": "害虫",
-              "pinyin": "hài chóng"
+              "word": "害虫"
             }
           ],
           "sentence": "青蛙可以吃害虫，保护庄稼。",
@@ -9016,42 +7140,23 @@ module.exports = {
           "pinyin": "bié",
           "words": [
             {
-              "word": "别致",
-              "pinyin": "bié zhì"
+              "word": "别致"
             },
             {
-              "word": "分别",
-              "pinyin": "fēn bié"
+              "word": "分别"
             }
           ],
           "sentence": "她戴的那枚贝壳胸针样式很别致。"
-        },
-        {
-          "character": "干",
-          "pinyin": "gān",
-          "words": [
-            {
-              "word": "干净",
-              "pinyin": "gān jìng"
-            },
-            {
-              "word": "干活",
-              "pinyin": "gān huó"
-            }
-          ],
-          "sentence": "我的房间很干净，妈妈经常表扬我。"
         },
         {
           "character": "惊",
           "pinyin": "jīng",
           "words": [
             {
-              "word": "惊讶",
-              "pinyin": ""
+              "word": "惊讶"
             },
             {
-              "word": "吃惊",
-              "pinyin": ""
+              "word": "吃惊"
             }
           ],
           "sentence": "看到好朋友突然出现，我很惊讶。"
@@ -9061,12 +7166,10 @@ module.exports = {
           "pinyin": "qí",
           "words": [
             {
-              "word": "奇怪",
-              "pinyin": "qí guài"
+              "word": "奇怪"
             },
             {
-              "word": "好奇",
-              "pinyin": "hǎo qí"
+              "word": "好奇"
             }
           ],
           "sentence": "我对一切新鲜事物都很好奇。"
@@ -9082,12 +7185,16 @@ module.exports = {
           "pinyin": "xià",
           "words": [
             {
-              "word": "吓人",
-              "pinyin": "xià rén"
+              "word": "吓人"
             },
             {
-              "word": "吓唬",
-              "pinyin": "xià hǔ"
+              "word": "吓唬"
+            },
+            {
+              "word": "威吓"
+            },
+            {
+              "word": "恐吓"
             }
           ],
           "sentence": "哥哥总爱装鬼脸吓唬院子里的小弟弟。"
@@ -9097,12 +7204,10 @@ module.exports = {
           "pinyin": "wèi",
           "words": [
             {
-              "word": "因为",
-              "pinyin": "yīn wèi"
+              "word": "因为"
             },
             {
-              "word": "为了",
-              "pinyin": "wèi le"
+              "word": "为了"
             }
           ],
           "sentence": "因为下雨，我们没去公园。"
@@ -9112,12 +7217,10 @@ module.exports = {
           "pinyin": "pà",
           "words": [
             {
-              "word": "害怕",
-              "pinyin": "hài pà"
+              "word": "害怕"
             },
             {
-              "word": "可怕",
-              "pinyin": "kě pà"
+              "word": "可怕"
             }
           ],
           "sentence": "昨晚做了一个可怕的噩梦，醒来后心还砰砰直跳。"
@@ -9127,12 +7230,10 @@ module.exports = {
           "pinyin": "jiā",
           "words": [
             {
-              "word": "家庭",
-              "pinyin": "jiā tíng"
+              "word": "家庭"
             },
             {
-              "word": "家乡",
-              "pinyin": "jiā xiāng"
+              "word": "家乡"
             }
           ],
           "sentence": "我爱我的家乡。"
@@ -9142,12 +7243,16 @@ module.exports = {
           "pinyin": "xiàng",
           "words": [
             {
-              "word": "象征",
-              "pinyin": "xiàng zhēng"
+              "word": "象征"
             },
             {
-              "word": "现象",
-              "pinyin": "xiàn xiàng"
+              "word": "现象"
+            },
+            {
+              "word": "气象"
+            },
+            {
+              "word": "象牙"
             }
           ],
           "sentence": "雨后出现彩虹是一种美丽的自然现象。"
@@ -9157,12 +7262,10 @@ module.exports = {
           "pinyin": "méi",
           "words": [
             {
-              "word": "没事",
-              "pinyin": "méi shì"
+              "word": "没事"
             },
             {
-              "word": "没完",
-              "pinyin": "méi wán"
+              "word": "没完"
             }
           ],
           "sentence": "弟弟一说起喜欢的动物角色就念叨个没完。"
@@ -9172,12 +7275,10 @@ module.exports = {
           "pinyin": "dào",
           "words": [
             {
-              "word": "到达",
-              "pinyin": "dào dá"
+              "word": "到达"
             },
             {
-              "word": "迟到",
-              "pinyin": "chí dào"
+              "word": "迟到"
             }
           ],
           "sentence": "我们终于到达了山顶。"
@@ -9187,12 +7288,10 @@ module.exports = {
           "pinyin": "gū",
           "words": [
             {
-              "word": "咕噜",
-              "pinyin": "gū lū"
+              "word": "咕噜"
             },
             {
-              "word": "咕咕",
-              "pinyin": "gū gū"
+              "word": "咕咕"
             }
           ],
           "sentence": "肚子饿了，会发出咕咕的声音。"
@@ -9202,12 +7301,10 @@ module.exports = {
           "pinyin": "dōng",
           "words": [
             {
-              "word": "咕咚",
-              "pinyin": "gū dōng"
+              "word": "咕咚"
             },
             {
-              "word": "叮咚",
-              "pinyin": "dīng dōng"
+              "word": "叮咚"
             }
           ],
           "sentence": "叮咚一声，我的快递来了。"
@@ -9217,12 +7314,10 @@ module.exports = {
           "pinyin": "shú",
           "words": [
             {
-              "word": "熟悉",
-              "pinyin": "shú xī"
+              "word": "熟悉"
             },
             {
-              "word": "眼熟",
-              "pinyin": "yǎn shú"
+              "word": "眼熟"
             }
           ],
           "sentence": "每次路过楼下早餐店，总能看到几张熟悉的面孔。"
@@ -9232,12 +7327,10 @@ module.exports = {
           "pinyin": "diào",
           "words": [
             {
-              "word": "掉落",
-              "pinyin": "diào luò"
+              "word": "掉落"
             },
             {
-              "word": "掉下",
-              "pinyin": "diào xià"
+              "word": "掉下"
             }
           ],
           "sentence": "樱花花瓣跳着舞轻轻掉落。"
@@ -9247,42 +7340,23 @@ module.exports = {
           "pinyin": "hú",
           "words": [
             {
-              "word": "湖水",
-              "pinyin": "hú shuǐ"
+              "word": "湖水"
             },
             {
-              "word": "湖泊",
-              "pinyin": "hú bó"
+              "word": "湖泊"
             }
           ],
           "sentence": "夏日的湖泊波光粼粼，格外迷人。"
-        },
-        {
-          "character": "吓",
-          "pinyin": "xià",
-          "words": [
-            {
-              "word": "威吓",
-              "pinyin": "wēi xià"
-            },
-            {
-              "word": "恐吓",
-              "pinyin": "kǒng xià"
-            }
-          ],
-          "sentence": "用威胁的话恐吓别人是不道德的行为。"
         },
         {
           "character": "啦",
           "pinyin": "la",
           "words": [
             {
-              "word": "好啦",
-              "pinyin": "hǎo la"
+              "word": "好啦"
             },
             {
-              "word": "走啦",
-              "pinyin": "zǒu la"
+              "word": "走啦"
             }
           ],
           "sentence": "好啦，我们可以出发去公园了。"
@@ -9292,42 +7366,23 @@ module.exports = {
           "pinyin": "lù",
           "words": [
             {
-              "word": "小鹿",
-              "pinyin": "xiǎo lù"
+              "word": "小鹿"
             },
             {
-              "word": "梅花鹿",
-              "pinyin": "méi huā lù"
+              "word": "梅花鹿"
             }
           ],
           "sentence": "梅花鹿很漂亮，有一对长长的角。"
-        },
-        {
-          "character": "象",
-          "pinyin": "xiàng",
-          "words": [
-            {
-              "word": "气象",
-              "pinyin": "qì xiàng"
-            },
-            {
-              "word": "象牙",
-              "pinyin": "xiàng yá"
-            }
-          ],
-          "sentence": "出门前记得查看气象预报，今天可能会下雷阵雨。"
         },
         {
           "character": "野",
           "pinyin": "yě",
           "words": [
             {
-              "word": "田野",
-              "pinyin": "tián yě"
+              "word": "田野"
             },
             {
-              "word": "野心",
-              "pinyin": "yě xīn"
+              "word": "野心"
             }
           ],
           "sentence": "春天的田野里，绿油油的麦苗在微风中摇晃。"
@@ -9337,12 +7392,10 @@ module.exports = {
           "pinyin": "lán",
           "words": [
             {
-              "word": "拦住",
-              "pinyin": "lán zhù"
+              "word": "拦住"
             },
             {
-              "word": "阻拦",
-              "pinyin": "zǔ lán"
+              "word": "阻拦"
             }
           ],
           "sentence": "小明拦住了我，说有话要告诉我。"
@@ -9352,12 +7405,10 @@ module.exports = {
           "pinyin": "nǎ",
           "words": [
             {
-              "word": "哪里",
-              "pinyin": "nǎ lǐ"
+              "word": "哪里"
             },
             {
-              "word": "哪个",
-              "pinyin": "nǎ gè"
+              "word": "哪个"
             }
           ],
           "sentence": "你在哪里呀？我找了你好久。"
@@ -9367,12 +7418,10 @@ module.exports = {
           "pinyin": "nà",
           "words": [
             {
-              "word": "那里",
-              "pinyin": "nà lǐ"
+              "word": "那里"
             },
             {
-              "word": "那个",
-              "pinyin": "nà gè"
+              "word": "那个"
             }
           ],
           "sentence": "那里有一棵大树，我们去那里乘凉吧。"
@@ -9382,12 +7431,10 @@ module.exports = {
           "pinyin": "lǐng",
           "words": [
             {
-              "word": "带领",
-              "pinyin": "dài lǐng"
+              "word": "带领"
             },
             {
-              "word": "领导",
-              "pinyin": "lǐng dǎo"
+              "word": "领导"
             }
           ],
           "sentence": "老师带领我们去春游，我们玩得很开心。"
@@ -9403,12 +7450,10 @@ module.exports = {
           "pinyin": "biān",
           "words": [
             {
-              "word": "旁边",
-              "pinyin": "páng biān"
+              "word": "旁边"
             },
             {
-              "word": "海边",
-              "pinyin": "hǎi biān"
+              "word": "海边"
             }
           ],
           "sentence": "周末我们去海边捡漂亮的贝壳。"
@@ -9418,12 +7463,10 @@ module.exports = {
           "pinyin": "xíng",
           "words": [
             {
-              "word": "行走",
-              "pinyin": "xíng zǒu"
+              "word": "行走"
             },
             {
-              "word": "银行",
-              "pinyin": "yín xíng"
+              "word": "银行"
             }
           ],
           "sentence": "我们沿着林间小路慢慢行走。"
@@ -9433,12 +7476,10 @@ module.exports = {
           "pinyin": "cǎo",
           "words": [
             {
-              "word": "小草",
-              "pinyin": "xiǎo cǎo"
+              "word": "小草"
             },
             {
-              "word": "草地",
-              "pinyin": "cǎo dì"
+              "word": "草地"
             }
           ],
           "sentence": "草地上有很多小虫。"
@@ -9448,12 +7489,10 @@ module.exports = {
           "pinyin": "gǎn",
           "words": [
             {
-              "word": "赶走",
-              "pinyin": "gǎn zǒu"
+              "word": "赶走"
             },
             {
-              "word": "赶快",
-              "pinyin": "gǎn kuài"
+              "word": "赶快"
             }
           ],
           "sentence": "我们赶快回家吧。"
@@ -9461,4 +7500,4 @@ module.exports = {
       ]
     }
   ]
-}
+};
