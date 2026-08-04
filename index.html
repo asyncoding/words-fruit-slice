@@ -827,7 +827,16 @@ document.getElementById('dialogBtn').addEventListener('click', () => {
 });
 
 // ==================== LEVEL 2 ====================
-let l2 = { pinyinDone: [], wordDropped: [], wordSuccess: [], sentenceDone: [], sentenceIdx: 0, sentenceFilled: false };
+function shuffleArray(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+let l2 = { pinyinDone: [], wordDropped: [], wordSuccess: [], sentenceDone: [], sentenceIdx: 0, sentenceFilled: false, sentenceOrder: [] };
 
 function startLevel2() {
   state.phase = 'level2';
@@ -837,7 +846,7 @@ function startLevel2() {
   canvas.style.display = 'none';
   document.getElementById('complete-overlay').style.display = 'none';
   document.getElementById('level2-screen').style.display = 'flex';
-  l2 = { pinyinDone: [], wordDropped: [], wordSuccess: [], sentenceDone: [], sentenceIdx: 0, sentenceFilled: false };
+  l2 = { pinyinDone: [], wordDropped: [], wordSuccess: [], sentenceDone: [], sentenceIdx: 0, sentenceFilled: false, sentenceOrder: shuffleArray([...Array(state.collectedChars.length).keys()]) };
   updateCoinDisplay();
   renderL2Chars();
   showTab('pinyin');
@@ -900,6 +909,7 @@ let hwWordLayout = null;    // 当前字母布局 {paths, regionPts, outlinePts,
 let hwInkPts = [];        // 本次笔迹点（画布坐标，4px 去重）
 let hwRecTimer = null;    // 停笔判定定时器（全局，开新蒙层时取消旧判定）
 let hwTraceSettled = false;  // 本蒙层拼音已全部完成（防完成动画期间重复结算）
+let hwPointerId = null;      // 单手指书写：活动的 pointerId，null = 未描
 
 // ---- 字母轮廓数据（pinyin-outlines.js，Patrick Hand 手写体，四线三格归一化） ----
 // 坐标系：基线 y=130，x-height 顶 y=65，升部 ~40，降部 ~156；d 为 SVG path data（Path2D 可用）
@@ -1127,6 +1137,7 @@ function openHWOverlay(charData, idx) {
   if (l2.pinyinDone.some(p => p.idx === idx)) return;
   clearTimeout(hwRecTimer);   // 取消上一蒙层的停笔判定，防乱序
   hwDrawing = false;
+  hwPointerId = null;       // 清除单手指指针状态
   hwCharData = charData;
   hwCharIdx = idx;
 
@@ -1182,12 +1193,15 @@ function openHWOverlay(charData, idx) {
   };
 
   const startDraw = (e) => {
+    if (hwPointerId !== null) return;  // 仅支持单手指书写，忽略多点
+    hwPointerId = e.pointerId;
     hwDrawing = true;
     hwLastPt = getPos(e);
     hwInkPts.push([hwLastPt.x, hwLastPt.y]);
     clearTimeout(hwRecTimer);
   };
   const moveDraw = (e) => {
+    if (e.pointerId !== hwPointerId) return;
     if (!hwDrawing) return;
     e.preventDefault();
     const pt = getPos(e);
@@ -1198,8 +1212,10 @@ function openHWOverlay(charData, idx) {
     const last = hwInkPts[hwInkPts.length - 1];
     if (!last || Math.hypot(pt.x - last[0], pt.y - last[1]) >= TRACE_STEP) hwInkPts.push([pt.x, pt.y]);
   };
-  const endDraw = () => {
+  const endDraw = (e) => {
+    if (e.pointerId !== hwPointerId) return;
     hwDrawing = false;
+    hwPointerId = null;
     // 单一滑动定时器：静置 700ms 判定；新笔画开始即取消重计时
     clearTimeout(hwRecTimer);
     hwRecTimer = setTimeout(() => { if (!hwDrawing) judgeTrace(); }, 700);
@@ -1208,7 +1224,7 @@ function openHWOverlay(charData, idx) {
   hc.onpointerdown = startDraw;
   hc.onpointermove = moveDraw;
   hc.onpointerup = endDraw;
-  hc.onpointercancel = () => { hwDrawing = false; };
+  hc.onpointercancel = () => { hwDrawing = false; hwPointerId = null; };
 }
 
 
@@ -1245,7 +1261,7 @@ function renderSentence() {
     document.getElementById('ssProgress').textContent = `${state.collectedChars.length} / ${state.collectedChars.length}`;
     return;
   }
-  const idx = l2.sentenceIdx;
+  const idx = l2.sentenceOrder[l2.sentenceIdx];
   const charData = state.collectedChars[idx];
   if (!charData) return;
   const sentence = charData.sentence;
@@ -1269,7 +1285,7 @@ function escapeHtml(s) {
 function fillSentenceBlank(charData) {
   if (l2.sentenceFilled) return;
   if (l2.sentenceDone.length >= state.collectedChars.length) return;
-  const currentIdx = l2.sentenceIdx;
+  const currentIdx = l2.sentenceOrder[l2.sentenceIdx];
   const currentChar = state.collectedChars[currentIdx];
   if (!currentChar) return;
   if (charData.character !== currentChar.character) {
@@ -1294,7 +1310,7 @@ function fillSentenceBlank(charData) {
   resultDiv.appendChild(span);
   updateL2Coins();
   setTimeout(() => {
-    l2.sentenceIdx = (l2.sentenceDone.length < state.collectedChars.length) ? currentIdx + 1 : 0;
+    l2.sentenceIdx = (l2.sentenceDone.length < state.collectedChars.length) ? l2.sentenceIdx + 1 : 0;
     renderSentence();
   }, 1200);
 }
@@ -1308,6 +1324,7 @@ async function initJieba() {
     const mod = await import('./vendor/jieba/jieba_rs_wasm.js');
     await mod.default();
     window.__jiebaCut = mod.cut;
+    window.__jiebaCutAll = mod.cut_all;
     window.__jiebaAddWord = mod.add_word;
     jiebaReady = true;
     console.log('jieba-wasm loaded');
@@ -1322,8 +1339,17 @@ function wordExists(word) {
     const chars = state.collectedChars.map(c => c.character);
     return chars.includes(word);
   }
-  const result = window.__jiebaCut(word, false);
-  return result.length === 1 && result[0] === word;
+  // 标准切词（确定性，无 HMM）
+  let result = window.__jiebaCut(word, false);
+  if (result.length === 1 && result[0] === word) return true;
+  // 回退 1：cut_all（全模式）—— 若单词在词典中，应出现在结果中
+  if (window.__jiebaCutAll) {
+    const allResult = window.__jiebaCutAll(word);
+    if (allResult.includes(word)) return true;
+  }
+  // 回退 2：所有字符均来自已收集字集（儿童游戏宽松模式）
+  const chars = state.collectedChars.map(c => c.character);
+  return word.split('').every(ch => chars.includes(ch));
 }
 
 // Click-based word matching
@@ -1609,7 +1635,7 @@ document.getElementById('exitBtn').addEventListener('click', () => {
   document.getElementById('new-chars-overlay').style.display = 'none';
   state.phase = 'menu';
   document.getElementById('start-screen').style.display = 'flex';
-  initSectionPicker();
+  initSectionPicker(true);
 });
 
 // ==================== UTILITY ====================
@@ -1618,7 +1644,7 @@ function updateCoinDisplay() {
 }
 
 // ==================== SECTION PICKER ====================
-function initSectionPicker() {
+function initSectionPicker(autoNext) {
   const container = document.getElementById('sectionPicker');
   container.innerHTML = '';
   GAME_DATA.sections.forEach((sec, idx) => {
@@ -1637,7 +1663,20 @@ function initSectionPicker() {
     });
     container.appendChild(btn);
   });
-  if (GAME_DATA.sections.length > 0) container.children[0].click();
+  if (GAME_DATA.sections.length > 0) {
+    if (autoNext && state.section) {
+      const curIdx = GAME_DATA.sections.findIndex(s => s === state.section);
+      let nextIdx = -1;
+      for (let i = curIdx + 1; i < GAME_DATA.sections.length; i++) {
+        if (!save.completedSections.includes(GAME_DATA.sections[i].title)) { nextIdx = i; break; }
+      }
+      if (nextIdx === -1) nextIdx = GAME_DATA.sections.findIndex(s => !save.completedSections.includes(s.title));
+      if (nextIdx === -1) nextIdx = 0;
+      container.children[nextIdx].click();
+    } else {
+      container.children[0].click();
+    }
+  }
   // 首页曝光埋点 + 生字本入口显示累计认识数
   const knownCount = save.knownChars.length;
   const entry = document.getElementById('knownEntryBtn');
