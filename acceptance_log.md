@@ -8,13 +8,13 @@
 | 被测版本 | 迭代10（含 4 项新修复，git HEAD ec86604） |
 | 验收依据 | AGENT.md §4（4.2 指标 / 4.4 脚本要点） |
 | 环境 | macOS Chrome headless（Playwright 真实鼠标事件）/ 本地 http-server :8080 |
-| 新增 | (a) 课本通关后自动选中下一课；(b) 造句顺序打乱；(c) 组词 jieba cut_all 回退 + 宽松回退；(d) 手写单手指限制 |
+| 新增 | (a) 课本通关后自动选中下一课；(b) 造句顺序打乱；(c) 组词 jieba 基础词典 + 课本组词表（含扩展表，弃用 HMM）；(d) 手写单手指限制 |
 
 ## 改动摘要（4 项用户报障修复）
 
 1. **(a) 课本通关后自动跳到下一课**：`exitBtn` → `initSectionPicker(true)`，查找第一个未完成课本并选中；若全部完成则回到第一课
 2. **(b) 造句顺序不与收字顺序一致**：`startLevel2()` 初始化 `l2.sentenceOrder` 为打乱的索引数组；`renderSentence`/`fillSentenceBlank` 通过 `sentenceOrder` 映射获取字符，句子呈现顺序与收字顺序解耦
-3. **(c) 组词"降落"有时难过**：`wordExists` 增加 `cut_all` 回退（确定性全模式）；最终回退为「所有字符均来自已收集字集」（儿童游戏宽松模式）
+3. **(c) 组词"降落"有时难过 + 乱组词误通过**：`wordExists` 重写 —— 依据 1：课本组词表（game-data `characters[].words` 汇总）+ 扩展组词表 `EXTRA_WORDS`（如"冬游"不在 jieba 词典）；依据 2：jieba 基础词典 `cut(word, false)` 单 token。**弃用 HMM 新词识别**（HMM 会把任意相邻字猜成词）；**弃用宽松回退**（用户否决）。每次判定打印依据（console.info 成功依据 / console.debug 原始切词）
 4. **(d) 拼音手写仅支持单手指**：添加 `hwPointerId` 跟踪活动指针；`startDraw` 忽略多点，`moveDraw`/`endDraw` 过滤非活动指针，`pointercancel` 清理
 
 ## 用例覆盖
@@ -56,13 +56,15 @@
 ## 经验教训
 
 - Playwright `page.mouse` 事件的 `pointerId` 恒为 1，单手指逻辑不影响鼠标回放测试
-- `cut_all` 返回所有可能词表，`includes(word)` 检查确定单词在词典中的存在（比 `cut` 更稳定）
+- jieba HMM 新词识别（`cut(word, true)`）不是词典——它用 Viterbi 把任意相邻字猜成词（实测"氏孙""张胡""古李"均被 HMM 猜成单 token），**不能**作为词语真实性依据
+- "降落"在 jieba 基础词典与课本组词表中都存在（`cut("降落", false)=["降落"]`），此前"不能组词"实为数据问题（缺"降"字条目，已由 ec86604 修正）；"冬游"不在 jieba 词典也不在课本组词表，需显式加入 `EXTRA_WORDS` 扩展表
+- 词语真实性 = 确定性依据（jieba 基础词典单 token 或课本/扩展组词表），判定依据必须可审计（打日志）
 - 句子顺序打乱需要在 `sentenceIdx` 推进时保持顺序（顺序索引 + 映射数组），不能打乱 `sentenceIdx` 本身（否则 `sentenceDone.length` 与进度条不一致）
 - `exitBtn` 是返回首页的唯一路径，`autoNext` 参数通过函数参数传递比全局变量更干净
 
 ## 结论
 
-迭代10 全项 PASS（描红 7 项 + i8 13 项 = 20 项均通过）。四项用户报障修复落地：课程跳转、句子顺序打乱、组词词典回退、手写单手指限制。Playwright 回归无回归。 awaiting commit.
+迭代10 全项 PASS（描红 7 项 + i8 13 项 = 20 项均通过）。四项用户报障修复落地：课程跳转、句子顺序打乱、组词词典校验（jieba 基础词典 + 课本组词表，含判定日志）、手写单手指限制。已提交 commit 6b42b24；后按用户反馈修正 (c)（弃用宽松回退与 HMM），重测 10 组组词样本：降落/冬游/看书/吃饭/小狗 通过，张孙/氏孙/张胡/古李 拒绝，判定依据全部打日志。
 
 ---
 

@@ -1324,7 +1324,6 @@ async function initJieba() {
     const mod = await import('./vendor/jieba/jieba_rs_wasm.js');
     await mod.default();
     window.__jiebaCut = mod.cut;
-    window.__jiebaCutAll = mod.cut_all;
     window.__jiebaAddWord = mod.add_word;
     jiebaReady = true;
     console.log('jieba-wasm loaded');
@@ -1333,23 +1332,62 @@ async function initJieba() {
   }
 }
 
+// 课程扩展组词表：jieba 词典之外、经人工确认的真实词语（如"冬游"是常见课外组词，但不在 jieba 基础词典中）
+const EXTRA_WORDS = new Set(['冬游']);
+
+let curriculumWordSet = null;
+
+// 课本组词表：从 game-data 的每课 characters[].words 汇总，作为课程内权威词语
+function getCurriculumWordSet() {
+  if (!curriculumWordSet) {
+    curriculumWordSet = new Set();
+    try {
+      GAME_DATA.sections.forEach(sec => {
+        (sec.characters || []).forEach(ch => {
+          (ch.words || []).forEach(w => curriculumWordSet.add(w.word));
+        });
+      });
+    } catch (e) {
+      console.warn('[组词] 课本组词表构建失败:', e);
+    }
+  }
+  return curriculumWordSet;
+}
+
+// 词语真实性判定：仅使用「jieba 基础词典」与「课本/扩展组词表」两个确定性依据，
+// 不使用 HMM 新词识别 —— HMM 会把任意相邻字猜成词（如"张孙""古李"），不能作为真实性依据。
+// 每次判定都会打印判定依据（console.info 成功依据 / console.debug 原始切词）。
 function wordExists(word) {
-  if (!window.__jiebaCut) return false;
+  if (!window.__jiebaCut) {
+    console.warn('[组词] ❌ jieba 未加载，拒绝:', word);
+    return false;
+  }
+  const baseCut = window.__jiebaCut(word, false);
+  const hmmCut = window.__jiebaCut(word, true);
+  console.debug('[组词] 原始切词', JSON.stringify({ word, dict: baseCut, hmm: hmmCut }));
+
   if (word.length === 1) {
     const chars = state.collectedChars.map(c => c.character);
-    return chars.includes(word);
+    const ok = chars.includes(word);
+    console.info(ok ? '[组词] ✅ 通过（单字已收集）' : '[组词] ❌ 拒绝（单字未收集）', word, JSON.stringify(chars));
+    return ok;
   }
-  // 标准切词（确定性，无 HMM）
-  let result = window.__jiebaCut(word, false);
-  if (result.length === 1 && result[0] === word) return true;
-  // 回退 1：cut_all（全模式）—— 若单词在词典中，应出现在结果中
-  if (window.__jiebaCutAll) {
-    const allResult = window.__jiebaCutAll(word);
-    if (allResult.includes(word)) return true;
+
+  // 依据 1：课本组词表 / 扩展组词表（课程内权威词语）
+  if (getCurriculumWordSet().has(word) || EXTRA_WORDS.has(word)) {
+    console.info('[组词] ✅ 通过（课本/扩展组词表）', word);
+    return true;
   }
-  // 回退 2：所有字符均来自已收集字集（儿童游戏宽松模式）
-  const chars = state.collectedChars.map(c => c.character);
-  return word.split('').every(ch => chars.includes(ch));
+
+  // 依据 2：jieba 基础词典（hmm=false 确定性切词，切成单个 token 即词典词）
+  if (baseCut.length === 1 && baseCut[0] === word) {
+    console.info('[组词] ✅ 通过（jieba 基础词典）', word, '→', JSON.stringify(baseCut));
+    return true;
+  }
+
+  console.info('[组词] ❌ 失败：非课本组词且非 jieba 词典词', word,
+    '切词=', JSON.stringify(baseCut), '(HMM 猜测=', JSON.stringify(hmmCut), '不作为依据)');
+  return false;
 }
 
 // Click-based word matching
