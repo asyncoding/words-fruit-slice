@@ -181,7 +181,7 @@ canvas{display:block;width:100%;height:100%}
     <div id="l2-chars"></div>
     <div class="l2-pinyin-hint">点击汉字，手写拼音。每个字母单独写，写完后稍等片刻自动识别。</div>
     <div id="l2-word-section">
-      <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:6px">点击下方汉字添加到组词框，点击确认组词：</div>
+      <div style="font-size:13px;color:rgba(255,255,255,.5);margin-bottom:6px">点击上方汉字添加到组词框，点击确认组词：</div>
       <div class="word-drop-zone" id="wordDropZone"></div>
       <div class="word-btn-row">
         <button class="confirm-btn" id="wordConfirmBtn">✅ 确认组词</button>
@@ -1412,7 +1412,7 @@ function renderWordDropZone() {
     zone.appendChild(span);
   });
   if (l2.wordDropped.length === 0) {
-    zone.textContent = 'Drag characters here...';
+    zone.textContent = '点击上方汉字添加到组词框';
     zone.style.color = 'rgba(255,255,255,.2)';
   } else {
     zone.style.color = '';
