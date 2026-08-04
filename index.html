@@ -278,29 +278,32 @@ let gameDataLoaded = false;
 function log(...args) { console.log('[game]', ...args); }
 function warn(...args) { console.warn('[game]', ...args); }
 
-// ==================== UMENG (U-Web / CNZZ) ANALYTICS ====================
-// 在 https://webplus.umeng.com 注册站点后把站点 ID 填入 UMENG_SITE_ID 即可生效；
+// ==================== UMENG (友盟+ Aplus Web) ANALYTICS ====================
+// 官方接入代码（友盟+ Web 端分析），AppKey: 6a705eade87a8d65f0a6275c
 // 未配置或 SDK 加载失败时 track() 静默降级，不影响游戏。
-const UMENG_SITE_ID = 'YOUR_CNZZ_SITE_ID';
-(function () {
-  if (UMENG_SITE_ID === 'YOUR_CNZZ_SITE_ID') return;
-  var _czc = window._czc || (window._czc = []);
-  _czc.push(['_setAccount', UMENG_SITE_ID]);
-  var d = document, g = d.createElement('script'), s = d.getElementsByTagName('script')[0];
-  g.src = 'https://v1.cnzz.com/z.js?id=' + UMENG_SITE_ID;
-  g.async = true;
-  s.parentNode.insertBefore(g, s);
-})();
-// 自定义事件（类别/动作/标签/数值）。SDK 未就绪时 push 进 _czc 缓冲数组由 SDK 接管。
+(function (w, d, s, q, i) {
+  w[q] = w[q] || [];
+  var f = d.getElementsByTagName(s)[0], j = d.createElement(s);
+  j.async = true;
+  j.id = 'beacon-aplus';
+  j.src = 'https://d.alicdn.com/alilog/mlog/aplus/' + i + '.js';
+  f.parentNode.insertBefore(j, f);
+})(window, document, 'script', 'aplus_queue', '203467608');
+
+// 集成应用的 appKey
+aplus_queue.push({
+  action: 'aplus.setMetaInfo',
+  arguments: ['appKey', '6a705eade87a8d65f0a6275c']
+});
+
+// 自定义事件（类别/动作/标签/数值）。SDK 未就绪时 push 进 aplus_queue 缓冲数组由 SDK 接管。
 function track(cat, action, label, value) {
   try {
-    if (!window._czc) window._czc = [];
-    var czc = window._czc;
-    if (typeof czc.push === 'function') {
-      czc.push(['_trackEvent', cat, action, label || '', typeof value === 'number' ? value : 0]);
-    } else if (typeof czc === 'function') {
-      czc('_trackEvent', cat, action, label || '', typeof value === 'number' ? value : 0);
-    }
+    if (!window.aplus_queue) window.aplus_queue = [];
+    aplus_queue.push({
+      action: 'aplus.trackEvent',
+      arguments: [cat + '_' + action, label || '', { label: label || '', value: typeof value === 'number' ? value : 0 }]
+    });
   } catch (e) {}
 }
 function trackBtnClick(id) { track('btn_click', id, id, 1); }
