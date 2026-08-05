@@ -30,6 +30,9 @@ canvas{display:block;width:100%;height:100%}
 #start-screen .start-btn:active{transform:scale(.95)}
 #start-screen .sub-text{margin-top:12px;font-size:14px;color:rgba(255,255,255,.3)}
 #start-screen .shop-btn{position:absolute;top:16px;right:16px;padding:8px 16px;border-radius:20px;border:1px solid #ffd700;background:transparent;color:#ffd700;font-size:16px;cursor:pointer;pointer-events:auto}
+#start-screen .shop-bubble{position:absolute;top:52px;right:16px;padding:8px 14px;border-radius:12px;background:linear-gradient(135deg,#e94560,#0f3460);color:#fff;font-size:13px;cursor:pointer;pointer-events:auto;z-index:30;box-shadow:0 4px 16px rgba(233,69,96,.4);animation:bubblePop .4s ease;max-width:180px;text-align:center;line-height:1.4}
+#start-screen .shop-bubble::before{content:'';position:absolute;top:-6px;right:20px;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:6px solid #e94560}
+@keyframes bubblePop{0%{transform:scale(0);opacity:0}100%{transform:scale(1);opacity:1}}
 
 #complete-overlay{position:fixed;top:0;left:0;width:100%;height:100%;display:none;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.85);z-index:80}
 #complete-overlay .title{font-size:28px;margin-bottom:8px}
@@ -60,7 +63,7 @@ canvas{display:block;width:100%;height:100%}
 #l2-header .l2-finish-btn{padding:6px 16px;border-radius:16px;border:none;background:linear-gradient(135deg,#06d6a0,#0f3460);color:#fff;font-size:15px;font-weight:bold;cursor:pointer;pointer-events:auto;transition:transform .2s}
 #l2-header .l2-finish-btn:active{transform:scale(.95)}
 #l2-body{flex:1;padding:10px 12px;overflow-y:auto}
-#l2-tabs{display:flex;gap:6px;margin-bottom:10px}
+#l2-tabs{display:flex;gap:6px;margin-bottom:10px;overflow-x:auto;-webkit-overflow-scrolling:touch}
 #l2-tabs .tab{padding:6px 16px;border-radius:16px;border:1px solid rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.6);font-size:16px;cursor:pointer;pointer-events:auto;transition:all .2s}
 #l2-tabs .tab.active{background:#e94560;border-color:#e94560;color:#fff}
 
@@ -162,6 +165,7 @@ canvas{display:block;width:100%;height:100%}
   <div class="sub-text">选择要练习的课文</div>
   <button class="known-entry-btn" id="knownEntryBtn">📖 我的生字本</button>
   <button class="shop-btn" id="menuShopBtn">🏪 商店</button>
+  <div class="shop-bubble" id="shopBubble" style="display:none">🪙 你有足够的金币解锁新刀具！</div>
 </div>
 
 <div id="level2-screen">
@@ -179,7 +183,7 @@ canvas{display:block;width:100%;height:100%}
   </div>
   <div id="l2-body">
     <div id="l2-chars"></div>
-    <div class="l2-pinyin-hint">点击汉字，手写拼音。每个字母单独写，写完后稍等片刻自动识别。</div>
+    <div class="l2-pinyin-hint">点击汉字，手写拼音</div>
     <div id="l2-word-section">
       <div style="font-size:16px;color:rgba(255,255,255,.5);margin-bottom:6px">点击上方汉字添加到组词框，点击确认组词：</div>
       <div class="word-drop-zone" id="wordDropZone"></div>
@@ -400,6 +404,7 @@ function loadSave() {
   if (!s.equippedKnife) s.equippedKnife = 'default';
   if (!Array.isArray(s.completedSections)) s.completedSections = [];
   if (!Array.isArray(s.knownChars)) s.knownChars = [];
+  if (typeof s.shopBubbleShown !== 'boolean') s.shopBubbleShown = false;
   return s;
 }
 function writeSave() {
@@ -433,6 +438,15 @@ resize();
 // ==================== AUDIO ====================
 let audioCtx = null;
 function initAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); }
+
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'zh-CN';
+  u.rate = 0.9;
+  window.speechSynthesis.speak(u);
+}
 
 function playSlice() {
   try {
@@ -846,7 +860,7 @@ function startLevel2() {
   canvas.style.display = 'none';
   document.getElementById('complete-overlay').style.display = 'none';
   document.getElementById('level2-screen').style.display = 'flex';
-  l2 = { pinyinDone: [], wordDropped: [], wordSuccess: [], sentenceDone: [], sentenceIdx: 0, sentenceFilled: false, sentenceOrder: shuffleArray([...Array(state.collectedChars.length).keys()]) };
+  l2 = { pinyinDone: [], wordDropped: [], wordSuccess: [], sentenceDone: [], sentenceIdx: 0, sentenceFilled: false, sentenceOrder: shuffleArray([...Array(state.collectedChars.length).keys()]), spokenTabs: new Set() };
   updateCoinDisplay();
   renderL2Chars();
   showTab('pinyin');
@@ -875,12 +889,17 @@ function renderL2Chars() {
 }
 
 // ==================== TABS ====================
+const TAB_HINTS = { pinyin: '点击汉字，手写拼音', word: '点击上方汉字添加到组词框，点击确认组词', sentence: '点击上方对应汉字填入空白' };
 function showTab(name) {
   document.getElementById('l2-word-section').style.display = name === 'word' ? 'block' : 'none';
   document.getElementById('l2-sentence-section').style.display = name === 'sentence' ? 'block' : 'none';
   document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === name));
   document.querySelector('.l2-pinyin-hint').style.display = name === 'pinyin' ? 'block' : 'none';
   if (name === 'sentence') initSentenceGame();
+  if (TAB_HINTS[name] && l2 && !l2.spokenTabs.has(name)) {
+    l2.spokenTabs.add(name);
+    speak(TAB_HINTS[name]);
+  }
   trackFuncExpose('level2_' + name);
   trackFuncUse('level2_' + name);
 }
@@ -1438,6 +1457,13 @@ document.getElementById('wordConfirmBtn').addEventListener('click', async () => 
     l2.wordDropped = [];
     renderWordDropZone();
     renderWordResult();
+  } else if (exists) {
+    playError();
+    const msg = document.createElement('div');
+    msg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:100;background:rgba(0,0,0,.9);padding:20px 40px;border-radius:16px;font-size:20px;border:2px solid #f0ad4e;color:#f0ad4e';
+    msg.textContent = `「${word}」已经组过了，换一个吧！`;
+    document.body.appendChild(msg);
+    setTimeout(() => msg.remove(), 1500);
   } else {
     playError();
     const msg = document.createElement('div');
@@ -1638,6 +1664,7 @@ function showComplete() {
 
   // 新增认识字 → 弹窗提示（点击可查看全部已认识生字）
   const added = mergeKnownChars();
+  state.lastRoundAdded = added;
   if (added > 0) showNewCharsPopup(added);
 
   // 埋点：本轮完成（切水果 → 完成页面），value 带当日累计轮数
@@ -1674,6 +1701,18 @@ document.getElementById('exitBtn').addEventListener('click', () => {
   state.phase = 'menu';
   document.getElementById('start-screen').style.display = 'flex';
   initSectionPicker(true);
+  const added = state.lastRoundAdded || 0;
+  if (added > 0 && !save.shopBubbleShown) {
+    const canBuy = KNIVES.some(k => !save.ownedKnives.includes(k.id) && save.coins >= k.cost);
+    if (canBuy) {
+      save.shopBubbleShown = true;
+      writeSave();
+      const bubble = document.getElementById('shopBubble');
+      bubble.style.display = 'block';
+      bubble.onclick = () => { bubble.style.display = 'none'; };
+      setTimeout(() => { bubble.style.display = 'none'; }, 5000);
+    }
+  }
 });
 
 // ==================== UTILITY ====================
@@ -1712,7 +1751,9 @@ function initSectionPicker(autoNext) {
       if (nextIdx === -1) nextIdx = 0;
       container.children[nextIdx].click();
     } else {
-      container.children[0].click();
+      let defaultIdx = GAME_DATA.sections.findIndex(s => !save.completedSections.includes(s.title));
+      if (defaultIdx === -1) defaultIdx = 0;
+      container.children[defaultIdx].click();
     }
   }
   // 首页曝光埋点 + 生字本入口显示累计认识数
